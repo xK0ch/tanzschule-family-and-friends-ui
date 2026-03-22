@@ -1,0 +1,156 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// Toolbar
+.app-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, var(--ts-orange) 0%, var(--ts-orange-dark) 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.menu-button {
+  margin-right: 8px;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  gap: 10px;
+
+  &:hover {
+    text-decoration: none;
+    opacity: 0.9;
+  }
+}
+
+.logo {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.app-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+  }
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+// Desktop nav in toolbar
+.desktop-nav {
+  display: flex;
+  gap: 2px;
+
+  a {
+    color: white;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    font-size: 0.875rem;
+
+    &.active-link {
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 500;
+    }
+  }
+}
+
+// Sidenav
+.sidenav-container {
+  flex: 1;
+  margin-top: 64px;
+}
+
+.app-sidenav {
+  width: 240px;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.desktop-sidenav {
+  display: none;
+}
+
+.mobile-sidenav {
+  display: block;
+}
+
+mat-nav-list {
+  padding-top: 8px;
+
+  .active-link {
+    background: rgba(224, 138, 74, 0.1);
+
+    mat-icon {
+      color: var(--ts-orange);
+    }
+
+    span {
+      color: var(--ts-orange-dark);
+      font-weight: 500;
+    }
+  }
+
+  mat-divider {
+    margin: 8px 16px;
+  }
+}
+
+// Main content
+.main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 64px);
+}
+
+// Footer
+.app-footer {
+  margin-top: auto;
+  background: #f5f5f5;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 24px 16px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 12px;
+
+  a {
+    color: var(--ts-text-dark);
+    font-size: 0.875rem;
+
+    &:hover {
+      color: var(--ts-cyan-dark);
+    }
+  }
+}
+
+.footer-copyright {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0;
+}
