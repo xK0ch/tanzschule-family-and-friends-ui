@@ -3,40 +3,38 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'neuigkeiten',
+    redirectTo: 'news',
     pathMatch: 'full',
   },
   {
-    path: 'neuigkeiten',
+    path: 'news',
     loadComponent: () =>
-      import('./pages/neuigkeiten/neuigkeiten').then((m) => m.Neuigkeiten),
+      import('./pages/news/news').then((m) => m.News),
   },
   {
-    path: 'kurse',
+    path: 'courses',
     loadComponent: () =>
-      import('./pages/kurse/kurse').then((m) => m.Kurse),
+      import('./pages/courses/courses').then((m) => m.Courses),
   },
   {
-    path: 'veranstaltungen',
+    path: 'events',
     loadComponent: () =>
-      import('./pages/veranstaltungen/veranstaltungen').then(
-        (m) => m.Veranstaltungen
-      ),
+      import('./pages/events/events').then((m) => m.Events),
   },
   {
-    path: 'gutscheine',
+    path: 'vouchers',
     loadComponent: () =>
-      import('./pages/gutscheine/gutscheine').then((m) => m.Gutscheine),
+      import('./pages/vouchers/vouchers').then((m) => m.Vouchers),
   },
   {
-    path: 'galerie',
+    path: 'gallery',
     loadComponent: () =>
-      import('./pages/galerie/galerie').then((m) => m.Galerie),
+      import('./pages/gallery/gallery').then((m) => m.Gallery),
   },
   {
-    path: 'ueber-uns',
+    path: 'about-us',
     loadComponent: () =>
-      import('./pages/ueber-uns/ueber-uns').then((m) => m.UeberUns),
+      import('./pages/about-us/about-us').then((m) => m.AboutUs),
   },
   {
     path: 'faq',
@@ -44,22 +42,24 @@ export const routes: Routes = [
       import('./pages/faq/faq').then((m) => m.Faq),
   },
   {
-    path: 'kontakt',
+    path: 'contact',
     loadComponent: () =>
-      import('./pages/kontakt/kontakt').then((m) => m.Kontakt),
+      import('./pages/contact/contact').then((m) => m.Contact),
   },
   {
-    path: 'impressum',
+    path: 'legal-notice',
     loadComponent: () =>
-      import('./pages/impressum/impressum').then((m) => m.Impressum),
+      import('./pages/legal-notice/legal-notice').then((m) => m.LegalNotice),
   },
   {
-    path: 'datenschutz',
+    path: 'privacy-policy',
     loadComponent: () =>
-      import('./pages/datenschutz/datenschutz').then((m) => m.Datenschutz),
+      import('./pages/privacy-policy/privacy-policy').then(
+        (m) => m.PrivacyPolicy
+      ),
   },
   {
     path: '**',
-    redirectTo: 'neuigkeiten',
+    redirectTo: 'news',
   },
 ];

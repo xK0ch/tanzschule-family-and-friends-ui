@@ -36,19 +36,19 @@ export class App {
   protected readonly isMobile = signal(false);
 
   protected readonly mainNavItems: NavItem[] = [
-    { label: 'Neuigkeiten', route: '/neuigkeiten', icon: 'newspaper' },
-    { label: 'Kurse', route: '/kurse', icon: 'school' },
-    { label: 'Veranstaltungen', route: '/veranstaltungen', icon: 'event' },
-    { label: 'Gutscheine', route: '/gutscheine', icon: 'card_giftcard' },
-    { label: 'Galerie', route: '/galerie', icon: 'photo_library' },
-    { label: 'Über uns', route: '/ueber-uns', icon: 'group' },
+    { label: 'Neuigkeiten', route: '/news', icon: 'newspaper' },
+    { label: 'Kurse', route: '/courses', icon: 'school' },
+    { label: 'Veranstaltungen', route: '/events', icon: 'event' },
+    { label: 'Gutscheine', route: '/vouchers', icon: 'card_giftcard' },
+    { label: 'Galerie', route: '/gallery', icon: 'photo_library' },
+    { label: 'Über uns', route: '/about-us', icon: 'group' },
     { label: 'FAQ', route: '/faq', icon: 'help_outline' },
-    { label: 'Kontakt', route: '/kontakt', icon: 'mail' },
+    { label: 'Kontakt', route: '/contact', icon: 'mail' },
   ];
 
   protected readonly footerNavItems: NavItem[] = [
-    { label: 'Impressum', route: '/impressum', icon: 'gavel' },
-    { label: 'Datenschutz', route: '/datenschutz', icon: 'privacy_tip' },
+    { label: 'Impressum', route: '/legal-notice', icon: 'gavel' },
+    { label: 'Datenschutz', route: '/privacy-policy', icon: 'privacy_tip' },
   ];
 
   constructor(private breakpointObserver: BreakpointObserver) {

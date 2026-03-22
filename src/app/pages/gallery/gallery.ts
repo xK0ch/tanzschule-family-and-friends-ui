@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-ueber-uns',
+  selector: 'app-gallery',
   imports: [MatCardModule],
-  templateUrl: './ueber-uns.html',
-  styleUrl: './ueber-uns.scss',
+  templateUrl: './gallery.html',
+  styleUrl: './gallery.scss',
 })
-export class UeberUns {}
+export class Gallery {}

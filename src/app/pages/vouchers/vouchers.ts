@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-galerie',
+  selector: 'app-vouchers',
   imports: [MatCardModule],
-  templateUrl: './galerie.html',
-  styleUrl: './galerie.scss',
+  templateUrl: './vouchers.html',
+  styleUrl: './vouchers.scss',
 })
-export class Galerie {}
+export class Vouchers {}

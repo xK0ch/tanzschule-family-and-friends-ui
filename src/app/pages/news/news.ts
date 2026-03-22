@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-gutscheine',
+  selector: 'app-news',
   imports: [MatCardModule],
-  templateUrl: './gutscheine.html',
-  styleUrl: './gutscheine.scss',
+  templateUrl: './news.html',
+  styleUrl: './news.scss',
 })
-export class Gutscheine {}
+export class News {}

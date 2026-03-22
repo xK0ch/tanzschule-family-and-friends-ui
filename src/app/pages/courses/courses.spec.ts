@@ -1,23 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { UeberUns } from './ueber-uns';
+import { Courses } from './courses';
 
-describe('UeberUns', () => {
+describe('Courses', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UeberUns],
+      imports: [Courses],
     }).compileComponents();
   });
 
   it('should create', () => {
-    const fixture = TestBed.createComponent(UeberUns);
+    const fixture = TestBed.createComponent(Courses);
     expect(fixture.componentInstance).toBeTruthy();
   });
 
   it('should render the heading', () => {
-    const fixture = TestBed.createComponent(UeberUns);
+    const fixture = TestBed.createComponent(Courses);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Über uns');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Kurse');
   });
 });

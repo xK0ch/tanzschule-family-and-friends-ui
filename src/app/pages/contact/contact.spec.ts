@@ -1,23 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { Datenschutz } from './datenschutz';
+import { Contact } from './contact';
 
-describe('Datenschutz', () => {
+describe('Contact', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Datenschutz],
+      imports: [Contact],
     }).compileComponents();
   });
 
   it('should create', () => {
-    const fixture = TestBed.createComponent(Datenschutz);
+    const fixture = TestBed.createComponent(Contact);
     expect(fixture.componentInstance).toBeTruthy();
   });
 
   it('should render the heading', () => {
-    const fixture = TestBed.createComponent(Datenschutz);
+    const fixture = TestBed.createComponent(Contact);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Datenschutz');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Kontakt');
   });
 });

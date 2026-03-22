@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-datenschutz',
+  selector: 'app-events',
   imports: [MatCardModule],
-  templateUrl: './datenschutz.html',
-  styleUrl: './datenschutz.scss',
+  templateUrl: './events.html',
+  styleUrl: './events.scss',
 })
-export class Datenschutz {}
+export class Events {}
