@@ -1,0 +1,19 @@
+services:
+  tanzschule-ui:
+    build: .
+    container_name: tanzschule-ui
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /etc/letsencrypt/live/fynn-koch.de-0001/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/fynn-koch.de-0001/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+    networks:
+      - tanzschule-net
+    restart: unless-stopped
+
+networks:
+  tanzschule-net:
+    name: tanzschule-net
+    external: true

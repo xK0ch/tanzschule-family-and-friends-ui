@@ -1,0 +1,45 @@
+.admin-faq {
+  max-width: 800px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+    color: var(--ts-text-dark);
+  }
+}
+
+.faq-form-card,
+.faq-card {
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.faq-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-buttons,
+.edit-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.empty-card {
+  text-align: center;
+
+  p {
+    color: #666;
+    padding: 24px 0;
+  }
+}

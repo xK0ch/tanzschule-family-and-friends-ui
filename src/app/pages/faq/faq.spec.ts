@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Faq } from './faq';
 
 describe('Faq', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Faq],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
   });
 

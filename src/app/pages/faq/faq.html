@@ -1,13 +1,38 @@
 <div class="page-container">
   <h1>Häufig gestellte Fragen</h1>
   <p>Antworten auf die wichtigsten Fragen.</p>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Platzhalter für FAQ</mat-card-title>
-      <mat-card-subtitle>Inhalte folgen mit dem Backend</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Hier werden zukünftig häufig gestellte Fragen und Antworten angezeigt.</p>
-    </mat-card-content>
-  </mat-card>
+
+  @if (loading()) {
+    <mat-card>
+      <mat-card-content>
+        <p>Fragen werden geladen...</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (error()) {
+    <mat-card>
+      <mat-card-content>
+        <p>Die FAQs konnten leider nicht geladen werden. Bitte versuche es später erneut.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (faqs().length === 0) {
+    <mat-card>
+      <mat-card-content>
+        <p>Derzeit sind keine häufig gestellten Fragen vorhanden.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <mat-accordion>
+      @for (faq of faqs(); track faq.id) {
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon class="faq-icon">help_outline</mat-icon>
+              {{ faq.question }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p class="faq-answer">{{ faq.answer }}</p>
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  }
 </div>

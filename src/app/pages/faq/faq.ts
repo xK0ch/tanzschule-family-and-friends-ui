@@ -1,10 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { FaqService } from '../../core/services/faq.service';
+import { FaqResponse } from '../../core/models/faq.model';
 
 @Component({
   selector: 'app-faq',
-  imports: [MatCardModule],
+  imports: [MatCardModule, MatExpansionModule, MatIconModule],
   templateUrl: './faq.html',
   styleUrl: './faq.scss',
 })
-export class Faq {}
+export class Faq implements OnInit {
+  protected faqs = signal<FaqResponse[]>([]);
+  protected loading = signal(true);
+  protected error = signal(false);
+
+  constructor(private faqService: FaqService) {}
+
+  ngOnInit(): void {
+    this.faqService.getAll().subscribe({
+      next: (faqs) => {
+        this.faqs.set(faqs);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set(true);
+        this.loading.set(false);
+      },
+    });
+  }
+}
