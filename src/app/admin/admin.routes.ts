@@ -19,6 +19,11 @@ export const adminRoutes: Routes = [
           import('./admin-faq/admin-faq').then((m) => m.AdminFaq),
       },
       {
+        path: 'gallery',
+        loadComponent: () =>
+          import('./admin-gallery/admin-gallery').then((m) => m.AdminGallery),
+      },
+      {
         path: '',
         redirectTo: 'faq',
         pathMatch: 'full',

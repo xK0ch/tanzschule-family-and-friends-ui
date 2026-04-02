@@ -1,13 +1,55 @@
 <div class="page-container">
   <h1>Galerie</h1>
   <p>Eindrücke aus unseren Kursen und Veranstaltungen.</p>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Platzhalter für Galerie</mat-card-title>
-      <mat-card-subtitle>Inhalte folgen mit dem Backend</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Hier werden zukünftig Fotos und Videos aus dem Tanzschul-Alltag gezeigt.</p>
-    </mat-card-content>
-  </mat-card>
+
+  @if (loading()) {
+    <mat-card>
+      <mat-card-content>
+        <p>Galerie wird geladen...</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (error()) {
+    <mat-card>
+      <mat-card-content>
+        <p>Die Galerie konnte leider nicht geladen werden. Bitte versuche es später erneut.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (events().length === 0) {
+    <mat-card>
+      <mat-card-content>
+        <p>Derzeit sind keine Galerie-Events vorhanden.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    @for (event of events(); track event.id) {
+      <div class="gallery-event">
+        <h2 class="event-title">{{ event.name }}</h2>
+        <p class="event-date">
+          <mat-icon class="date-icon">calendar_today</mat-icon>
+          {{ event.date | date:'dd.MM.yyyy' }}
+        </p>
+
+        @if (event.images.length > 0) {
+          <div class="image-grid">
+            @for (image of event.images; track image.id) {
+              <div class="image-tile" (click)="openLightbox(event.id, image)">
+                <img [src]="getImageUrl(event.id, image.id)" [alt]="image.originalFilename" loading="lazy" />
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="no-images">Noch keine Bilder vorhanden.</p>
+        }
+      </div>
+    }
+  }
 </div>
+
+@if (lightboxImage(); as lb) {
+  <div class="lightbox-overlay" (click)="closeLightbox()">
+    <button mat-icon-button class="lightbox-close" (click)="closeLightbox()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <img [src]="getImageUrl(lb.eventId, lb.image.id)" [alt]="lb.image.originalFilename" class="lightbox-image" (click)="$event.stopPropagation()" />
+  </div>
+}

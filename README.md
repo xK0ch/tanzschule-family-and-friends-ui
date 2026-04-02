@@ -60,7 +60,7 @@ docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build
 | `/courses`        | Kurse               | Course overview                      |
 | `/events`         | Veranstaltungen     | Events                               |
 | `/vouchers`       | Gutscheine          | Vouchers / gift cards                |
-| `/gallery`        | Galerie             | Photo gallery                        |
+| `/gallery`        | Galerie             | Photo gallery with events (from API) |
 | `/about-us`       | Über uns            | About the dance school               |
 | `/faq`            | FAQ                 | Frequently asked questions (from API)|
 | `/contact`        | Kontakt             | Contact information                  |
@@ -71,10 +71,11 @@ docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build
 
 The admin area is only accessible via URL — it is not linked from the public navigation.
 
-| Route            | Description                              |
-|------------------|------------------------------------------|
-| `/admin/login`   | Admin login (username + password)        |
-| `/admin/faq`     | FAQ management (CRUD + reorder)          |
+| Route              | Description                                          |
+|--------------------|------------------------------------------------------|
+| `/admin/login`     | Admin login (username + password)                    |
+| `/admin/faq`       | FAQ management (CRUD + reorder)                      |
+| `/admin/gallery`   | Gallery management (events CRUD, image upload/delete/reorder) |
 
 Authentication uses JWT tokens from the backend (`POST /api/auth/login`).
 
@@ -85,16 +86,17 @@ src/app/
 ├── core/
 │   ├── guards/          # authGuard
 │   ├── interceptors/    # authInterceptor (JWT Bearer)
-│   ├── models/          # TypeScript interfaces (FaqResponse, LoginRequest, ...)
-│   └── services/        # AuthService, FaqService
+│   ├── models/          # TypeScript interfaces (FaqResponse, GalleryEventResponse, ...)
+│   └── services/        # AuthService, FaqService, GalleryEventService
 ├── admin/
 │   ├── admin-login/     # Login page
 │   ├── admin-layout/    # Layout with sidebar
-│   └── admin-faq/       # FAQ management (create, edit, delete, reorder)
+│   ├── admin-faq/       # FAQ management (create, edit, delete, reorder)
+│   └── admin-gallery/   # Gallery management (events CRUD, image upload/delete/reorder)
 ├── pages/
 │   ├── news/            # 10 public pages, each lazy-loaded
-│   ├── courses/
-│   ├── events/
+│   ├── gallery/         # Public gallery with events and lightbox
+│   ├── faq/             # Public FAQ with accordion
 │   ├── ...
 │   └── privacy-policy/
 ├── app.ts               # Root component (toolbar, sidenav, footer)
