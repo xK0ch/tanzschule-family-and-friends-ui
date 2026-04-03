@@ -9,7 +9,7 @@
     <div class="contact-info">
       <h2 class="section-title">Kontaktmöglichkeiten</h2>
 
-      <div class="info-block">
+      <div class="info-block address-block">
         <p class="company-name">Tanzschule Family & Friends</p>
         <p>Uwe & Tabea Höftmann</p>
       </div>
@@ -45,12 +45,20 @@
         <mat-card-content>
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Name *</mat-label>
-            <input matInput [(ngModel)]="name" placeholder="Ihr Name" />
+            <input matInput [(ngModel)]="name" placeholder="Ihr Name" required />
+            @if (submitted() && !name.trim()) {
+              <mat-error>Name ist erforderlich.</mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>E-Mail *</mat-label>
-            <input matInput type="email" [(ngModel)]="email" placeholder="ihre@email.de" />
+            <input matInput type="email" [(ngModel)]="email" placeholder="ihre@email.de" required />
+            @if (submitted() && !email.trim()) {
+              <mat-error>E-Mail ist erforderlich.</mat-error>
+            } @else if (submitted() && email.trim() && !isEmailValid()) {
+              <mat-error>Bitte geben Sie eine gültige E-Mail-Adresse ein.</mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
@@ -60,7 +68,10 @@
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Nachricht *</mat-label>
-            <textarea matInput [(ngModel)]="message" rows="5" placeholder="Ihre Nachricht an uns..."></textarea>
+            <textarea matInput [(ngModel)]="message" rows="5" placeholder="Ihre Nachricht an uns..." required></textarea>
+            @if (submitted() && !message.trim()) {
+              <mat-error>Nachricht ist erforderlich.</mat-error>
+            }
           </mat-form-field>
 
           <button mat-raised-button color="primary" class="send-button" (click)="send()" [disabled]="sending()">
