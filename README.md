@@ -61,9 +61,9 @@ docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build
 | `/events`         | Veranstaltungen     | Events                               |
 | `/vouchers`       | Gutscheine          | Vouchers / gift cards                |
 | `/gallery`        | Galerie             | Photo gallery with events (from API) |
-| `/about-us`       | Über uns            | About the dance school               |
+| `/about-us`       | Über uns            | About the dance school & team        |
 | `/faq`            | FAQ                 | Frequently asked questions (from API)|
-| `/contact`        | Kontakt             | Contact information                  |
+| `/contact`        | Kontakt             | Contact info & contact form (via API)|
 | `/legal-notice`   | Impressum           | Legal notice                         |
 | `/privacy-policy` | Datenschutz         | Privacy policy                       |
 
@@ -86,8 +86,8 @@ src/app/
 ├── core/
 │   ├── guards/          # authGuard
 │   ├── interceptors/    # authInterceptor (JWT Bearer)
-│   ├── models/          # TypeScript interfaces (FaqResponse, GalleryEventResponse, ...)
-│   └── services/        # AuthService, FaqService, GalleryEventService
+│   ├── models/          # TypeScript interfaces (FaqResponse, GalleryEventResponse, ContactRequest, ...)
+│   └── services/        # AuthService, FaqService, GalleryEventService, ContactService
 ├── admin/
 │   ├── admin-login/     # Login page
 │   ├── admin-layout/    # Layout with sidebar
@@ -96,6 +96,8 @@ src/app/
 ├── pages/
 │   ├── news/            # 10 public pages, each lazy-loaded
 │   ├── gallery/         # Public gallery with events and lightbox
+│   ├── about-us/        # Team page with member cards
+│   ├── contact/         # Contact info + contact form (sends email via API)
 │   ├── faq/             # Public FAQ with accordion
 │   ├── ...
 │   └── privacy-policy/

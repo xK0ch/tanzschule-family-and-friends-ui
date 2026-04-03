@@ -1,13 +1,74 @@
 <div class="page-container">
   <h1>Kontakt</h1>
-  <p>So erreichen Sie uns.</p>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Platzhalter für Kontakt</mat-card-title>
-      <mat-card-subtitle>Inhalte folgen mit dem Backend</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Hier werden zukünftig Kontaktformular und Kontaktdaten der Tanzschule angezeigt.</p>
-    </mat-card-content>
-  </mat-card>
+  <p class="intro">
+    Sie haben noch einige Fragen offen oder Sie konnten etwas nicht finden?
+    Wir helfen Ihnen gerne bei allen Fragen...
+  </p>
+
+  <div class="contact-layout">
+    <div class="contact-info">
+      <h2 class="section-title">Kontaktmöglichkeiten</h2>
+
+      <div class="info-block">
+        <p class="company-name">Tanzschule Family & Friends</p>
+        <p>Uwe & Tabea Höftmann</p>
+      </div>
+
+      <div class="info-block">
+        <mat-icon class="info-icon">location_on</mat-icon>
+        <div>
+          <p>Georg-Fuhg-Straße 6</p>
+          <p>24537 Neumünster</p>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <mat-icon class="info-icon">phone</mat-icon>
+        <a href="tel:+494321014900">(04321) 1 49 00</a>
+      </div>
+
+      <div class="info-block">
+        <mat-icon class="info-icon">email</mat-icon>
+        <a href="mailto:info@tsfaf.de">info&#64;tsfaf.de</a>
+      </div>
+
+      <p class="form-hint">
+        ...oder nutzen Sie das Kontaktformular, um uns zu kontaktieren.
+        Wir melden uns dann bei Ihnen.
+      </p>
+    </div>
+
+    <div class="contact-form">
+      <h2 class="section-title">Kontaktformular</h2>
+
+      <mat-card>
+        <mat-card-content>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Name *</mat-label>
+            <input matInput [(ngModel)]="name" placeholder="Ihr Name" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>E-Mail *</mat-label>
+            <input matInput type="email" [(ngModel)]="email" placeholder="ihre@email.de" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Telefon</mat-label>
+            <input matInput type="tel" [(ngModel)]="phone" placeholder="(optional)" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nachricht *</mat-label>
+            <textarea matInput [(ngModel)]="message" rows="5" placeholder="Ihre Nachricht an uns..."></textarea>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" class="send-button" (click)="send()" [disabled]="sending()">
+            <mat-icon>send</mat-icon>
+            {{ sending() ? 'Wird gesendet...' : 'Nachricht senden' }}
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>
