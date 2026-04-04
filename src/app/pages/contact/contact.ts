@@ -20,9 +20,10 @@ export class Contact {
   protected phone = '';
   protected message = '';
   protected sending = signal(false);
-  protected submitted = signal(false);
+  protected touched: Record<string, boolean> = {};
 
   private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  private readonly phonePattern = /^[+]?[\d\s()/-]{6,20}$/;
 
   constructor(
     private contactService: ContactService,
@@ -33,15 +34,19 @@ export class Contact {
     return this.emailPattern.test(this.email);
   }
 
+  protected isPhoneValid(): boolean {
+    return this.phonePattern.test(this.phone.trim());
+  }
+
   protected isFormValid(): boolean {
     return this.name.trim().length > 0
       && this.email.trim().length > 0
       && this.isEmailValid()
-      && this.message.trim().length > 0;
+      && this.message.trim().length > 0
+      && (!this.phone.trim() || this.isPhoneValid());
   }
 
   protected send(): void {
-    this.submitted.set(true);
     if (!this.isFormValid()) return;
     this.sending.set(true);
 
@@ -58,7 +63,7 @@ export class Contact {
         this.phone = '';
         this.message = '';
         this.sending.set(false);
-        this.submitted.set(false);
+        this.touched = {};
       },
       error: () => {
         this.snackBar.open('Ihre Nachricht konnte leider nicht gesendet werden. Bitte versuchen Sie es später erneut.', 'OK', { duration: 5000 });

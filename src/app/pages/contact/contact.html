@@ -11,12 +11,12 @@
 
       <div class="info-block address-block">
         <p class="company-name">Tanzschule Family & Friends</p>
-        <p>Uwe & Tabea Höftmann</p>
       </div>
 
       <div class="info-block">
         <mat-icon class="info-icon">location_on</mat-icon>
         <div>
+          <p>Uwe & Tabea Höftmann</p>
           <p>Georg-Fuhg-Straße 6</p>
           <p>24537 Neumünster</p>
         </div>
@@ -44,37 +44,42 @@
       <mat-card>
         <mat-card-content>
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Name *</mat-label>
-            <input matInput [(ngModel)]="name" placeholder="Ihr Name" required />
-            @if (submitted() && !name.trim()) {
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="name" (blur)="touched['name'] = true" placeholder="Ihr Name" required />
+            @if (touched['name'] && !name.trim()) {
               <mat-error>Name ist erforderlich.</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>E-Mail *</mat-label>
-            <input matInput type="email" [(ngModel)]="email" placeholder="ihre@email.de" required />
-            @if (submitted() && !email.trim()) {
+            <mat-label>E-Mail</mat-label>
+            <input matInput type="email" [(ngModel)]="email" (blur)="touched['email'] = true" placeholder="ihre@email.de" required
+                   pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" />
+            @if (touched['email'] && !email.trim()) {
               <mat-error>E-Mail ist erforderlich.</mat-error>
-            } @else if (submitted() && email.trim() && !isEmailValid()) {
+            } @else if (touched['email'] && email.trim() && !isEmailValid()) {
               <mat-error>Bitte geben Sie eine gültige E-Mail-Adresse ein.</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Telefon</mat-label>
-            <input matInput type="tel" [(ngModel)]="phone" placeholder="(optional)" />
+            <input matInput type="tel" [(ngModel)]="phone" (blur)="touched['phone'] = true" placeholder="(optional)"
+                   pattern="[+]?[\d\s()/\-]{6,20}" />
+            @if (touched['phone'] && phone.trim() && !isPhoneValid()) {
+              <mat-error>Bitte geben Sie eine gültige Telefonnummer ein.</mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Nachricht *</mat-label>
-            <textarea matInput [(ngModel)]="message" rows="5" placeholder="Ihre Nachricht an uns..." required></textarea>
-            @if (submitted() && !message.trim()) {
+            <mat-label>Nachricht</mat-label>
+            <textarea matInput [(ngModel)]="message" (blur)="touched['message'] = true" rows="5" placeholder="Ihre Nachricht an uns..." required></textarea>
+            @if (touched['message'] && !message.trim()) {
               <mat-error>Nachricht ist erforderlich.</mat-error>
             }
           </mat-form-field>
 
-          <button mat-raised-button color="primary" class="send-button" (click)="send()" [disabled]="sending()">
+          <button mat-raised-button color="primary" class="send-button" (click)="send()" [disabled]="sending() || !isFormValid()">
             <mat-icon>send</mat-icon>
             {{ sending() ? 'Wird gesendet...' : 'Nachricht senden' }}
           </button>
