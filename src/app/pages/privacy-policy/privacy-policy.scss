@@ -1,0 +1,70 @@
+.legal-section {
+  margin-bottom: 32px;
+  max-width: 800px;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--ts-text-dark);
+    margin-bottom: 16px;
+    position: relative;
+    padding-bottom: 10px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--ts-orange), var(--ts-cyan));
+      border-radius: 2px;
+    }
+  }
+
+  p {
+    line-height: 1.7;
+    color: var(--ts-text-dark);
+    margin: 0 0 8px;
+  }
+
+  a {
+    color: var(--ts-cyan-dark);
+    text-decoration: none;
+    word-break: break-all;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    margin: 8px 0 16px;
+    padding-left: 24px;
+
+    li {
+      line-height: 1.7;
+      color: var(--ts-text-dark);
+      margin-bottom: 4px;
+    }
+  }
+}
+
+.address-block {
+  margin-bottom: 12px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.company-name {
+  font-weight: 500;
+  font-size: 1.05rem;
+}
+
+.generator-notice {
+  margin-top: 16px;
+  font-style: italic;
+  color: #666;
+}
