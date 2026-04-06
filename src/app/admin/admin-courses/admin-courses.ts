@@ -1,4 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +17,7 @@ import { CourseCategoryResponse, CourseResponse, CourseTariffRequest } from '../
 @Component({
   selector: 'app-admin-courses',
   imports: [
+    DecimalPipe,
     FormsModule,
     MatCardModule,
     MatButtonModule,
