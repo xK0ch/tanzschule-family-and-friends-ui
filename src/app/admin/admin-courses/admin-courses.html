@@ -1,0 +1,275 @@
+<div class="admin-courses">
+  <div class="header">
+    <h2>Kurse verwalten</h2>
+    <button mat-raised-button color="primary" (click)="toggleNewCategoryForm()">
+      <mat-icon>{{ showNewCategoryForm() ? 'close' : 'add' }}</mat-icon>
+      {{ showNewCategoryForm() ? 'Abbrechen' : 'Neue Kategorie' }}
+    </button>
+  </div>
+
+  <!-- New Category Form -->
+  @if (showNewCategoryForm()) {
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Neue Kategorie erstellen</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="newCategoryName" placeholder="z.B. Erwachsene" />
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button (click)="toggleNewCategoryForm()">Abbrechen</button>
+        <button mat-raised-button color="primary" (click)="createCategory()">Erstellen</button>
+      </mat-card-actions>
+    </mat-card>
+  }
+
+  <!-- Category List -->
+  @for (category of categories(); track category.id; let i = $index) {
+    <mat-card class="category-card">
+      @if (editingCategoryId() === category.id) {
+        <!-- Edit Category -->
+        <mat-card-content>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="editCategoryName" />
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button (click)="cancelEditCategory()">Abbrechen</button>
+          <button mat-raised-button color="primary" (click)="saveCategory(category)">Speichern</button>
+        </mat-card-actions>
+      } @else {
+        <!-- Category Header -->
+        <mat-card-header class="category-header" (click)="toggleExpand(category.id)">
+          <mat-card-title>{{ category.name }}</mat-card-title>
+          <mat-card-subtitle>{{ category.courses.length }} Kurse</mat-card-subtitle>
+          <mat-icon class="expand-icon">{{ expandedCategoryId() === category.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </mat-card-header>
+
+        <!-- Expanded: Course List -->
+        @if (expandedCategoryId() === category.id) {
+          <mat-divider />
+          <mat-card-content class="category-content">
+            <div class="course-actions-header">
+              <button mat-raised-button (click)="toggleNewCourseForm(category.id)">
+                <mat-icon>{{ showNewCourseForCategoryId() === category.id ? 'close' : 'add' }}</mat-icon>
+                {{ showNewCourseForCategoryId() === category.id ? 'Abbrechen' : 'Neuer Kurs' }}
+              </button>
+            </div>
+
+            <!-- New Course Form -->
+            @if (showNewCourseForCategoryId() === category.id) {
+              <mat-card class="form-card nested-form">
+                <mat-card-header>
+                  <mat-card-title>Neuen Kurs erstellen</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Kursname</mat-label>
+                    <input matInput [(ngModel)]="newCourseName" placeholder="z.B. Welttanzprogramm Teil 1" />
+                  </mat-form-field>
+                  <div class="form-row">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Startdatum</mat-label>
+                      <input matInput type="date" [(ngModel)]="newCourseStartDate" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Von</mat-label>
+                      <input matInput type="time" [(ngModel)]="newCourseStartTime" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Bis</mat-label>
+                      <input matInput type="time" [(ngModel)]="newCourseEndTime" />
+                    </mat-form-field>
+                  </div>
+                  <div class="form-row">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Anzahl Stunden</mat-label>
+                      <input matInput [(ngModel)]="newCourseNumberOfHours" placeholder="z.B. 8 Doppelstunden" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Tanzlehrer/in</mat-label>
+                      <input matInput [(ngModel)]="newCourseTeacher" placeholder="z.B. Uwe Höftmann" />
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Bemerkung</mat-label>
+                    <textarea matInput [(ngModel)]="newCourseRemark" rows="3" placeholder="Optional"></textarea>
+                  </mat-form-field>
+                  <mat-checkbox [(ngModel)]="newCoursePartnerOption">Partneroption (mit Partner anmelden)</mat-checkbox>
+
+                  <!-- Tariffs -->
+                  <h4 class="tariff-title">Tarife</h4>
+                  @for (tariff of newCourseTariffs; track $index; let j = $index) {
+                    <div class="tariff-row">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Bezeichnung</mat-label>
+                        <input matInput [(ngModel)]="tariff.name" placeholder="z.B. Normal" />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Preis (€)</mat-label>
+                        <input matInput type="number" [(ngModel)]="tariff.price" />
+                      </mat-form-field>
+                      <button mat-icon-button color="warn" (click)="removeNewTariff(j)" [disabled]="newCourseTariffs.length <= 1" title="Tarif entfernen">
+                        <mat-icon>remove_circle</mat-icon>
+                      </button>
+                    </div>
+                  }
+                  <button mat-button (click)="addNewTariff()">
+                    <mat-icon>add</mat-icon> Tarif hinzufügen
+                  </button>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                  <button mat-button (click)="toggleNewCourseForm(category.id)">Abbrechen</button>
+                  <button mat-raised-button color="primary" (click)="createCourse(category.id)">Erstellen</button>
+                </mat-card-actions>
+              </mat-card>
+            }
+
+            <!-- Course List -->
+            @for (course of category.courses; track course.id) {
+              <mat-card class="course-card">
+                @if (editingCourseId() === course.id) {
+                  <!-- Edit Course -->
+                  <mat-card-content>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Kursname</mat-label>
+                      <input matInput [(ngModel)]="editCourseName" />
+                    </mat-form-field>
+                    <div class="form-row">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Startdatum</mat-label>
+                        <input matInput type="date" [(ngModel)]="editCourseStartDate" />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Von</mat-label>
+                        <input matInput type="time" [(ngModel)]="editCourseStartTime" />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Bis</mat-label>
+                        <input matInput type="time" [(ngModel)]="editCourseEndTime" />
+                      </mat-form-field>
+                    </div>
+                    <div class="form-row">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Anzahl Stunden</mat-label>
+                        <input matInput [(ngModel)]="editCourseNumberOfHours" />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Tanzlehrer/in</mat-label>
+                        <input matInput [(ngModel)]="editCourseTeacher" />
+                      </mat-form-field>
+                    </div>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Bemerkung</mat-label>
+                      <textarea matInput [(ngModel)]="editCourseRemark" rows="3"></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Kategorie</mat-label>
+                      <mat-select [(ngModel)]="editCourseCategoryId">
+                        @for (cat of categories(); track cat.id) {
+                          <mat-option [value]="cat.id">{{ cat.name }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-checkbox [(ngModel)]="editCoursePartnerOption">Partneroption (mit Partner anmelden)</mat-checkbox>
+
+                    <h4 class="tariff-title">Tarife</h4>
+                    @for (tariff of editCourseTariffs; track $index; let j = $index) {
+                      <div class="tariff-row">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Bezeichnung</mat-label>
+                          <input matInput [(ngModel)]="tariff.name" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Preis (€)</mat-label>
+                          <input matInput type="number" [(ngModel)]="tariff.price" />
+                        </mat-form-field>
+                        <button mat-icon-button color="warn" (click)="removeEditTariff(j)" [disabled]="editCourseTariffs.length <= 1" title="Tarif entfernen">
+                          <mat-icon>remove_circle</mat-icon>
+                        </button>
+                      </div>
+                    }
+                    <button mat-button (click)="addEditTariff()">
+                      <mat-icon>add</mat-icon> Tarif hinzufügen
+                    </button>
+                  </mat-card-content>
+                  <mat-card-actions align="end">
+                    <button mat-button (click)="cancelEditCourse()">Abbrechen</button>
+                    <button mat-raised-button color="primary" (click)="saveCourse(course)">Speichern</button>
+                  </mat-card-actions>
+                } @else {
+                  <!-- Course View -->
+                  <mat-card-header>
+                    <mat-card-title>{{ course.name }}</mat-card-title>
+                    <mat-card-subtitle>
+                      {{ course.startDate }} &middot; {{ course.startTime.substring(0, 5) }}–{{ course.endTime.substring(0, 5) }} &middot; {{ course.numberOfHours }} &middot; {{ course.teacher }}
+                    </mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-content>
+                    @if (course.remark) {
+                      <p class="course-remark">{{ course.remark }}</p>
+                    }
+                    <div class="course-details">
+                      @if (course.partnerOption) {
+                        <span class="badge">Partneroption</span>
+                      }
+                      @for (tariff of course.tariffs; track tariff.id) {
+                        <span class="badge tariff-badge">{{ tariff.name }}: {{ tariff.price | number:'1.2-2' }} €</span>
+                      }
+                    </div>
+                  </mat-card-content>
+                  <mat-card-actions class="course-actions">
+                    <div class="edit-buttons">
+                      <button mat-icon-button color="primary" (click)="startEditCourse(course)" title="Bearbeiten">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteCourse(course)" title="Löschen">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </mat-card-actions>
+                }
+              </mat-card>
+            } @empty {
+              @if (showNewCourseForCategoryId() !== category.id) {
+                <p class="no-courses">Noch keine Kurse in dieser Kategorie.</p>
+              }
+            }
+          </mat-card-content>
+        }
+
+        <!-- Category Actions -->
+        <mat-card-actions class="category-actions">
+          <div class="order-buttons">
+            <button mat-icon-button (click)="moveCategoryUp(i)" [disabled]="i === 0" title="Nach oben">
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button mat-icon-button (click)="moveCategoryDown(i)" [disabled]="i === categories().length - 1" title="Nach unten">
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+          </div>
+          <div class="edit-buttons">
+            <button mat-icon-button color="primary" (click)="startEditCategory(category)" title="Bearbeiten">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteCategory(category)" title="Löschen">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-actions>
+      }
+    </mat-card>
+  } @empty {
+    @if (!showNewCategoryForm()) {
+      <mat-card class="empty-card">
+        <mat-card-content>
+          <p>Noch keine Kategorien vorhanden. Erstelle die erste Kategorie!</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+</div>
