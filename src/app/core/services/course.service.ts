@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { CourseRequest, CourseResponse } from '../models/course.model';
+import { CourseRegistrationRequest, CourseRequest, CourseResponse } from '../models/course.model';
 
 @Injectable({ providedIn: 'root' })
 export class CourseService {
@@ -24,5 +24,9 @@ export class CourseService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  register(courseId: number, request: CourseRegistrationRequest): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${courseId}/register`, request);
   }
 }

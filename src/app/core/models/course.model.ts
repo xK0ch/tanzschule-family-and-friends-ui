@@ -54,3 +54,24 @@ export interface CourseCategoryRequest {
   name: string;
   displayOrder: number;
 }
+
+export interface CourseRegistrationRequest {
+  salutation: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  street: string;
+  city: string;
+  phone: string;
+  mobile?: string;
+  email: string;
+  remark?: string;
+  tariffName: string;
+  withPartner: boolean;
+  partnerFirstName?: string;
+  partnerLastName?: string;
+  directDebit: boolean;
+  accountHolder?: string;
+  iban?: string;
+  bic?: string;
+}

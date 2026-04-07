@@ -1,13 +1,47 @@
 <div class="page-container">
   <h1>Kurse</h1>
-  <p>Entdecken Sie unser vielfältiges Kursangebot.</p>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Platzhalter für Kurse</mat-card-title>
-      <mat-card-subtitle>Inhalte folgen mit dem Backend</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Hier werden zukünftig alle verfügbaren Tanzkurse aufgelistet.</p>
-    </mat-card-content>
-  </mat-card>
+  <p class="intro">Entdecken Sie unser vielfältiges Kursangebot. Klicken Sie auf einen Kurs, um weitere Details zu erhalten und sich direkt anzumelden.</p>
+
+  @if (loading()) {
+    <div class="loading">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else if (categories().length === 0) {
+    <mat-card>
+      <mat-card-content>
+        <p class="empty">Aktuell sind keine Kurse verfügbar. Schauen Sie bald wieder vorbei!</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    @for (category of categories(); track category.id) {
+      <section class="category-section">
+        <h2 class="category-title">{{ category.name }}</h2>
+        <div class="course-grid">
+          @for (course of category.courses; track course.id) {
+            <mat-card class="course-card" [routerLink]="['/courses', course.id]">
+              <mat-card-content>
+                <h3 class="course-name">{{ course.name }}</h3>
+                <div class="course-info">
+                  <div class="info-item">
+                    <mat-icon>calendar_today</mat-icon>
+                    <span>{{ course.startDate | date:'dd.MM.yyyy' }}</span>
+                  </div>
+                  <div class="info-item">
+                    <mat-icon>schedule</mat-icon>
+                    <span>{{ course.startTime }} – {{ course.endTime }} Uhr</span>
+                  </div>
+                  @if (course.tariffs.length > 0) {
+                    <div class="info-item price">
+                      <mat-icon>euro</mat-icon>
+                      <span>ab {{ course.tariffs[0].price | number:'1.2-2' }} €</span>
+                    </div>
+                  }
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      </section>
+    }
+  }
 </div>

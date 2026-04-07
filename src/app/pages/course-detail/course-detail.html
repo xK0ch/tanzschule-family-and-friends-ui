@@ -1,0 +1,269 @@
+<div class="page-container">
+  @if (loading()) {
+    <div class="loading">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else if (!course()) {
+    <mat-card>
+      <mat-card-content>
+        <p class="empty">Der Kurs wurde nicht gefunden.</p>
+        <a mat-button routerLink="/courses">
+          <mat-icon>arrow_back</mat-icon> Zurück zur Übersicht
+        </a>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <a mat-button routerLink="/courses" class="back-link">
+      <mat-icon>arrow_back</mat-icon> Zurück zur Übersicht
+    </a>
+
+    <h1>{{ course()!.name }}</h1>
+
+    <!-- Course Details -->
+    <mat-card class="detail-card">
+      <mat-card-content>
+        <h2 class="section-title">Kursdetails</h2>
+        <div class="details-grid">
+          <div class="detail-item">
+            <mat-icon>calendar_today</mat-icon>
+            <div>
+              <span class="detail-label">Startdatum</span>
+              <span class="detail-value">{{ course()!.startDate | date:'dd.MM.yyyy' }}</span>
+            </div>
+          </div>
+          <div class="detail-item">
+            <mat-icon>schedule</mat-icon>
+            <div>
+              <span class="detail-label">Uhrzeit</span>
+              <span class="detail-value">{{ course()!.startTime }} – {{ course()!.endTime }} Uhr</span>
+            </div>
+          </div>
+          <div class="detail-item">
+            <mat-icon>hourglass_top</mat-icon>
+            <div>
+              <span class="detail-label">Umfang</span>
+              <span class="detail-value">{{ course()!.numberOfHours }}</span>
+            </div>
+          </div>
+          <div class="detail-item">
+            <mat-icon>person</mat-icon>
+            <div>
+              <span class="detail-label">Kursleiter</span>
+              <span class="detail-value">{{ course()!.teacher }}</span>
+            </div>
+          </div>
+          @if (course()!.partnerOption) {
+            <div class="detail-item">
+              <mat-icon>group</mat-icon>
+              <div>
+                <span class="detail-label">Partneroption</span>
+                <span class="detail-value">Anmeldung mit Partner möglich</span>
+              </div>
+            </div>
+          }
+        </div>
+        @if (course()!.remark) {
+          <p class="course-remark">
+            <mat-icon>info</mat-icon> {{ course()!.remark }}
+          </p>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Tariffs -->
+    @if (course()!.tariffs.length > 0) {
+      <mat-card class="detail-card">
+        <mat-card-content>
+          <h2 class="section-title">Tarife</h2>
+          <div class="tariff-list">
+            @for (tariff of course()!.tariffs; track tariff.id) {
+              <div class="tariff-item">
+                <span class="tariff-name">{{ tariff.name }}</span>
+                <span class="tariff-price">{{ tariff.price | number:'1.2-2' }} €</span>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <!-- Registration Form -->
+    <mat-card class="detail-card registration-card">
+      <mat-card-content>
+        <h2 class="section-title">Anmeldung</h2>
+
+        <!-- Tariff Selection -->
+        @if (course()!.tariffs.length > 1) {
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tarif auswählen</mat-label>
+            <mat-select [(ngModel)]="selectedTariff" required>
+              @for (tariff of course()!.tariffs; track tariff.id) {
+                <mat-option [value]="tariff.name">{{ tariff.name }} – {{ tariff.price | number:'1.2-2' }} €</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+
+        <!-- Partner Option -->
+        @if (course()!.partnerOption) {
+          <div class="partner-section">
+            <mat-checkbox [(ngModel)]="withPartner">Mit Partner anmelden</mat-checkbox>
+            @if (withPartner) {
+              <div class="form-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Vorname des Partners</mat-label>
+                  <input matInput [(ngModel)]="partnerFirstName" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Nachname des Partners</mat-label>
+                  <input matInput [(ngModel)]="partnerLastName" />
+                </mat-form-field>
+              </div>
+            }
+          </div>
+        }
+
+        <mat-divider></mat-divider>
+
+        <h3 class="form-section-title">Persönliche Daten</h3>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Anrede</mat-label>
+          <mat-select [(ngModel)]="salutation" (blur)="touched['salutation'] = true" required>
+            <mat-option value="Herr">Herr</mat-option>
+            <mat-option value="Frau">Frau</mat-option>
+            <mat-option value="Divers">Divers</mat-option>
+          </mat-select>
+          @if (touched['salutation'] && !salutation) {
+            <mat-error>Anrede ist erforderlich.</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Vorname</mat-label>
+            <input matInput [(ngModel)]="firstName" (blur)="touched['firstName'] = true" required />
+            @if (touched['firstName'] && !firstName.trim()) {
+              <mat-error>Vorname ist erforderlich.</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Nachname</mat-label>
+            <input matInput [(ngModel)]="lastName" (blur)="touched['lastName'] = true" required />
+            @if (touched['lastName'] && !lastName.trim()) {
+              <mat-error>Nachname ist erforderlich.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Geburtsdatum</mat-label>
+          <input matInput [(ngModel)]="birthDate" (blur)="touched['birthDate'] = true" placeholder="TT.MM.JJJJ" required />
+          @if (touched['birthDate'] && !birthDate.trim()) {
+            <mat-error>Geburtsdatum ist erforderlich.</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Straße / Nr.</mat-label>
+            <input matInput [(ngModel)]="street" (blur)="touched['street'] = true" required />
+            @if (touched['street'] && !street.trim()) {
+              <mat-error>Straße ist erforderlich.</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>PLZ / Stadt</mat-label>
+            <input matInput [(ngModel)]="city" (blur)="touched['city'] = true" required />
+            @if (touched['city'] && !city.trim()) {
+              <mat-error>PLZ / Stadt ist erforderlich.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Telefon</mat-label>
+            <input matInput type="tel" [(ngModel)]="phone" (blur)="touched['phone'] = true" required
+                   pattern="[+]?[\d\s()/\-]{6,20}" />
+            @if (touched['phone'] && !phone.trim()) {
+              <mat-error>Telefon ist erforderlich.</mat-error>
+            } @else if (touched['phone'] && phone.trim() && !isPhoneValid(phone)) {
+              <mat-error>Bitte geben Sie eine gültige Telefonnummer ein.</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Mobil</mat-label>
+            <input matInput type="tel" [(ngModel)]="mobile" (blur)="touched['mobile'] = true" placeholder="(optional)"
+                   pattern="[+]?[\d\s()/\-]{6,20}" />
+            @if (touched['mobile'] && mobile.trim() && !isPhoneValid(mobile)) {
+              <mat-error>Bitte geben Sie eine gültige Mobilnummer ein.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>E-Mail</mat-label>
+          <input matInput type="email" [(ngModel)]="email" (blur)="touched['email'] = true" required
+                 pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" />
+          @if (touched['email'] && !email.trim()) {
+            <mat-error>E-Mail ist erforderlich.</mat-error>
+          } @else if (touched['email'] && email.trim() && !isEmailValid()) {
+            <mat-error>Bitte geben Sie eine gültige E-Mail-Adresse ein.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Bemerkung</mat-label>
+          <textarea matInput [(ngModel)]="remark" rows="3" placeholder="(optional)"></textarea>
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+
+        <!-- SEPA Direct Debit -->
+        <div class="sepa-section">
+          <mat-checkbox [(ngModel)]="directDebit">Zahlung per Lastschrift</mat-checkbox>
+          @if (directDebit) {
+            <div class="sepa-mandate">
+              <p class="mandate-text">
+                Ich ermächtige die Tanzschule Family & Friends, Zahlungen von meinem Konto mittels Lastschrift einzuziehen.
+                Zugleich weise ich mein Kreditinstitut an, die von der Tanzschule Family & Friends auf mein Konto gezogenen
+                Lastschriften einzulösen.
+              </p>
+              <p class="mandate-note">
+                Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des
+                belasteten Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.
+              </p>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Kontoinhaber</mat-label>
+                <input matInput [(ngModel)]="accountHolder" (blur)="touched['accountHolder'] = true" required />
+                @if (touched['accountHolder'] && !accountHolder.trim()) {
+                  <mat-error>Kontoinhaber ist erforderlich.</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>IBAN</mat-label>
+                <input matInput [(ngModel)]="iban" (blur)="touched['iban'] = true" placeholder="DE00 0000 0000 0000 0000 00" required />
+                @if (touched['iban'] && !iban.trim()) {
+                  <mat-error>IBAN ist erforderlich.</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>BIC</mat-label>
+                <input matInput [(ngModel)]="bic" placeholder="(optional)" />
+              </mat-form-field>
+            </div>
+          }
+        </div>
+
+        <button mat-raised-button color="primary" class="submit-button" (click)="submit()" [disabled]="sending() || !isFormValid()">
+          <mat-icon>send</mat-icon>
+          {{ sending() ? 'Wird gesendet...' : 'Anmeldung absenden' }}
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
