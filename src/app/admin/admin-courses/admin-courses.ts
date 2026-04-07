@@ -162,6 +162,27 @@ export class AdminCourses implements OnInit {
     });
   }
 
+  protected moveCourseUp(category: CourseCategoryResponse, index: number): void {
+    if (index <= 0) return;
+    const ids = category.courses.map((c) => c.id);
+    [ids[index - 1], ids[index]] = [ids[index], ids[index - 1]];
+    this.reorderCourses(ids);
+  }
+
+  protected moveCourseDown(category: CourseCategoryResponse, index: number): void {
+    const ids = category.courses.map((c) => c.id);
+    if (index >= ids.length - 1) return;
+    [ids[index], ids[index + 1]] = [ids[index + 1], ids[index]];
+    this.reorderCourses(ids);
+  }
+
+  private reorderCourses(ids: number[]): void {
+    this.courseService.reorder(ids).subscribe({
+      next: () => this.loadCategories(),
+      error: () => this.showMessage('Fehler beim Sortieren.'),
+    });
+  }
+
   // ── Courses ──
 
   protected toggleNewCourseForm(categoryId: number): void {

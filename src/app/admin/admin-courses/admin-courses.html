@@ -130,7 +130,7 @@
             }
 
             <!-- Course List -->
-            @for (course of category.courses; track course.id) {
+            @for (course of category.courses; track course.id; let ci = $index) {
               <mat-card class="course-card">
                 @if (editingCourseId() === course.id) {
                   <!-- Edit Course -->
@@ -223,6 +223,14 @@
                     </div>
                   </mat-card-content>
                   <mat-card-actions class="course-actions">
+                    <div class="order-buttons">
+                      <button mat-icon-button (click)="moveCourseUp(category, ci)" [disabled]="ci === 0" title="Nach oben">
+                        <mat-icon>arrow_upward</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="moveCourseDown(category, ci)" [disabled]="ci === category.courses.length - 1" title="Nach unten">
+                        <mat-icon>arrow_downward</mat-icon>
+                      </button>
+                    </div>
                     <div class="edit-buttons">
                       <button mat-icon-button color="primary" (click)="startEditCourse(course)" title="Bearbeiten">
                         <mat-icon>edit</mat-icon>

@@ -22,6 +22,7 @@ export interface CourseResponse {
   teacher: string;
   remark: string | null;
   partnerOption: boolean;
+  displayOrder: number;
   categoryId: number;
   tariffs: CourseTariffResponse[];
   createdAt: string;

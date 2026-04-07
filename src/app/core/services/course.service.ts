@@ -29,4 +29,8 @@ export class CourseService {
   register(courseId: number, request: CourseRegistrationRequest): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/${courseId}/register`, request);
   }
+
+  reorder(orderedIds: number[]): Observable<CourseResponse[]> {
+    return this.http.put<CourseResponse[]>(`${this.baseUrl}/reorder`, orderedIds);
+  }
 }
