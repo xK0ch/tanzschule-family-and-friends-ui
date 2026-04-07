@@ -35,7 +35,7 @@
             <mat-icon>schedule</mat-icon>
             <div>
               <span class="detail-label">Uhrzeit</span>
-              <span class="detail-value">{{ course()!.startTime }} – {{ course()!.endTime }} Uhr</span>
+              <span class="detail-value">{{ course()!.startTime.slice(0, 5) }} – {{ course()!.endTime.slice(0, 5) }} Uhr</span>
             </div>
           </div>
           <div class="detail-item">

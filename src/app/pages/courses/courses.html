@@ -28,7 +28,7 @@
                   </div>
                   <div class="info-item">
                     <mat-icon>schedule</mat-icon>
-                    <span>{{ course.startTime }} – {{ course.endTime }} Uhr</span>
+                    <span>{{ course.startTime.slice(0, 5) }} – {{ course.endTime.slice(0, 5) }} Uhr</span>
                   </div>
                   @if (course.tariffs.length > 0) {
                     <div class="info-item price">
