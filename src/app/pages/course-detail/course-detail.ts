@@ -36,8 +36,6 @@ export class CourseDetail {
   // Form fields
   protected selectedTariff = '';
   protected withPartner = false;
-  protected partnerFirstName = '';
-  protected partnerLastName = '';
   protected salutation = '';
   protected firstName = '';
   protected lastName = '';
@@ -48,10 +46,28 @@ export class CourseDetail {
   protected mobile = '';
   protected email = '';
   protected remark = '';
+
+  // Partner fields
+  protected partnerSalutation = '';
+  protected partnerFirstName = '';
+  protected partnerLastName = '';
+  protected partnerBirthDate = '';
+  protected partnerStreet = '';
+  protected partnerCity = '';
+  protected partnerPhone = '';
+  protected partnerMobile = '';
+  protected partnerEmail = '';
+
+  // Payment fields
   protected directDebit = false;
   protected accountHolder = '';
   protected iban = '';
   protected bic = '';
+  protected samePaymentDetails = true;
+  protected partnerAccountHolder = '';
+  protected partnerIban = '';
+  protected partnerBic = '';
+
   protected termsAccepted = false;
   protected showAgbDialog = signal(false);
 
@@ -76,8 +92,8 @@ export class CourseDetail {
     });
   }
 
-  protected isEmailValid(): boolean {
-    return this.emailPattern.test(this.email);
+  protected isEmailValid(value: string = this.email): boolean {
+    return this.emailPattern.test(value);
   }
 
   protected isPhoneValid(value: string): boolean {
@@ -85,7 +101,7 @@ export class CourseDetail {
   }
 
   protected isFormValid(): boolean {
-    return this.salutation.trim().length > 0
+    const mainValid = this.salutation.trim().length > 0
       && this.firstName.trim().length > 0
       && this.lastName.trim().length > 0
       && this.birthDate.trim().length > 0
@@ -97,8 +113,31 @@ export class CourseDetail {
       && this.email.trim().length > 0
       && this.isEmailValid()
       && this.selectedTariff.length > 0
-      && (!this.directDebit || (this.accountHolder.trim().length > 0 && this.iban.trim().length > 0))
       && this.termsAccepted;
+
+    if (this.withPartner) {
+      const partnerValid = this.partnerSalutation.trim().length > 0
+        && this.partnerFirstName.trim().length > 0
+        && this.partnerLastName.trim().length > 0
+        && this.partnerBirthDate.trim().length > 0
+        && this.partnerStreet.trim().length > 0
+        && this.partnerCity.trim().length > 0
+        && this.partnerPhone.trim().length > 0
+        && this.isPhoneValid(this.partnerPhone)
+        && (!this.partnerMobile.trim() || this.isPhoneValid(this.partnerMobile))
+        && this.partnerEmail.trim().length > 0
+        && this.isEmailValid(this.partnerEmail);
+      if (!partnerValid) return false;
+    }
+
+    if (this.directDebit) {
+      if (!this.accountHolder.trim() || !this.iban.trim()) return false;
+      if (this.withPartner && !this.samePaymentDetails) {
+        if (!this.partnerAccountHolder.trim() || !this.partnerIban.trim()) return false;
+      }
+    }
+
+    return mainValid;
   }
 
   protected submit(): void {
@@ -118,12 +157,23 @@ export class CourseDetail {
       remark: this.remark || undefined,
       tariffName: this.selectedTariff,
       withPartner: this.withPartner,
+      partnerSalutation: this.withPartner ? this.partnerSalutation || undefined : undefined,
       partnerFirstName: this.withPartner ? this.partnerFirstName || undefined : undefined,
       partnerLastName: this.withPartner ? this.partnerLastName || undefined : undefined,
+      partnerBirthDate: this.withPartner ? this.partnerBirthDate || undefined : undefined,
+      partnerStreet: this.withPartner ? this.partnerStreet || undefined : undefined,
+      partnerCity: this.withPartner ? this.partnerCity || undefined : undefined,
+      partnerPhone: this.withPartner ? this.partnerPhone || undefined : undefined,
+      partnerMobile: this.withPartner ? this.partnerMobile || undefined : undefined,
+      partnerEmail: this.withPartner ? this.partnerEmail || undefined : undefined,
       directDebit: this.directDebit,
       accountHolder: this.directDebit ? this.accountHolder || undefined : undefined,
       iban: this.directDebit ? this.iban || undefined : undefined,
       bic: this.directDebit ? this.bic || undefined : undefined,
+      samePaymentDetails: (this.directDebit && this.withPartner) ? this.samePaymentDetails : undefined,
+      partnerAccountHolder: (this.directDebit && this.withPartner && !this.samePaymentDetails) ? this.partnerAccountHolder || undefined : undefined,
+      partnerIban: (this.directDebit && this.withPartner && !this.samePaymentDetails) ? this.partnerIban || undefined : undefined,
+      partnerBic: (this.directDebit && this.withPartner && !this.samePaymentDetails) ? this.partnerBic || undefined : undefined,
     };
 
     this.courseService.register(this.course()!.id, request).subscribe({
@@ -160,12 +210,23 @@ export class CourseDetail {
     this.email = '';
     this.remark = '';
     this.withPartner = false;
+    this.partnerSalutation = '';
     this.partnerFirstName = '';
     this.partnerLastName = '';
+    this.partnerBirthDate = '';
+    this.partnerStreet = '';
+    this.partnerCity = '';
+    this.partnerPhone = '';
+    this.partnerMobile = '';
+    this.partnerEmail = '';
     this.directDebit = false;
     this.accountHolder = '';
     this.iban = '';
     this.bic = '';
+    this.samePaymentDetails = true;
+    this.partnerAccountHolder = '';
+    this.partnerIban = '';
+    this.partnerBic = '';
     this.termsAccepted = false;
     this.touched = {};
     if (this.course() && this.course()!.tariffs.length > 0) {

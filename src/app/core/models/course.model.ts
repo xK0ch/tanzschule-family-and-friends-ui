@@ -69,10 +69,21 @@ export interface CourseRegistrationRequest {
   remark?: string;
   tariffName: string;
   withPartner: boolean;
+  partnerSalutation?: string;
   partnerFirstName?: string;
   partnerLastName?: string;
+  partnerBirthDate?: string;
+  partnerStreet?: string;
+  partnerCity?: string;
+  partnerPhone?: string;
+  partnerMobile?: string;
+  partnerEmail?: string;
   directDebit: boolean;
   accountHolder?: string;
   iban?: string;
   bic?: string;
+  samePaymentDetails?: boolean;
+  partnerAccountHolder?: string;
+  partnerIban?: string;
+  partnerBic?: string;
 }

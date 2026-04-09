@@ -108,18 +108,6 @@
         @if (course()!.partnerOption) {
           <div class="partner-section">
             <mat-checkbox [(ngModel)]="withPartner">Mit Partner anmelden</mat-checkbox>
-            @if (withPartner) {
-              <div class="form-row">
-                <mat-form-field appearance="outline">
-                  <mat-label>Vorname des Partners</mat-label>
-                  <input matInput [(ngModel)]="partnerFirstName" />
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                  <mat-label>Nachname des Partners</mat-label>
-                  <input matInput [(ngModel)]="partnerLastName" />
-                </mat-form-field>
-              </div>
-            }
           </div>
         }
 
@@ -218,6 +206,99 @@
           <textarea matInput [(ngModel)]="remark" rows="3" placeholder="(optional)"></textarea>
         </mat-form-field>
 
+        <!-- Partner Data -->
+        @if (withPartner) {
+          <mat-divider></mat-divider>
+
+          <h3 class="form-section-title">Daten des Partners</h3>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Anrede</mat-label>
+            <mat-select [(ngModel)]="partnerSalutation" (blur)="touched['partnerSalutation'] = true" required>
+              <mat-option value="Herr">Herr</mat-option>
+              <mat-option value="Frau">Frau</mat-option>
+              <mat-option value="Divers">Divers</mat-option>
+            </mat-select>
+            @if (touched['partnerSalutation'] && !partnerSalutation) {
+              <mat-error>Anrede ist erforderlich.</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Vorname</mat-label>
+              <input matInput [(ngModel)]="partnerFirstName" (blur)="touched['partnerFirstName'] = true" required />
+              @if (touched['partnerFirstName'] && !partnerFirstName.trim()) {
+                <mat-error>Vorname ist erforderlich.</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Nachname</mat-label>
+              <input matInput [(ngModel)]="partnerLastName" (blur)="touched['partnerLastName'] = true" required />
+              @if (touched['partnerLastName'] && !partnerLastName.trim()) {
+                <mat-error>Nachname ist erforderlich.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Geburtsdatum</mat-label>
+            <input matInput [(ngModel)]="partnerBirthDate" (blur)="touched['partnerBirthDate'] = true" placeholder="TT.MM.JJJJ" required />
+            @if (touched['partnerBirthDate'] && !partnerBirthDate.trim()) {
+              <mat-error>Geburtsdatum ist erforderlich.</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Straße / Nr.</mat-label>
+              <input matInput [(ngModel)]="partnerStreet" (blur)="touched['partnerStreet'] = true" required />
+              @if (touched['partnerStreet'] && !partnerStreet.trim()) {
+                <mat-error>Straße ist erforderlich.</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>PLZ / Stadt</mat-label>
+              <input matInput [(ngModel)]="partnerCity" (blur)="touched['partnerCity'] = true" required />
+              @if (touched['partnerCity'] && !partnerCity.trim()) {
+                <mat-error>PLZ / Stadt ist erforderlich.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Telefon</mat-label>
+              <input matInput type="tel" [(ngModel)]="partnerPhone" (blur)="touched['partnerPhone'] = true" required
+                     pattern="[+]?[\d\s()/\-]{6,20}" />
+              @if (touched['partnerPhone'] && !partnerPhone.trim()) {
+                <mat-error>Telefon ist erforderlich.</mat-error>
+              } @else if (touched['partnerPhone'] && partnerPhone.trim() && !isPhoneValid(partnerPhone)) {
+                <mat-error>Bitte geben Sie eine gültige Telefonnummer ein.</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Mobil</mat-label>
+              <input matInput type="tel" [(ngModel)]="partnerMobile" (blur)="touched['partnerMobile'] = true" placeholder="(optional)"
+                     pattern="[+]?[\d\s()/\-]{6,20}" />
+              @if (touched['partnerMobile'] && partnerMobile.trim() && !isPhoneValid(partnerMobile)) {
+                <mat-error>Bitte geben Sie eine gültige Mobilnummer ein.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>E-Mail</mat-label>
+            <input matInput type="email" [(ngModel)]="partnerEmail" (blur)="touched['partnerEmail'] = true" required
+                   pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" />
+            @if (touched['partnerEmail'] && !partnerEmail.trim()) {
+              <mat-error>E-Mail ist erforderlich.</mat-error>
+            } @else if (touched['partnerEmail'] && partnerEmail.trim() && !isEmailValid(partnerEmail)) {
+              <mat-error>Bitte geben Sie eine gültige E-Mail-Adresse ein.</mat-error>
+            }
+          </mat-form-field>
+        }
+
         <mat-divider></mat-divider>
 
         <!-- SEPA Direct Debit -->
@@ -234,6 +315,10 @@
                 Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des
                 belasteten Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.
               </p>
+
+              @if (withPartner) {
+                <h4 class="bank-section-title">Bankverbindung Teilnehmer</h4>
+              }
 
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Kontoinhaber</mat-label>
@@ -255,6 +340,38 @@
                 <mat-label>BIC</mat-label>
                 <input matInput [(ngModel)]="bic" placeholder="(optional)" />
               </mat-form-field>
+
+              @if (withPartner) {
+                <mat-divider></mat-divider>
+
+                <h4 class="bank-section-title">Bankverbindung Partner</h4>
+                <mat-checkbox [(ngModel)]="samePaymentDetails">Selbe Bankverbindung</mat-checkbox>
+
+                @if (!samePaymentDetails) {
+                  <div class="partner-bank-fields">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Kontoinhaber</mat-label>
+                      <input matInput [(ngModel)]="partnerAccountHolder" (blur)="touched['partnerAccountHolder'] = true" required />
+                      @if (touched['partnerAccountHolder'] && !partnerAccountHolder.trim()) {
+                        <mat-error>Kontoinhaber ist erforderlich.</mat-error>
+                      }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>IBAN</mat-label>
+                      <input matInput [(ngModel)]="partnerIban" (blur)="touched['partnerIban'] = true" placeholder="DE00 0000 0000 0000 0000 00" required />
+                      @if (touched['partnerIban'] && !partnerIban.trim()) {
+                        <mat-error>IBAN ist erforderlich.</mat-error>
+                      }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>BIC</mat-label>
+                      <input matInput [(ngModel)]="partnerBic" placeholder="(optional)" />
+                    </mat-form-field>
+                  </div>
+                }
+              }
             </div>
           }
         </div>

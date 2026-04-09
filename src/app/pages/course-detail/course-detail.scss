@@ -170,6 +170,17 @@ mat-divider {
 
 .sepa-mandate {
   margin-top: 16px;
+
+  .bank-section-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ts-text-dark);
+    margin: 16px 0 12px;
+  }
+
+  .partner-bank-fields {
+    margin-top: 12px;
+  }
 }
 
 .mandate-text {
