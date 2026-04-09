@@ -52,6 +52,8 @@ export class CourseDetail {
   protected accountHolder = '';
   protected iban = '';
   protected bic = '';
+  protected termsAccepted = false;
+  protected showAgbDialog = signal(false);
 
   private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   private readonly phonePattern = /^[+]?[\d\s()/-]{6,20}$/;
@@ -95,7 +97,8 @@ export class CourseDetail {
       && this.email.trim().length > 0
       && this.isEmailValid()
       && this.selectedTariff.length > 0
-      && (!this.directDebit || (this.accountHolder.trim().length > 0 && this.iban.trim().length > 0));
+      && (!this.directDebit || (this.accountHolder.trim().length > 0 && this.iban.trim().length > 0))
+      && this.termsAccepted;
   }
 
   protected submit(): void {
@@ -136,6 +139,15 @@ export class CourseDetail {
     });
   }
 
+  protected openAgb(event: Event): void {
+    event.preventDefault();
+    this.showAgbDialog.set(true);
+  }
+
+  protected closeAgb(): void {
+    this.showAgbDialog.set(false);
+  }
+
   private resetForm(): void {
     this.salutation = '';
     this.firstName = '';
@@ -154,6 +166,7 @@ export class CourseDetail {
     this.accountHolder = '';
     this.iban = '';
     this.bic = '';
+    this.termsAccepted = false;
     this.touched = {};
     if (this.course() && this.course()!.tariffs.length > 0) {
       this.selectedTariff = this.course()!.tariffs[0].name;
