@@ -16,7 +16,7 @@ export class Gallery implements OnInit {
   protected events = signal<GalleryEventResponse[]>([]);
   protected loading = signal(true);
   protected error = signal(false);
-  protected lightboxImage = signal<{ eventId: number; image: ImageResponse } | null>(null);
+  protected lightboxImage = signal<{ eventId: string; image: ImageResponse } | null>(null);
 
   constructor(private galleryEventService: GalleryEventService) {}
 
@@ -33,11 +33,11 @@ export class Gallery implements OnInit {
     });
   }
 
-  protected getImageUrl(eventId: number, imageId: number): string {
+  protected getImageUrl(eventId: string, imageId: string): string {
     return this.galleryEventService.getImageDownloadUrl(eventId, imageId);
   }
 
-  protected openLightbox(eventId: number, image: ImageResponse): void {
+  protected openLightbox(eventId: string, image: ImageResponse): void {
     this.lightboxImage.set({ eventId, image });
   }
 

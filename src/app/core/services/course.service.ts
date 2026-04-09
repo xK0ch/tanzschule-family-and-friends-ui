@@ -10,7 +10,7 @@ export class CourseService {
 
   constructor(private http: HttpClient) {}
 
-  getById(id: number): Observable<CourseResponse> {
+  getById(id: string): Observable<CourseResponse> {
     return this.http.get<CourseResponse>(`${this.baseUrl}/${id}`);
   }
 
@@ -18,19 +18,19 @@ export class CourseService {
     return this.http.post<CourseResponse>(this.baseUrl, request);
   }
 
-  update(id: number, request: CourseRequest): Observable<CourseResponse> {
+  update(id: string, request: CourseRequest): Observable<CourseResponse> {
     return this.http.put<CourseResponse>(`${this.baseUrl}/${id}`, request);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  register(courseId: number, request: CourseRegistrationRequest): Observable<void> {
+  register(courseId: string, request: CourseRegistrationRequest): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/${courseId}/register`, request);
   }
 
-  reorder(orderedIds: number[]): Observable<CourseResponse[]> {
+  reorder(orderedIds: string[]): Observable<CourseResponse[]> {
     return this.http.put<CourseResponse[]>(`${this.baseUrl}/reorder`, orderedIds);
   }
 }

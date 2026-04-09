@@ -27,7 +27,7 @@ import { FaqResponse } from '../../core/models/faq.model';
 })
 export class AdminFaq implements OnInit {
   protected faqs = signal<FaqResponse[]>([]);
-  protected editingId = signal<number | null>(null);
+  protected editingId = signal<string | null>(null);
   protected showNewForm = signal(false);
 
   protected newQuestion = '';
@@ -128,7 +128,7 @@ export class AdminFaq implements OnInit {
     this.reorder(ids);
   }
 
-  private reorder(ids: number[]): void {
+  private reorder(ids: string[]): void {
     this.faqService.reorder(ids).subscribe({
       next: () => this.loadFaqs(),
       error: () => this.showMessage('Fehler beim Sortieren.'),

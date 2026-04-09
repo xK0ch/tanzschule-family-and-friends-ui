@@ -14,7 +14,7 @@ export class GalleryEventService {
     return this.http.get<GalleryEventResponse[]>(this.baseUrl);
   }
 
-  getById(id: number): Observable<GalleryEventResponse> {
+  getById(id: string): Observable<GalleryEventResponse> {
     return this.http.get<GalleryEventResponse>(`${this.baseUrl}/${id}`);
   }
 
@@ -22,29 +22,29 @@ export class GalleryEventService {
     return this.http.post<GalleryEventResponse>(this.baseUrl, request);
   }
 
-  update(id: number, request: GalleryEventRequest): Observable<GalleryEventResponse> {
+  update(id: string, request: GalleryEventRequest): Observable<GalleryEventResponse> {
     return this.http.put<GalleryEventResponse>(`${this.baseUrl}/${id}`, request);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  uploadImage(eventId: number, file: File): Observable<ImageResponse> {
+  uploadImage(eventId: string, file: File): Observable<ImageResponse> {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post<ImageResponse>(`${this.baseUrl}/${eventId}/images`, formData);
   }
 
-  deleteImage(eventId: number, imageId: number): Observable<void> {
+  deleteImage(eventId: string, imageId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${eventId}/images/${imageId}`);
   }
 
-  reorderImages(eventId: number, orderedIds: number[]): Observable<ImageResponse[]> {
+  reorderImages(eventId: string, orderedIds: string[]): Observable<ImageResponse[]> {
     return this.http.put<ImageResponse[]>(`${this.baseUrl}/${eventId}/images/reorder`, orderedIds);
   }
 
-  getImageDownloadUrl(eventId: number, imageId: number): string {
+  getImageDownloadUrl(eventId: string, imageId: string): string {
     return `${this.baseUrl}/${eventId}/images/${imageId}/download`;
   }
 }

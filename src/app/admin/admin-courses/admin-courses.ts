@@ -34,12 +34,12 @@ import { CourseCategoryResponse, CourseResponse, CourseTariffRequest } from '../
 })
 export class AdminCourses implements OnInit {
   protected categories = signal<CourseCategoryResponse[]>([]);
-  protected expandedCategoryId = signal<number | null>(null);
-  protected editingCategoryId = signal<number | null>(null);
+  protected expandedCategoryId = signal<string | null>(null);
+  protected editingCategoryId = signal<string | null>(null);
   protected showNewCategoryForm = signal(false);
 
-  protected showNewCourseForCategoryId = signal<number | null>(null);
-  protected editingCourseId = signal<number | null>(null);
+  protected showNewCourseForCategoryId = signal<string | null>(null);
+  protected editingCourseId = signal<string | null>(null);
 
   // Category form fields
   protected newCategoryName = '';
@@ -64,7 +64,7 @@ export class AdminCourses implements OnInit {
   protected editCourseTeacher = '';
   protected editCourseRemark = '';
   protected editCoursePartnerOption = false;
-  protected editCourseCategoryId = 0;
+  protected editCourseCategoryId = '';
   protected editCourseTariffs: CourseTariffRequest[] = [];
 
   constructor(
@@ -137,7 +137,7 @@ export class AdminCourses implements OnInit {
     });
   }
 
-  protected toggleExpand(categoryId: number): void {
+  protected toggleExpand(categoryId: string): void {
     this.expandedCategoryId.set(this.expandedCategoryId() === categoryId ? null : categoryId);
   }
 
@@ -155,7 +155,7 @@ export class AdminCourses implements OnInit {
     this.reorderCategories(ids);
   }
 
-  private reorderCategories(ids: number[]): void {
+  private reorderCategories(ids: string[]): void {
     this.courseCategoryService.reorder(ids).subscribe({
       next: () => this.loadCategories(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
@@ -176,7 +176,7 @@ export class AdminCourses implements OnInit {
     this.reorderCourses(ids);
   }
 
-  private reorderCourses(ids: number[]): void {
+  private reorderCourses(ids: string[]): void {
     this.courseService.reorder(ids).subscribe({
       next: () => this.loadCategories(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
@@ -185,7 +185,7 @@ export class AdminCourses implements OnInit {
 
   // ── Courses ──
 
-  protected toggleNewCourseForm(categoryId: number): void {
+  protected toggleNewCourseForm(categoryId: string): void {
     if (this.showNewCourseForCategoryId() === categoryId) {
       this.showNewCourseForCategoryId.set(null);
     } else {
@@ -206,7 +206,7 @@ export class AdminCourses implements OnInit {
     this.newCourseTariffs = [{ name: 'Normal', price: 0 }];
   }
 
-  protected createCourse(categoryId: number): void {
+  protected createCourse(categoryId: string): void {
     if (!this.newCourseName.trim() || !this.newCourseStartDate || !this.newCourseStartTime || !this.newCourseEndTime || !this.newCourseNumberOfHours.trim() || !this.newCourseTeacher.trim()) return;
     this.courseService.create({
       name: this.newCourseName,

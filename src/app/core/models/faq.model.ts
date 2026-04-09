@@ -1,5 +1,5 @@
 export interface FaqResponse {
-  id: number;
+  id: string;
   question: string;
   answer: string;
   displayOrder: number;

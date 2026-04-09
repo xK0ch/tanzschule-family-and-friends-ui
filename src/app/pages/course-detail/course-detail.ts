@@ -61,7 +61,7 @@ export class CourseDetail {
     private courseService: CourseService,
     private snackBar: MatSnackBar,
   ) {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id')!;
     this.courseService.getById(id).subscribe({
       next: (course) => {
         this.course.set(course);

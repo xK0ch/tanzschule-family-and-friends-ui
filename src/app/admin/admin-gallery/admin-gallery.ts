@@ -20,8 +20,8 @@ import { GalleryEventService } from '../../core/services/gallery-event.service';
 export class AdminGallery implements OnInit {
   protected events = signal<GalleryEventResponse[]>([]);
   protected showNewForm = signal(false);
-  protected editingId = signal<number | null>(null);
-  protected expandedEventId = signal<number | null>(null);
+  protected editingId = signal<string | null>(null);
+  protected expandedEventId = signal<string | null>(null);
 
   protected newName = '';
   protected newDate = '';
@@ -98,11 +98,11 @@ export class AdminGallery implements OnInit {
     });
   }
 
-  protected toggleExpand(eventId: number): void {
+  protected toggleExpand(eventId: string): void {
     this.expandedEventId.set(this.expandedEventId() === eventId ? null : eventId);
   }
 
-  protected getImageUrl(eventId: number, imageId: number): string {
+  protected getImageUrl(eventId: string, imageId: string): string {
     return this.galleryEventService.getImageDownloadUrl(eventId, imageId);
   }
 
@@ -122,7 +122,7 @@ export class AdminGallery implements OnInit {
     input.value = '';
   }
 
-  protected deleteImage(event: GalleryEventResponse, imageId: number): void {
+  protected deleteImage(event: GalleryEventResponse, imageId: string): void {
     if (!confirm('Bild wirklich löschen?')) return;
     this.galleryEventService.deleteImage(event.id, imageId).subscribe({
       next: () => {
@@ -147,7 +147,7 @@ export class AdminGallery implements OnInit {
     this.reorderImages(event.id, ids);
   }
 
-  private reorderImages(eventId: number, ids: number[]): void {
+  private reorderImages(eventId: string, ids: string[]): void {
     this.galleryEventService.reorderImages(eventId, ids).subscribe({
       next: () => this.loadEvents(),
       error: () => this.showMessage('Fehler beim Sortieren.'),

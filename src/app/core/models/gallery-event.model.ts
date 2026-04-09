@@ -1,17 +1,17 @@
 export interface ImageResponse {
-  id: number;
+  id: string;
   filename: string;
   originalFilename: string;
   contentType: string;
   fileSize: number;
   displayOrder: number;
-  galleryEventId: number | null;
+  galleryEventId: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface GalleryEventResponse {
-  id: number;
+  id: string;
   name: string;
   date: string;
   images: ImageResponse[];

@@ -14,7 +14,7 @@ export class CourseCategoryService {
     return this.http.get<CourseCategoryResponse[]>(this.baseUrl);
   }
 
-  getById(id: number): Observable<CourseCategoryResponse> {
+  getById(id: string): Observable<CourseCategoryResponse> {
     return this.http.get<CourseCategoryResponse>(`${this.baseUrl}/${id}`);
   }
 
@@ -22,15 +22,15 @@ export class CourseCategoryService {
     return this.http.post<CourseCategoryResponse>(this.baseUrl, request);
   }
 
-  update(id: number, request: CourseCategoryRequest): Observable<CourseCategoryResponse> {
+  update(id: string, request: CourseCategoryRequest): Observable<CourseCategoryResponse> {
     return this.http.put<CourseCategoryResponse>(`${this.baseUrl}/${id}`, request);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  reorder(orderedIds: number[]): Observable<CourseCategoryResponse[]> {
+  reorder(orderedIds: string[]): Observable<CourseCategoryResponse[]> {
     return this.http.put<CourseCategoryResponse[]>(`${this.baseUrl}/reorder`, orderedIds);
   }
 }

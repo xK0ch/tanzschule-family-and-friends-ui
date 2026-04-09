@@ -1,8 +1,8 @@
 export interface CourseTariffResponse {
-  id: number;
+  id: string;
   name: string;
   price: number;
-  courseId: number;
+  courseId: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -13,7 +13,7 @@ export interface CourseTariffRequest {
 }
 
 export interface CourseResponse {
-  id: number;
+  id: string;
   name: string;
   startDate: string;
   startTime: string;
@@ -23,7 +23,7 @@ export interface CourseResponse {
   remark: string | null;
   partnerOption: boolean;
   displayOrder: number;
-  categoryId: number;
+  categoryId: string;
   tariffs: CourseTariffResponse[];
   createdAt: string;
   updatedAt: string;
@@ -38,12 +38,12 @@ export interface CourseRequest {
   teacher: string;
   remark: string | null;
   partnerOption: boolean;
-  categoryId: number;
+  categoryId: string;
   tariffs: CourseTariffRequest[];
 }
 
 export interface CourseCategoryResponse {
-  id: number;
+  id: string;
   name: string;
   displayOrder: number;
   courses: CourseResponse[];
