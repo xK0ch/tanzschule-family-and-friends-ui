@@ -10,7 +10,11 @@ export class CourseCategoryService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<CourseCategoryResponse[]> {
+  getAll(ids?: string[]): Observable<CourseCategoryResponse[]> {
+    if (ids && ids.length > 0) {
+      const params = ids.map((id) => `ids=${id}`).join('&');
+      return this.http.get<CourseCategoryResponse[]>(`${this.baseUrl}?${params}`);
+    }
     return this.http.get<CourseCategoryResponse[]>(this.baseUrl);
   }
 

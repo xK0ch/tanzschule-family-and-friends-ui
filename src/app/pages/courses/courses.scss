@@ -18,6 +18,25 @@
   padding: 24px 0;
 }
 
+.filter-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+
+  .filter-label {
+    font-weight: 500;
+    color: var(--ts-text-dark);
+    white-space: nowrap;
+  }
+
+  .clear-filter {
+    color: #888;
+    font-size: 0.85rem;
+  }
+}
+
 .category-section {
   margin-bottom: 40px;
 }

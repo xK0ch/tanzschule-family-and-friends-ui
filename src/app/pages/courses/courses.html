@@ -6,42 +6,68 @@
     <div class="loading">
       <mat-spinner diameter="48"></mat-spinner>
     </div>
-  } @else if (categories().length === 0) {
+  } @else if (allCategories().length === 0) {
     <mat-card>
       <mat-card-content>
         <p class="empty">Aktuell sind keine Kurse verfügbar. Schauen Sie bald wieder vorbei!</p>
       </mat-card-content>
     </mat-card>
   } @else {
-    @for (category of categories(); track category.id) {
-      <section class="category-section">
-        <h2 class="category-title">{{ category.name }}</h2>
-        <div class="course-grid">
-          @for (course of category.courses; track course.id) {
-            <mat-card class="course-card" [routerLink]="['/courses', course.id]">
-              <mat-card-content>
-                <h3 class="course-name">{{ course.name }}</h3>
-                <div class="course-info">
-                  <div class="info-item">
-                    <mat-icon>calendar_today</mat-icon>
-                    <span>{{ course.startDate | date:'dd.MM.yyyy' }}</span>
-                  </div>
-                  <div class="info-item">
-                    <mat-icon>schedule</mat-icon>
-                    <span>{{ course.startTime.slice(0, 5) }} – {{ course.endTime.slice(0, 5) }} Uhr</span>
-                  </div>
-                  @if (course.tariffs.length > 0) {
-                    <div class="info-item price">
-                      <mat-icon>euro</mat-icon>
-                      <span>ab {{ course.tariffs[0].price | number:'1.2-2' }} €</span>
-                    </div>
-                  }
-                </div>
-              </mat-card-content>
-            </mat-card>
+    <div class="filter-section">
+      <span class="filter-label">Kategorien:</span>
+      <mat-chip-set>
+        @for (category of allCategories(); track category.id) {
+          @if (category.courses.length > 0) {
+            <mat-chip-option [selected]="isCategorySelected(category.id)" (selectionChange)="toggleCategory(category.id)">
+              {{ category.name }}
+            </mat-chip-option>
           }
-        </div>
-      </section>
+        }
+      </mat-chip-set>
+      @if (selectedCategoryIds().size > 0) {
+        <button mat-button class="clear-filter" (click)="clearFilter()">
+          <mat-icon>close</mat-icon> Filter zurücksetzen
+        </button>
+      }
+    </div>
+
+    @if (filteredCategories().length === 0) {
+      <mat-card>
+        <mat-card-content>
+          <p class="empty">Keine Kurse in den ausgewählten Kategorien gefunden.</p>
+        </mat-card-content>
+      </mat-card>
+    } @else {
+      @for (category of filteredCategories(); track category.id) {
+        <section class="category-section">
+          <h2 class="category-title">{{ category.name }}</h2>
+          <div class="course-grid">
+            @for (course of category.courses; track course.id) {
+              <mat-card class="course-card" [routerLink]="['/courses', course.id]">
+                <mat-card-content>
+                  <h3 class="course-name">{{ course.name }}</h3>
+                  <div class="course-info">
+                    <div class="info-item">
+                      <mat-icon>calendar_today</mat-icon>
+                      <span>{{ course.startDate | date:'dd.MM.yyyy' }}</span>
+                    </div>
+                    <div class="info-item">
+                      <mat-icon>schedule</mat-icon>
+                      <span>{{ course.startTime.slice(0, 5) }} – {{ course.endTime.slice(0, 5) }} Uhr</span>
+                    </div>
+                    @if (course.tariffs.length > 0) {
+                      <div class="info-item price">
+                        <mat-icon>euro</mat-icon>
+                        <span>ab {{ course.tariffs[0].price | number:'1.2-2' }} €</span>
+                      </div>
+                    }
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+        </section>
+      }
     }
   }
 </div>
