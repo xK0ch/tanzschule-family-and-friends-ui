@@ -1,0 +1,69 @@
+<div class="page-container">
+  @if (loading()) {
+    <div class="loading">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else if (!event()) {
+    <mat-card>
+      <mat-card-content>
+        <p class="empty">Das Event wurde nicht gefunden.</p>
+        <a mat-button routerLink="/gallery">
+          <mat-icon>arrow_back</mat-icon> Zurück zur Galerie
+        </a>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <a mat-button routerLink="/gallery" class="back-link">
+      <mat-icon>arrow_back</mat-icon> Zurück zur Galerie
+    </a>
+
+    <h1>{{ event()!.name }}</h1>
+    <p class="event-date">
+      <mat-icon>calendar_today</mat-icon>
+      {{ event()!.date | date:'dd.MM.yyyy' }}
+    </p>
+
+    @if (event()!.images.length === 0) {
+      <mat-card>
+        <mat-card-content>
+          <p class="empty">Noch keine Bilder vorhanden.</p>
+        </mat-card-content>
+      </mat-card>
+    } @else {
+      <div class="image-grid">
+        @for (image of event()!.images; track image.id; let i = $index) {
+          <div class="image-tile" (click)="openLightbox(i)">
+            <img [src]="getImageUrl(image.id)" [alt]="image.originalFilename" loading="lazy" />
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
+
+@if (lightboxIndex() !== null) {
+  <div class="lightbox-overlay" (click)="closeLightbox()">
+    <button mat-icon-button class="lightbox-close" (click)="closeLightbox()">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    @if (event()!.images.length > 1) {
+      <button mat-icon-button class="lightbox-prev" (click)="previousImage($event)">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button mat-icon-button class="lightbox-next" (click)="nextImage($event)">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    }
+
+    <img
+      [src]="getImageUrl(event()!.images[lightboxIndex()!].id)"
+      [alt]="event()!.images[lightboxIndex()!].originalFilename"
+      class="lightbox-image"
+      (click)="$event.stopPropagation()" />
+
+    <div class="lightbox-counter" (click)="$event.stopPropagation()">
+      {{ lightboxIndex()! + 1 }} / {{ event()!.images.length }}
+    </div>
+  </div>
+}
