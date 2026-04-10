@@ -15,15 +15,15 @@
   } @else {
     <div class="filter-section">
       <span class="filter-label">Kategorien:</span>
-      <mat-chip-set>
+      <mat-chip-listbox multiple [value]="selectedCategoryArray()" (change)="onFilterChange($event)">
         @for (category of allCategories(); track category.id) {
           @if (category.courses.length > 0) {
-            <mat-chip-option [selected]="isCategorySelected(category.id)" (selectionChange)="toggleCategory(category.id)">
+            <mat-chip-option [value]="category.id">
               {{ category.name }}
             </mat-chip-option>
           }
         }
-      </mat-chip-set>
+      </mat-chip-listbox>
       @if (selectedCategoryIds().size > 0) {
         <button mat-button class="clear-filter" (click)="clearFilter()">
           <mat-icon>close</mat-icon> Filter zurücksetzen

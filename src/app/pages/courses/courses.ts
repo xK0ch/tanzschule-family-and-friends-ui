@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { CourseCategoryService } from '../../core/services/course-category.service';
 import { CourseCategoryResponse } from '../../core/models/course.model';
 
@@ -39,18 +39,10 @@ export class Courses {
     });
   }
 
-  protected toggleCategory(categoryId: string): void {
-    const current = new Set(this.selectedCategoryIds());
-    if (current.has(categoryId)) {
-      current.delete(categoryId);
-    } else {
-      current.add(categoryId);
-    }
-    this.selectedCategoryIds.set(current);
-  }
+  protected selectedCategoryArray = computed(() => [...this.selectedCategoryIds()]);
 
-  protected isCategorySelected(categoryId: string): boolean {
-    return this.selectedCategoryIds().has(categoryId);
+  protected onFilterChange(event: MatChipListboxChange): void {
+    this.selectedCategoryIds.set(new Set(event.value));
   }
 
   protected clearFilter(): void {
