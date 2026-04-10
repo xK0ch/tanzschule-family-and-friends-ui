@@ -39,6 +39,13 @@ export const routes: Routes = [
       import('./pages/gallery/gallery').then((m) => m.Gallery),
   },
   {
+    path: 'gallery/:id',
+    loadComponent: () =>
+      import('./pages/gallery-detail/gallery-detail').then(
+        (m) => m.GalleryDetail
+      ),
+  },
+  {
     path: 'about-us',
     loadComponent: () =>
       import('./pages/about-us/about-us').then((m) => m.AboutUs),
