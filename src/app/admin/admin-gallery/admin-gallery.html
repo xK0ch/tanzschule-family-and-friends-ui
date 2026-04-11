@@ -57,10 +57,10 @@
           <mat-divider />
           <mat-card-content class="event-content">
             <div class="image-actions">
-              <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden #fileInput (change)="onFileSelected(event, $event)" />
+              <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple hidden #fileInput (change)="onFilesSelected(event, $event)" />
               <button mat-raised-button (click)="fileInput.click()">
                 <mat-icon>upload</mat-icon>
-                Bild hochladen
+                Bilder hochladen
               </button>
             </div>
 

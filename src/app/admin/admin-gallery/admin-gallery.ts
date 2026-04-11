@@ -106,14 +106,15 @@ export class AdminGallery implements OnInit {
     return this.galleryEventService.getImageDownloadUrl(eventId, imageId);
   }
 
-  protected onFileSelected(event: GalleryEventResponse, fileEvent: Event): void {
+  protected onFilesSelected(event: GalleryEventResponse, fileEvent: Event): void {
     const input = fileEvent.target as HTMLInputElement;
     if (!input.files?.length) return;
 
-    const file = input.files[0];
-    this.galleryEventService.uploadImage(event.id, file).subscribe({
+    const files = Array.from(input.files);
+    this.galleryEventService.uploadImages(event.id, files).subscribe({
       next: () => {
-        this.showMessage('Bild hochgeladen.');
+        const count = files.length;
+        this.showMessage(count === 1 ? 'Bild hochgeladen.' : `${count} Bilder hochgeladen.`);
         this.loadEvents();
       },
       error: () => this.showMessage('Fehler beim Hochladen.'),

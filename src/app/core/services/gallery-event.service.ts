@@ -30,10 +30,12 @@ export class GalleryEventService {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  uploadImage(eventId: string, file: File): Observable<ImageResponse> {
+  uploadImages(eventId: string, files: File[]): Observable<ImageResponse[]> {
     const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post<ImageResponse>(`${this.baseUrl}/${eventId}/images`, formData);
+    for (const file of files) {
+      formData.append('files', file);
+    }
+    return this.http.post<ImageResponse[]>(`${this.baseUrl}/${eventId}/images`, formData);
   }
 
   deleteImage(eventId: string, imageId: string): Observable<void> {
