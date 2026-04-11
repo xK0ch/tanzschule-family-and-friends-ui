@@ -88,6 +88,9 @@
   transform: translateY(-50%);
   color: white;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   mat-icon {
     font-size: 36px;
