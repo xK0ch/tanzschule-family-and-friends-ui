@@ -12,7 +12,11 @@ export class AuthService {
   readonly isLoggedIn = signal(this.hasToken());
   readonly username = signal(this.getStoredUsername());
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    if (this.hasToken() && this.isTokenExpired()) {
+      this.logout();
+    }
+  }
 
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.http
@@ -44,5 +48,17 @@ export class AuthService {
 
   private getStoredUsername(): string | null {
     return localStorage.getItem(this.USERNAME_KEY);
+  }
+
+  private isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true;
+    }
   }
 }
