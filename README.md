@@ -56,7 +56,7 @@ docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build
 
 | Route             | Page                | Description                          |
 |--------------------|---------------------|--------------------------------------|
-| `/news`           | Neuigkeiten         | Homepage with news                   |
+| `/news`           | Neuigkeiten         | News slideshow (from API)            |
 | `/courses`        | Kurse               | Course overview                      |
 | `/events`         | Veranstaltungen     | Events                               |
 | `/vouchers`       | Gutscheine          | Vouchers / gift cards                |
@@ -76,6 +76,7 @@ The admin area is only accessible via URL — it is not linked from the public n
 | `/admin/login`     | Admin login (username + password)                    |
 | `/admin/faq`       | FAQ management (CRUD + reorder)                      |
 | `/admin/gallery`   | Gallery management (events CRUD, image upload/delete/reorder) |
+| `/admin/news`      | News management (CRUD, image upload, reorder)                 |
 
 Authentication uses JWT tokens from the backend (`POST /api/auth/login`).
 
@@ -87,14 +88,15 @@ src/app/
 │   ├── guards/          # authGuard
 │   ├── interceptors/    # authInterceptor (JWT Bearer)
 │   ├── models/          # TypeScript interfaces (FaqResponse, GalleryEventResponse, ContactRequest, ...)
-│   └── services/        # AuthService, FaqService, GalleryEventService, ContactService
+│   └── services/        # AuthService, FaqService, GalleryEventService, NewsService, ContactService
 ├── admin/
 │   ├── admin-login/     # Login page
 │   ├── admin-layout/    # Layout with sidebar
 │   ├── admin-faq/       # FAQ management (create, edit, delete, reorder)
-│   └── admin-gallery/   # Gallery management (events CRUD, image upload/delete/reorder)
+│   ├── admin-gallery/   # Gallery management (events CRUD, image upload/delete/reorder)
+│   └── admin-news/      # News management (CRUD, image upload, reorder)
 ├── pages/
-│   ├── news/            # 10 public pages, each lazy-loaded
+│   ├── news/            # News slideshow page
 │   ├── gallery/         # Public gallery with events and lightbox
 │   ├── about-us/        # Team page with member cards
 │   ├── contact/         # Contact info + contact form (sends email via API)

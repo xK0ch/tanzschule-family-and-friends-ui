@@ -1,13 +1,41 @@
 <div class="page-container">
   <h1>Neuigkeiten</h1>
-  <p>Willkommen bei der Tanzschule Family & Friends! Hier finden Sie aktuelle Neuigkeiten und Ankündigungen.</p>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Platzhalter für Neuigkeiten</mat-card-title>
-      <mat-card-subtitle>Inhalte folgen mit dem Backend</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Hier werden zukünftig aktuelle Nachrichten und Ankündigungen der Tanzschule angezeigt.</p>
-    </mat-card-content>
-  </mat-card>
+
+  @if (currentNews(); as news) {
+    <div class="slideshow">
+      <div class="slide">
+        @if (news.image) {
+          <img
+            [src]="newsService.getImageUrl(news.id)"
+            [alt]="news.title"
+            class="slide-image" />
+        }
+        <div class="slide-content">
+          <h2 class="slide-title">{{ news.title }}</h2>
+          <p class="slide-description">{{ news.description }}</p>
+        </div>
+      </div>
+
+      @if (newsList().length > 1) {
+        <button class="slide-arrow slide-prev" mat-icon-button (click)="prev()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button class="slide-arrow slide-next" mat-icon-button (click)="next()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+
+        <div class="slide-dots">
+          @for (item of newsList(); track item.id; let i = $index) {
+            <button
+              class="dot"
+              [class.active]="i === currentIndex()"
+              (click)="goTo(i)">
+            </button>
+          }
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="empty-message">Aktuell gibt es keine Neuigkeiten.</p>
+  }
 </div>
