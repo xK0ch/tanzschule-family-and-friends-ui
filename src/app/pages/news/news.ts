@@ -3,10 +3,12 @@ import { NewsService } from '../../core/services/news.service';
 import { NewsResponse } from '../../core/models/news.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NewsDetailDialog } from './news-detail-dialog';
 
 @Component({
   selector: 'app-news',
-  imports: [MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule, MatDialogModule],
   templateUrl: './news.html',
   styleUrl: './news.scss',
 })
@@ -21,7 +23,10 @@ export class News implements OnInit, OnDestroy {
     return list[this.currentIndex()];
   });
 
-  constructor(protected newsService: NewsService) {}
+  constructor(
+    protected newsService: NewsService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.newsService.getAll().subscribe({
@@ -38,7 +43,29 @@ export class News implements OnInit, OnDestroy {
     this.stopAutoSlide();
   }
 
-  protected prev(): void {
+  protected openDetail(news: NewsResponse): void {
+    this.stopAutoSlide();
+    const dialogRef = this.dialog.open(NewsDetailDialog, {
+      data: {
+        news,
+        imageUrl: news.image
+          ? this.newsService.getImageUrl(news.id)
+          : null,
+      },
+      maxWidth: '900px',
+      width: '90vw',
+      panelClass: 'news-detail-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      if (this.newsList().length > 1) {
+        this.startAutoSlide();
+      }
+    });
+  }
+
+  protected prev(event: Event): void {
+    event.stopPropagation();
     this.stopAutoSlide();
     const list = this.newsList();
     if (list.length === 0) return;
@@ -48,13 +75,15 @@ export class News implements OnInit, OnDestroy {
     this.startAutoSlide();
   }
 
-  protected next(): void {
+  protected next(event: Event): void {
+    event.stopPropagation();
     this.stopAutoSlide();
     this.advanceSlide();
     this.startAutoSlide();
   }
 
-  protected goTo(index: number): void {
+  protected goTo(index: number, event: Event): void {
+    event.stopPropagation();
     this.stopAutoSlide();
     this.currentIndex.set(index);
     this.startAutoSlide();
@@ -62,7 +91,7 @@ export class News implements OnInit, OnDestroy {
 
   private startAutoSlide(): void {
     this.stopAutoSlide();
-    this.intervalId = setInterval(() => this.advanceSlide(), 5000);
+    this.intervalId = setInterval(() => this.advanceSlide(), 8000);
   }
 
   private stopAutoSlide(): void {

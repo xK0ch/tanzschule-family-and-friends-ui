@@ -2,7 +2,7 @@
   <h1>Neuigkeiten</h1>
 
   @if (currentNews(); as news) {
-    <div class="slideshow">
+    <div class="slideshow" (click)="openDetail(news)">
       <div class="slide">
         @if (news.image) {
           <img
@@ -10,17 +10,17 @@
             [alt]="news.title"
             class="slide-image" />
         }
-        <div class="slide-content">
+        <div class="slide-overlay">
           <h2 class="slide-title">{{ news.title }}</h2>
-          <p class="slide-description">{{ news.description }}</p>
+          <p class="slide-hint">Klicken zum Lesen</p>
         </div>
       </div>
 
       @if (newsList().length > 1) {
-        <button class="slide-arrow slide-prev" mat-icon-button (click)="prev()">
+        <button class="slide-arrow slide-prev" mat-icon-button (click)="prev($event)">
           <mat-icon>chevron_left</mat-icon>
         </button>
-        <button class="slide-arrow slide-next" mat-icon-button (click)="next()">
+        <button class="slide-arrow slide-next" mat-icon-button (click)="next($event)">
           <mat-icon>chevron_right</mat-icon>
         </button>
 
@@ -29,7 +29,7 @@
             <button
               class="dot"
               [class.active]="i === currentIndex()"
-              (click)="goTo(i)">
+              (click)="goTo(i, $event)">
             </button>
           }
         </div>
