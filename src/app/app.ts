@@ -36,7 +36,7 @@ export class App {
   protected readonly isMobile = signal(false);
 
   protected readonly mainNavItems: NavItem[] = [
-    { label: 'Neuigkeiten', route: '/news', icon: 'newspaper' },
+    { label: 'Startseite', route: '/home', icon: 'home' },
     { label: 'Kurse', route: '/courses', icon: 'school' },
     { label: 'Veranstaltungen', route: '/events', icon: 'event' },
     { label: 'Gutscheine', route: '/vouchers', icon: 'card_giftcard' },

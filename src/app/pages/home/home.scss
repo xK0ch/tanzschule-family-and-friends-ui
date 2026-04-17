@@ -1,0 +1,355 @@
+// ── Hero / Slideshow (outside page-container, full width) ──
+.hero-section {
+  margin-bottom: 0;
+}
+
+.slideshow {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover .slide-overlay {
+    background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.8));
+  }
+}
+
+.slide {
+  position: relative;
+  min-height: 350px;
+  background: #222;
+}
+
+.slide-image {
+  width: 100%;
+  height: 65vh;
+  min-height: 400px;
+  max-height: 650px;
+  object-fit: cover;
+  display: block;
+}
+
+.slide-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 48px;
+  background: linear-gradient(transparent 30%, rgba(0, 0, 0, 0.75));
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.slide-title {
+  margin: 0 0 8px;
+  font-size: 2.2rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+  // Override page-container h2 styling
+  padding-bottom: 0;
+  &::after {
+    display: none;
+  }
+}
+
+.slide-hint {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.slide-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: var(--ts-text-dark) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: #fff !important;
+  }
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.slide-prev {
+  left: 20px;
+}
+
+.slide-next {
+  right: 20px;
+}
+
+.slide-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 2;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s;
+
+  &.active {
+    background: #fff;
+  }
+
+  &:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.4);
+  }
+}
+
+// ── Page content (inside page-container) ──
+.home-page {
+  section {
+    margin-bottom: 48px;
+  }
+}
+
+// ── Section titles (matching category-title / section-title pattern) ──
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--ts-text-dark);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--ts-orange), var(--ts-cyan));
+    border-radius: 2px;
+  }
+}
+
+.title-icon {
+  margin-right: 10px;
+  color: var(--ts-cyan);
+}
+
+// ── Welcome ──
+.welcome-section {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.welcome-text {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 700px;
+  margin: 16px auto 0;
+  line-height: 1.7;
+}
+
+// ── Opening Hours ──
+.hours-subtitle {
+  color: #666;
+  font-size: 1.05rem;
+  margin: 0 0 20px;
+}
+
+.hours-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 48px;
+  background: var(--ts-bg-warm);
+  border-radius: 12px;
+  padding: 32px 40px;
+  border-left: 3px solid var(--ts-cyan);
+}
+
+.hours-table {
+  border-collapse: collapse;
+
+  td {
+    padding: 6px 0;
+    font-size: 1.1rem;
+  }
+}
+
+.hours-day {
+  font-weight: 600;
+  color: var(--ts-text-dark);
+  padding-right: 32px !important;
+}
+
+.hours-time {
+  color: #444;
+}
+
+.hours-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.phone-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: var(--ts-orange);
+}
+
+.phone-number {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--ts-text-dark);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--ts-orange);
+    text-decoration: none;
+  }
+}
+
+// ── Video ──
+.video-wrapper {
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+  video {
+    width: 100%;
+    display: block;
+    max-height: 550px;
+    background: #000;
+  }
+}
+
+// ── Course Teaser ──
+.courses-subtitle {
+  color: #666;
+  font-size: 1.05rem;
+  margin: 0 0 24px;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.course-teaser {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+  img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.teaser-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 20px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.courses-cta {
+  text-align: center;
+
+  a {
+    font-size: 1.05rem;
+    padding: 8px 28px;
+    text-decoration: none;
+  }
+}
+
+// ── Responsive ──
+@media (max-width: 768px) {
+  .slide-image {
+    height: 45vh;
+    min-height: 280px;
+  }
+
+  .slide-overlay {
+    padding: 24px 28px;
+  }
+
+  .slide-title {
+    font-size: 1.5rem;
+  }
+
+  .hours-card {
+    flex-direction: column;
+    padding: 24px;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .hours-table {
+    margin: 0 auto;
+  }
+
+  .courses-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .course-teaser img {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slide {
+    min-height: 250px;
+  }
+
+  .slide-image {
+    height: 35vh;
+    min-height: 220px;
+  }
+
+  .slide-overlay {
+    padding: 16px 20px;
+  }
+
+  .slide-title {
+    font-size: 1.2rem;
+  }
+}

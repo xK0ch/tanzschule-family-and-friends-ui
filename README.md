@@ -56,7 +56,7 @@ docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build
 
 | Route             | Page                | Description                          |
 |--------------------|---------------------|--------------------------------------|
-| `/news`           | Neuigkeiten         | News slideshow (from API)            |
+| `/home`           | Startseite          | Landing page with news slideshow, opening hours, video, course teaser |
 | `/courses`        | Kurse               | Course overview                      |
 | `/events`         | Veranstaltungen     | Events                               |
 | `/vouchers`       | Gutscheine          | Vouchers / gift cards                |
@@ -96,7 +96,7 @@ src/app/
 │   ├── admin-gallery/   # Gallery management (events CRUD, image upload/delete/reorder)
 │   └── admin-news/      # News management (CRUD, image upload, reorder)
 ├── pages/
-│   ├── news/            # News slideshow page
+│   ├── home/            # Landing page (news slideshow, opening hours, video, course teaser)
 │   ├── gallery/         # Public gallery with events and lightbox
 │   ├── about-us/        # Team page with member cards
 │   ├── contact/         # Contact info + contact form (sends email via API)
