@@ -13,24 +13,28 @@
   <section class="hours-section">
     <h2 class="section-title">Öffnungszeiten</h2>
     <p class="hours-subtitle">Du hast etwas gefunden und eventuelle Fragen? Komm einfach vorbei oder ruf uns an!</p>
-    <div class="hours-card">
-      <div class="hours-info">
-        <table class="hours-table">
-          <tr>
-            <td class="hours-day">So. bis Fr.</td>
-            <td class="hours-time">14:30 &ndash; 21:00 Uhr</td>
-          </tr>
-          <tr>
-            <td class="hours-day">Sa.</td>
-            <td class="hours-time">19:30 &ndash; 23:00 Uhr</td>
-          </tr>
-        </table>
-      </div>
-      <div class="hours-contact">
-        <mat-icon class="phone-icon">phone</mat-icon>
-        <a href="tel:+4943211490O" class="phone-number">04321 - 1 49 00</a>
-      </div>
-    </div>
+    <mat-card>
+      <mat-card-content>
+        <div class="hours-inner">
+          <div class="hours-info">
+            <table class="hours-table">
+              <tr>
+                <td class="hours-day">So. bis Fr.</td>
+                <td class="hours-time">14:30 &ndash; 21:00 Uhr</td>
+              </tr>
+              <tr>
+                <td class="hours-day">Sa.</td>
+                <td class="hours-time">19:30 &ndash; 23:00 Uhr</td>
+              </tr>
+            </table>
+          </div>
+          <div class="hours-contact">
+            <mat-icon class="phone-icon">phone</mat-icon>
+            <a href="tel:+4943211490O" class="phone-number">04321 - 1 49 00</a>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </section>
 
   <!-- News Slideshow -->
@@ -52,12 +56,16 @@
         </div>
 
         @if (newsList().length > 1) {
-          <button class="slide-arrow slide-prev" mat-icon-button (click)="prev($event)">
-            <mat-icon>chevron_left</mat-icon>
-          </button>
-          <button class="slide-arrow slide-next" mat-icon-button (click)="next($event)">
-            <mat-icon>chevron_right</mat-icon>
-          </button>
+          <div class="slide-arrow slide-prev">
+            <button mat-icon-button (click)="prev($event)">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+          </div>
+          <div class="slide-arrow slide-next">
+            <button mat-icon-button (click)="next($event)">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
 
           <div class="slide-dots">
             @for (item of newsList(); track item.id; let i = $index) {
