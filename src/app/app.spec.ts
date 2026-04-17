@@ -31,11 +31,11 @@ describe('App', () => {
     expect(app['footerNavItems'].length).toBe(2);
   });
 
-  it('should contain Neuigkeiten in nav items', () => {
+  it('should contain Startseite in nav items', () => {
     const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
     const labels = app['mainNavItems'].map((item: { label: string }) => item.label);
-    expect(labels).toContain('Neuigkeiten');
+    expect(labels).toContain('Startseite');
   });
 
   it('should contain Impressum in footer nav items', () => {
