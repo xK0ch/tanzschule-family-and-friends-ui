@@ -1,16 +1,9 @@
-// ── Hero / Slideshow (outside page-container, full width) ──
-.hero-section {
-  margin-bottom: 0;
-}
-
-.slideshow-header {
-  padding-bottom: 0;
-  margin-bottom: 12px;
-}
-
+// ── News Slideshow ──
 .slideshow {
   position: relative;
   overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 
   &:hover .slide-overlay {
@@ -26,9 +19,7 @@
 
 .slide-image {
   width: 100%;
-  height: 65vh;
-  min-height: 400px;
-  max-height: 650px;
+  height: 420px;
   object-fit: cover;
   display: block;
 }
@@ -299,8 +290,7 @@
 // ── Responsive ──
 @media (max-width: 768px) {
   .slide-image {
-    height: 45vh;
-    min-height: 280px;
+    height: 280px;
   }
 
   .slide-overlay {
@@ -333,13 +323,8 @@
 }
 
 @media (max-width: 480px) {
-  .slide {
-    min-height: 250px;
-  }
-
   .slide-image {
-    height: 35vh;
-    min-height: 220px;
+    height: 220px;
   }
 
   .slide-overlay {

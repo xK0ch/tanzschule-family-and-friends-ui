@@ -33,51 +33,45 @@
     </div>
   </section>
 
-</div>
-
-<!-- News Slideshow (full width, outside page-container) -->
-@if (currentNews(); as news) {
-  <section class="hero-section">
-    <div class="slideshow-header page-container">
+  <!-- News Slideshow -->
+  @if (currentNews(); as news) {
+    <section class="news-section">
       <h2 class="section-title">Neuigkeiten</h2>
-    </div>
-    <div class="slideshow" (click)="openDetail(news)">
-      <div class="slide">
-        @if (news.image) {
-          <img
-            [src]="newsService.getImageUrl(news.id)"
-            [alt]="news.title"
-            class="slide-image" />
-        }
-        <div class="slide-overlay">
-          <h2 class="slide-title">{{ news.title }}</h2>
-          <p class="slide-hint">Klicken zum Lesen</p>
-        </div>
-      </div>
-
-      @if (newsList().length > 1) {
-        <button class="slide-arrow slide-prev" mat-icon-button (click)="prev($event)">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-        <button class="slide-arrow slide-next" mat-icon-button (click)="next($event)">
-          <mat-icon>chevron_right</mat-icon>
-        </button>
-
-        <div class="slide-dots">
-          @for (item of newsList(); track item.id; let i = $index) {
-            <button
-              class="dot"
-              [class.active]="i === currentIndex()"
-              (click)="goTo(i, $event)">
-            </button>
+      <div class="slideshow" (click)="openDetail(news)">
+        <div class="slide">
+          @if (news.image) {
+            <img
+              [src]="newsService.getImageUrl(news.id)"
+              [alt]="news.title"
+              class="slide-image" />
           }
+          <div class="slide-overlay">
+            <h2 class="slide-title">{{ news.title }}</h2>
+            <p class="slide-hint">Klicken zum Lesen</p>
+          </div>
         </div>
-      }
-    </div>
-  </section>
-}
 
-<div class="page-container home-page">
+        @if (newsList().length > 1) {
+          <button class="slide-arrow slide-prev" mat-icon-button (click)="prev($event)">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button class="slide-arrow slide-next" mat-icon-button (click)="next($event)">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+
+          <div class="slide-dots">
+            @for (item of newsList(); track item.id; let i = $index) {
+              <button
+                class="dot"
+                [class.active]="i === currentIndex()"
+                (click)="goTo(i, $event)">
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  }
 
   <!-- Video: Einblicke -->
   <section class="video-section">
