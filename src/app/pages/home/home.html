@@ -1,6 +1,46 @@
-<!-- Hero: News Slideshow -->
+<div class="page-container home-page">
+
+  <!-- Welcome -->
+  <section class="welcome-section">
+    <h1>Herzlich Willkommen!</h1>
+    <p class="welcome-text">
+      Ob allein oder als Paar &ndash; bei der Tanzschule Family &amp; Friends findet jeder den passenden Kurs.
+      Wir bieten ein vielseitiges Programm für jede Altersgruppe und jedes Niveau.
+    </p>
+  </section>
+
+  <!-- Opening Hours -->
+  <section class="hours-section">
+    <h2 class="section-title">Öffnungszeiten</h2>
+    <p class="hours-subtitle">Du hast etwas gefunden und eventuelle Fragen? Komm einfach vorbei oder ruf uns an!</p>
+    <div class="hours-card">
+      <div class="hours-info">
+        <table class="hours-table">
+          <tr>
+            <td class="hours-day">So. bis Fr.</td>
+            <td class="hours-time">14:30 &ndash; 21:00 Uhr</td>
+          </tr>
+          <tr>
+            <td class="hours-day">Sa.</td>
+            <td class="hours-time">19:30 &ndash; 23:00 Uhr</td>
+          </tr>
+        </table>
+      </div>
+      <div class="hours-contact">
+        <mat-icon class="phone-icon">phone</mat-icon>
+        <a href="tel:+4943211490O" class="phone-number">04321 - 1 49 00</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- News Slideshow (full width, outside page-container) -->
 @if (currentNews(); as news) {
   <section class="hero-section">
+    <div class="slideshow-header page-container">
+      <h2 class="section-title">Neuigkeiten</h2>
+    </div>
     <div class="slideshow" (click)="openDetail(news)">
       <div class="slide">
         @if (news.image) {
@@ -39,48 +79,9 @@
 
 <div class="page-container home-page">
 
-  <!-- Welcome -->
-  <section class="welcome-section">
-    <h1>Herzlich Willkommen!</h1>
-    <p class="welcome-text">
-      Ob allein oder als Paar &ndash; bei der Tanzschule Family &amp; Friends findet jeder den passenden Kurs.
-      Wir bieten ein vielseitiges Programm für jede Altersgruppe und jedes Niveau.
-    </p>
-  </section>
-
-  <!-- Opening Hours -->
-  <section class="hours-section">
-    <h2 class="section-title">
-      <mat-icon class="title-icon">schedule</mat-icon>
-      Öffnungszeiten
-    </h2>
-    <p class="hours-subtitle">Du hast etwas gefunden und eventuelle Fragen? Komm einfach vorbei oder ruf uns an!</p>
-    <div class="hours-card">
-      <div class="hours-info">
-        <table class="hours-table">
-          <tr>
-            <td class="hours-day">So. bis Fr.</td>
-            <td class="hours-time">14:30 &ndash; 21:00 Uhr</td>
-          </tr>
-          <tr>
-            <td class="hours-day">Sa.</td>
-            <td class="hours-time">19:30 &ndash; 23:00 Uhr</td>
-          </tr>
-        </table>
-      </div>
-      <div class="hours-contact">
-        <mat-icon class="phone-icon">phone</mat-icon>
-        <a href="tel:+4943211490O" class="phone-number">04321 - 1 49 00</a>
-      </div>
-    </div>
-  </section>
-
   <!-- Video: Einblicke -->
   <section class="video-section">
-    <h2 class="section-title">
-      <mat-icon class="title-icon">videocam</mat-icon>
-      Einblicke in unsere Tanzschule
-    </h2>
+    <h2 class="section-title">Einblicke in unsere Tanzschule</h2>
     <div class="video-wrapper">
       <video controls preload="metadata">
         <source src="assets/videos/einblicke.mp4" type="video/mp4" />
@@ -91,10 +92,7 @@
 
   <!-- Course Teaser -->
   <section class="courses-section">
-    <h2 class="section-title">
-      <mat-icon class="title-icon">school</mat-icon>
-      Unsere Kurse
-    </h2>
+    <h2 class="section-title">Unsere Kurse</h2>
     <p class="courses-subtitle">Von Anfängern bis Fortgeschrittene &ndash; entdecke unser vielfältiges Kursangebot.</p>
     <div class="courses-grid">
       <div class="course-teaser">
