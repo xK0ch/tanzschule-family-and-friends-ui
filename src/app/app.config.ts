@@ -5,6 +5,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { ApiConfiguration } from '../api/src';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,5 +13,13 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor])),
+    {
+      provide: ApiConfiguration,
+      useFactory: () => {
+        const config = new ApiConfiguration();
+        config.rootUrl = '';
+        return config;
+      },
+    },
   ],
 };

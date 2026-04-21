@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,8 +13,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { CourseService } from '../../core/services/course.service';
-import { CourseRegistrationRequest, CourseResponse } from '../../core/models/course.model';
+import {
+  CoursesService,
+  CourseRegistrationService,
+  CourseRegistrationRequest,
+  CourseResponse,
+} from '../../../api/src';
 
 @Component({
   selector: 'app-course-detail',
@@ -74,13 +78,14 @@ export class CourseDetail {
   private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   private readonly phonePattern = /^[+]?[\d\s()/-]{6,20}$/;
 
-  constructor(
-    private route: ActivatedRoute,
-    private courseService: CourseService,
-    private snackBar: MatSnackBar,
-  ) {
+  private readonly route = inject(ActivatedRoute);
+  private readonly coursesService = inject(CoursesService);
+  private readonly courseRegistrationService = inject(CourseRegistrationService);
+  private readonly snackBar = inject(MatSnackBar);
+
+  constructor() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.courseService.getById(id).subscribe({
+    this.coursesService.getById3({ id }).subscribe({
       next: (course) => {
         this.course.set(course);
         if (course.tariffs.length > 0) {
@@ -176,7 +181,7 @@ export class CourseDetail {
       partnerBic: (this.directDebit && this.withPartner && !this.samePaymentDetails) ? this.partnerBic || undefined : undefined,
     };
 
-    this.courseService.register(this.course()!.id, request).subscribe({
+    this.courseRegistrationService.register({ id: this.course()!.id, body: request }).subscribe({
       next: () => {
         this.snackBar.open('Ihre Anmeldung wurde erfolgreich gesendet!', 'OK', { duration: 5000 });
         this.resetForm();

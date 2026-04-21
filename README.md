@@ -83,32 +83,48 @@ Authentication uses JWT tokens from the backend (`POST /api/auth/login`).
 ## Project Structure
 
 ```
-src/app/
-├── core/
-│   ├── guards/          # authGuard
-│   ├── interceptors/    # authInterceptor (JWT Bearer)
-│   ├── models/          # TypeScript interfaces (FaqResponse, GalleryEventResponse, ContactRequest, ...)
-│   └── services/        # AuthService, FaqService, GalleryEventService, NewsService, ContactService
-├── admin/
-│   ├── admin-login/     # Login page
-│   ├── admin-layout/    # Layout with sidebar
-│   ├── admin-faq/       # FAQ management (create, edit, delete, reorder)
-│   ├── admin-gallery/   # Gallery management (events CRUD, image upload/delete/reorder)
-│   └── admin-news/      # News management (CRUD, image upload, reorder)
-├── pages/
-│   ├── home/            # Landing page (news slideshow, opening hours, video, course teaser)
-│   ├── gallery/         # Public gallery with events and lightbox
-│   ├── about-us/        # Team page with member cards
-│   ├── contact/         # Contact info + contact form (sends email via API)
-│   ├── faq/             # Public FAQ with accordion
-│   ├── ...
-│   └── privacy-policy/
-├── app.ts               # Root component (toolbar, sidenav, footer)
-├── app.routes.ts        # Route definitions
-└── app.config.ts        # Providers (router, http, animations)
+src/
+├── api/                     # OpenAPI spec + generated Angular client (regenerated on `npm install`)
+│   ├── openapi.json         # OpenAPI spec copied from the backend
+│   ├── config.json          # ng-openapi-gen config
+│   └── src/                 # generated services, models, ApiConfiguration, ...
+└── app/
+    ├── core/
+    │   ├── guards/          # authGuard
+    │   ├── interceptors/    # authInterceptor (JWT Bearer)
+    │   └── services/        # AuthService (wraps generated AuthenticationService), ImageUrlService
+    ├── admin/
+    │   ├── admin-login/     # Login page
+    │   ├── admin-layout/    # Layout with sidebar
+    │   ├── admin-faq/       # FAQ management (create, edit, delete, reorder)
+    │   ├── admin-gallery/   # Gallery management (events CRUD, image upload/delete/reorder)
+    │   └── admin-news/      # News management (CRUD, image upload, reorder)
+    ├── pages/
+    │   ├── home/            # Landing page (news slideshow, opening hours, video, course teaser)
+    │   ├── gallery/         # Public gallery with events and lightbox
+    │   ├── about-us/        # Team page with member cards
+    │   ├── contact/         # Contact info + contact form (sends email via API)
+    │   ├── faq/             # Public FAQ with accordion
+    │   ├── ...
+    │   └── privacy-policy/
+    ├── app.ts               # Root component (toolbar, sidenav, footer)
+    ├── app.routes.ts        # Route definitions
+    └── app.config.ts        # Providers (router, http, animations)
 ```
 
 ## Backend Connection
 
 - **Development**: Angular dev server proxies `/api` requests to `localhost:8080` (`proxy.conf.json`)
 - **Production**: nginx proxies `/api` requests to the `tanzschule-service` Docker container
+
+## API Client (OpenAPI → Angular services)
+
+The Angular API client is generated from the backend's OpenAPI specification using [`ng-openapi-gen`](https://github.com/cyclosproject/ng-openapi-gen). This keeps the frontend's types and endpoints in lockstep with the backend contract — no more hand-written DTOs.
+
+### Layout
+
+| Path                    | Purpose                                                          |
+|-------------------------|------------------------------------------------------------------|
+| `src/api/openapi.json`  | OpenAPI spec — copied from the backend (see below)               |
+| `src/api/config.json`   | `ng-openapi-gen` config (input/output paths, options)            |
+| `src/api/src/`          | Generated services, models, `ApiConfiguration`, …                |

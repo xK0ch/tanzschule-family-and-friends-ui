@@ -1,9 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { FaqService } from '../../core/services/faq.service';
-import { FaqResponse } from '../../core/models/faq.model';
+import { FaqService, FaqResponse } from '../../../api/src';
 
 @Component({
   selector: 'app-faq',
@@ -16,10 +15,10 @@ export class Faq implements OnInit {
   protected loading = signal(true);
   protected error = signal(false);
 
-  constructor(private faqService: FaqService) {}
+  private readonly faqService = inject(FaqService);
 
   ngOnInit(): void {
-    this.faqService.getAll().subscribe({
+    this.faqService.getAll2().subscribe({
       next: (faqs) => {
         this.faqs.set(faqs);
         this.loading.set(false);

@@ -17,7 +17,7 @@
         <div class="slide">
           @if (news.image) {
             <img
-              [src]="newsService.getImageUrl(news.id)"
+              [src]="imageUrls.newsImage(news.id)"
               [alt]="news.title"
               class="slide-image" />
           }

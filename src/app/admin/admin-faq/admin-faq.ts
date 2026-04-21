@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,8 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { FaqService } from '../../core/services/faq.service';
-import { FaqResponse } from '../../core/models/faq.model';
+import { FaqService, FaqResponse } from '../../../api/src';
 
 @Component({
   selector: 'app-admin-faq',
@@ -26,6 +25,9 @@ import { FaqResponse } from '../../core/models/faq.model';
   styleUrl: './admin-faq.scss',
 })
 export class AdminFaq implements OnInit {
+  private readonly faqService = inject(FaqService);
+  private readonly snackBar = inject(MatSnackBar);
+
   protected faqs = signal<FaqResponse[]>([]);
   protected editingId = signal<string | null>(null);
   protected showNewForm = signal(false);
@@ -35,17 +37,12 @@ export class AdminFaq implements OnInit {
   protected editQuestion = '';
   protected editAnswer = '';
 
-  constructor(
-    private faqService: FaqService,
-    private snackBar: MatSnackBar
-  ) {}
-
   ngOnInit(): void {
     this.loadFaqs();
   }
 
   protected loadFaqs(): void {
-    this.faqService.getAll().subscribe({
+    this.faqService.getAll2().subscribe({
       next: (faqs) => this.faqs.set(faqs),
       error: () => this.showMessage('Fehler beim Laden der FAQs.'),
     });
@@ -62,7 +59,9 @@ export class AdminFaq implements OnInit {
 
     const displayOrder = this.faqs().length;
     this.faqService
-      .create({ question: this.newQuestion, answer: this.newAnswer, displayOrder })
+      .create2({
+        body: { question: this.newQuestion, answer: this.newAnswer, displayOrder },
+      })
       .subscribe({
         next: () => {
           this.showMessage('FAQ erstellt.');
@@ -87,10 +86,13 @@ export class AdminFaq implements OnInit {
     if (!this.editQuestion.trim() || !this.editAnswer.trim()) return;
 
     this.faqService
-      .update(faq.id, {
-        question: this.editQuestion,
-        answer: this.editAnswer,
-        displayOrder: faq.displayOrder,
+      .update2({
+        id: faq.id,
+        body: {
+          question: this.editQuestion,
+          answer: this.editAnswer,
+          displayOrder: faq.displayOrder,
+        },
       })
       .subscribe({
         next: () => {
@@ -105,7 +107,7 @@ export class AdminFaq implements OnInit {
   protected deleteFaq(faq: FaqResponse): void {
     if (!confirm(`FAQ "${faq.question}" wirklich löschen?`)) return;
 
-    this.faqService.delete(faq.id).subscribe({
+    this.faqService.delete2({ id: faq.id }).subscribe({
       next: () => {
         this.showMessage('FAQ gelöscht.');
         this.loadFaqs();
@@ -129,7 +131,7 @@ export class AdminFaq implements OnInit {
   }
 
   private reorder(ids: string[]): void {
-    this.faqService.reorder(ids).subscribe({
+    this.faqService.reorder1({ body: ids }).subscribe({
       next: () => this.loadFaqs(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });

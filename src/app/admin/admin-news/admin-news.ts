@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,8 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { NewsService } from '../../core/services/news.service';
-import { NewsResponse } from '../../core/models/news.model';
+import { NewsService, NewsResponse } from '../../../api/src';
+import { ImageUrlService } from '../../core/services/image-url.service';
 
 @Component({
   selector: 'app-admin-news',
@@ -26,6 +26,10 @@ import { NewsResponse } from '../../core/models/news.model';
   styleUrl: './admin-news.scss',
 })
 export class AdminNews implements OnInit {
+  private readonly newsService = inject(NewsService);
+  protected readonly imageUrls = inject(ImageUrlService);
+  private readonly snackBar = inject(MatSnackBar);
+
   protected newsList = signal<NewsResponse[]>([]);
   protected editingId = signal<string | null>(null);
   protected showNewForm = signal(false);
@@ -34,11 +38,6 @@ export class AdminNews implements OnInit {
   protected newDescription = '';
   protected editTitle = '';
   protected editDescription = '';
-
-  constructor(
-    protected newsService: NewsService,
-    private snackBar: MatSnackBar
-  ) {}
 
   ngOnInit(): void {
     this.loadNews();
@@ -63,9 +62,11 @@ export class AdminNews implements OnInit {
     const displayOrder = this.newsList().length;
     this.newsService
       .create({
-        title: this.newTitle,
-        description: this.newDescription,
-        displayOrder,
+        body: {
+          title: this.newTitle,
+          description: this.newDescription,
+          displayOrder,
+        },
       })
       .subscribe({
         next: () => {
@@ -91,10 +92,13 @@ export class AdminNews implements OnInit {
     if (!this.editTitle.trim() || !this.editDescription.trim()) return;
 
     this.newsService
-      .update(news.id, {
-        title: this.editTitle,
-        description: this.editDescription,
-        displayOrder: news.displayOrder,
+      .update({
+        id: news.id,
+        body: {
+          title: this.editTitle,
+          description: this.editDescription,
+          displayOrder: news.displayOrder,
+        },
       })
       .subscribe({
         next: () => {
@@ -109,7 +113,7 @@ export class AdminNews implements OnInit {
   protected deleteNews(news: NewsResponse): void {
     if (!confirm(`Neuigkeit "${news.title}" wirklich löschen?`)) return;
 
-    this.newsService.delete(news.id).subscribe({
+    this.newsService.delete({ id: news.id }).subscribe({
       next: () => {
         this.showMessage('Neuigkeit gelöscht.');
         this.loadNews();
@@ -123,7 +127,7 @@ export class AdminNews implements OnInit {
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-    this.newsService.uploadImage(news.id, file).subscribe({
+    this.newsService.uploadImage({ id: news.id, body: { file } }).subscribe({
       next: () => {
         this.showMessage('Bild hochgeladen.');
         this.loadNews();
@@ -137,7 +141,7 @@ export class AdminNews implements OnInit {
   protected removeImage(news: NewsResponse): void {
     if (!confirm('Bild wirklich entfernen?')) return;
 
-    this.newsService.deleteImage(news.id).subscribe({
+    this.newsService.deleteImage({ id: news.id }).subscribe({
       next: () => {
         this.showMessage('Bild entfernt.');
         this.loadNews();
@@ -161,7 +165,7 @@ export class AdminNews implements OnInit {
   }
 
   private reorder(ids: string[]): void {
-    this.newsService.reorder(ids).subscribe({
+    this.newsService.reorder({ body: ids }).subscribe({
       next: () => this.loadNews(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });

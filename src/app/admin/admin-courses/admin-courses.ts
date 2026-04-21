@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -10,9 +10,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { CourseCategoryService } from '../../core/services/course-category.service';
-import { CourseService } from '../../core/services/course.service';
-import { CourseCategoryResponse, CourseResponse, CourseTariffRequest } from '../../core/models/course.model';
+import {
+  CourseCategoriesService,
+  CoursesService,
+  CourseCategoryResponse,
+  CourseResponse,
+  CourseTariffRequest,
+} from '../../../api/src';
 
 @Component({
   selector: 'app-admin-courses',
@@ -33,6 +37,10 @@ import { CourseCategoryResponse, CourseResponse, CourseTariffRequest } from '../
   styleUrl: './admin-courses.scss',
 })
 export class AdminCourses implements OnInit {
+  private readonly courseCategoriesService = inject(CourseCategoriesService);
+  private readonly coursesService = inject(CoursesService);
+  private readonly snackBar = inject(MatSnackBar);
+
   protected categories = signal<CourseCategoryResponse[]>([]);
   protected expandedCategoryId = signal<string | null>(null);
   protected editingCategoryId = signal<string | null>(null);
@@ -67,12 +75,6 @@ export class AdminCourses implements OnInit {
   protected editCourseCategoryId = '';
   protected editCourseTariffs: CourseTariffRequest[] = [];
 
-  constructor(
-    private courseCategoryService: CourseCategoryService,
-    private courseService: CourseService,
-    private snackBar: MatSnackBar,
-  ) {}
-
   ngOnInit(): void {
     this.loadCategories();
   }
@@ -80,7 +82,7 @@ export class AdminCourses implements OnInit {
   // ── Categories ──
 
   protected loadCategories(): void {
-    this.courseCategoryService.getAll().subscribe({
+    this.courseCategoriesService.getAll3().subscribe({
       next: (categories) => this.categories.set(categories),
       error: () => this.showMessage('Fehler beim Laden der Kategorien.'),
     });
@@ -94,14 +96,16 @@ export class AdminCourses implements OnInit {
   protected createCategory(): void {
     if (!this.newCategoryName.trim()) return;
     const displayOrder = this.categories().length;
-    this.courseCategoryService.create({ name: this.newCategoryName, displayOrder }).subscribe({
-      next: () => {
-        this.showMessage('Kategorie erstellt.');
-        this.toggleNewCategoryForm();
-        this.loadCategories();
-      },
-      error: () => this.showMessage('Fehler beim Erstellen.'),
-    });
+    this.courseCategoriesService
+      .create4({ body: { name: this.newCategoryName, displayOrder } })
+      .subscribe({
+        next: () => {
+          this.showMessage('Kategorie erstellt.');
+          this.toggleNewCategoryForm();
+          this.loadCategories();
+        },
+        error: () => this.showMessage('Fehler beim Erstellen.'),
+      });
   }
 
   protected startEditCategory(category: CourseCategoryResponse): void {
@@ -115,19 +119,24 @@ export class AdminCourses implements OnInit {
 
   protected saveCategory(category: CourseCategoryResponse): void {
     if (!this.editCategoryName.trim()) return;
-    this.courseCategoryService.update(category.id, { name: this.editCategoryName, displayOrder: category.displayOrder }).subscribe({
-      next: () => {
-        this.showMessage('Kategorie aktualisiert.');
-        this.editingCategoryId.set(null);
-        this.loadCategories();
-      },
-      error: () => this.showMessage('Fehler beim Speichern.'),
-    });
+    this.courseCategoriesService
+      .update4({
+        id: category.id,
+        body: { name: this.editCategoryName, displayOrder: category.displayOrder },
+      })
+      .subscribe({
+        next: () => {
+          this.showMessage('Kategorie aktualisiert.');
+          this.editingCategoryId.set(null);
+          this.loadCategories();
+        },
+        error: () => this.showMessage('Fehler beim Speichern.'),
+      });
   }
 
   protected deleteCategory(category: CourseCategoryResponse): void {
     if (!confirm(`Kategorie "${category.name}" und alle zugehörigen Kurse wirklich löschen?`)) return;
-    this.courseCategoryService.delete(category.id).subscribe({
+    this.courseCategoriesService.delete4({ id: category.id }).subscribe({
       next: () => {
         this.showMessage('Kategorie gelöscht.');
         if (this.expandedCategoryId() === category.id) this.expandedCategoryId.set(null);
@@ -156,7 +165,7 @@ export class AdminCourses implements OnInit {
   }
 
   private reorderCategories(ids: string[]): void {
-    this.courseCategoryService.reorder(ids).subscribe({
+    this.courseCategoriesService.reorder3({ body: ids }).subscribe({
       next: () => this.loadCategories(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });
@@ -177,7 +186,7 @@ export class AdminCourses implements OnInit {
   }
 
   private reorderCourses(ids: string[]): void {
-    this.courseService.reorder(ids).subscribe({
+    this.coursesService.reorder2({ body: ids }).subscribe({
       next: () => this.loadCategories(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });
@@ -208,25 +217,29 @@ export class AdminCourses implements OnInit {
 
   protected createCourse(categoryId: string): void {
     if (!this.newCourseName.trim() || !this.newCourseStartDate || !this.newCourseStartTime || !this.newCourseEndTime || !this.newCourseNumberOfHours.trim() || !this.newCourseTeacher.trim()) return;
-    this.courseService.create({
-      name: this.newCourseName,
-      startDate: this.newCourseStartDate,
-      startTime: this.newCourseStartTime,
-      endTime: this.newCourseEndTime,
-      numberOfHours: this.newCourseNumberOfHours,
-      teacher: this.newCourseTeacher,
-      remark: this.newCourseRemark || null,
-      partnerOption: this.newCoursePartnerOption,
-      categoryId,
-      tariffs: this.newCourseTariffs.filter((t) => t.name.trim() && t.price > 0),
-    }).subscribe({
-      next: () => {
-        this.showMessage('Kurs erstellt.');
-        this.showNewCourseForCategoryId.set(null);
-        this.loadCategories();
-      },
-      error: () => this.showMessage('Fehler beim Erstellen.'),
-    });
+    this.coursesService
+      .create3({
+        body: {
+          name: this.newCourseName,
+          startDate: this.newCourseStartDate,
+          startTime: this.newCourseStartTime,
+          endTime: this.newCourseEndTime,
+          numberOfHours: this.newCourseNumberOfHours,
+          teacher: this.newCourseTeacher,
+          remark: this.newCourseRemark || undefined,
+          partnerOption: this.newCoursePartnerOption,
+          categoryId,
+          tariffs: this.newCourseTariffs.filter((t) => t.name.trim() && t.price > 0),
+        },
+      })
+      .subscribe({
+        next: () => {
+          this.showMessage('Kurs erstellt.');
+          this.showNewCourseForCategoryId.set(null);
+          this.loadCategories();
+        },
+        error: () => this.showMessage('Fehler beim Erstellen.'),
+      });
   }
 
   protected startEditCourse(course: CourseResponse): void {
@@ -252,30 +265,35 @@ export class AdminCourses implements OnInit {
 
   protected saveCourse(course: CourseResponse): void {
     if (!this.editCourseName.trim() || !this.editCourseStartDate || !this.editCourseStartTime || !this.editCourseEndTime || !this.editCourseNumberOfHours.trim() || !this.editCourseTeacher.trim()) return;
-    this.courseService.update(course.id, {
-      name: this.editCourseName,
-      startDate: this.editCourseStartDate,
-      startTime: this.editCourseStartTime,
-      endTime: this.editCourseEndTime,
-      numberOfHours: this.editCourseNumberOfHours,
-      teacher: this.editCourseTeacher,
-      remark: this.editCourseRemark || null,
-      partnerOption: this.editCoursePartnerOption,
-      categoryId: this.editCourseCategoryId,
-      tariffs: this.editCourseTariffs.filter((t) => t.name.trim() && t.price > 0),
-    }).subscribe({
-      next: () => {
-        this.showMessage('Kurs aktualisiert.');
-        this.editingCourseId.set(null);
-        this.loadCategories();
-      },
-      error: () => this.showMessage('Fehler beim Speichern.'),
-    });
+    this.coursesService
+      .update3({
+        id: course.id,
+        body: {
+          name: this.editCourseName,
+          startDate: this.editCourseStartDate,
+          startTime: this.editCourseStartTime,
+          endTime: this.editCourseEndTime,
+          numberOfHours: this.editCourseNumberOfHours,
+          teacher: this.editCourseTeacher,
+          remark: this.editCourseRemark || undefined,
+          partnerOption: this.editCoursePartnerOption,
+          categoryId: this.editCourseCategoryId,
+          tariffs: this.editCourseTariffs.filter((t) => t.name.trim() && t.price > 0),
+        },
+      })
+      .subscribe({
+        next: () => {
+          this.showMessage('Kurs aktualisiert.');
+          this.editingCourseId.set(null);
+          this.loadCategories();
+        },
+        error: () => this.showMessage('Fehler beim Speichern.'),
+      });
   }
 
   protected deleteCourse(course: CourseResponse): void {
     if (!confirm(`Kurs "${course.name}" wirklich löschen?`)) return;
-    this.courseService.delete(course.id).subscribe({
+    this.coursesService.delete3({ id: course.id }).subscribe({
       next: () => {
         this.showMessage('Kurs gelöscht.');
         this.loadCategories();

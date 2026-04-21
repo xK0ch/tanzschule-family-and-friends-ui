@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --no-watch",
-    "test:watch": "ng test"
+    "test:watch": "ng test",
+    "postinstall": "ng-openapi-gen --config src/api/config.json"
   },
   "private": true,
   "packageManager": "npm@11.9.0",
@@ -30,8 +31,9 @@
     "@angular/cli": "21.2.7",
     "@angular/compiler-cli": "21.2.7",
     "jsdom": "29.0.2",
+    "ng-openapi-gen": "1.0.5",
     "prettier": "3.8.3",
     "typescript": "5.9.3",
-    "vitest": "4.1.4"
+    "vitest": "4.1.5"
   }
 }

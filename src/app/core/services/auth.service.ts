@@ -1,34 +1,32 @@
-import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { LoginRequest, LoginResponse } from '../models/auth.model';
+import { AuthenticationService, LoginRequest, LoginResponse } from '../../../api/src';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly TOKEN_KEY = 'admin_token';
   private readonly USERNAME_KEY = 'admin_username';
 
+  private readonly authenticationService = inject(AuthenticationService);
+
   readonly isLoggedIn = signal(this.hasToken());
   readonly username = signal(this.getStoredUsername());
 
-  constructor(private http: HttpClient) {
+  constructor() {
     if (this.hasToken() && this.isTokenExpired()) {
       this.logout();
     }
   }
 
   login(request: LoginRequest): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${environment.apiUrl}/auth/login`, request)
-      .pipe(
-        tap((response) => {
-          localStorage.setItem(this.TOKEN_KEY, response.token);
-          localStorage.setItem(this.USERNAME_KEY, response.username);
-          this.isLoggedIn.set(true);
-          this.username.set(response.username);
-        })
-      );
+    return this.authenticationService.login({ body: request }).pipe(
+      tap((response) => {
+        localStorage.setItem(this.TOKEN_KEY, response.token);
+        localStorage.setItem(this.USERNAME_KEY, response.username);
+        this.isLoggedIn.set(true);
+        this.username.set(response.username);
+      }),
+    );
   }
 
   logout(): void {

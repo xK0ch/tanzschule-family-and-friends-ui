@@ -1,12 +1,12 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { GalleryEventResponse } from '../../core/models/gallery-event.model';
-import { GalleryEventService } from '../../core/services/gallery-event.service';
+import { GalleryEventsService, GalleryEventResponse } from '../../../api/src';
+import { ImageUrlService } from '../../core/services/image-url.service';
 
 @Component({
   selector: 'app-gallery-detail',
@@ -15,16 +15,17 @@ import { GalleryEventService } from '../../core/services/gallery-event.service';
   styleUrl: './gallery-detail.scss',
 })
 export class GalleryDetail {
+  private readonly route = inject(ActivatedRoute);
+  private readonly galleryEventsService = inject(GalleryEventsService);
+  private readonly imageUrls = inject(ImageUrlService);
+
   protected event = signal<GalleryEventResponse | null>(null);
   protected loading = signal(true);
   protected lightboxIndex = signal<number | null>(null);
 
-  constructor(
-    private route: ActivatedRoute,
-    private galleryEventService: GalleryEventService,
-  ) {
+  constructor() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.galleryEventService.getById(id).subscribe({
+    this.galleryEventsService.getById1({ id }).subscribe({
       next: (event) => {
         this.event.set(event);
         this.loading.set(false);
@@ -34,7 +35,7 @@ export class GalleryDetail {
   }
 
   protected getImageUrl(imageId: string): string {
-    return this.galleryEventService.getImageDownloadUrl(this.event()!.id, imageId);
+    return this.imageUrls.galleryImage(this.event()!.id, imageId);
   }
 
   protected openLightbox(index: number): void {

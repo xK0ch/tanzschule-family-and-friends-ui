@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -8,8 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
-import { GalleryEventResponse } from '../../core/models/gallery-event.model';
-import { GalleryEventService } from '../../core/services/gallery-event.service';
+import { GalleryEventsService, GalleryEventResponse } from '../../../api/src';
+import { ImageUrlService } from '../../core/services/image-url.service';
 
 @Component({
   selector: 'app-admin-gallery',
@@ -18,6 +18,10 @@ import { GalleryEventService } from '../../core/services/gallery-event.service';
   styleUrl: './admin-gallery.scss',
 })
 export class AdminGallery implements OnInit {
+  private readonly galleryEventsService = inject(GalleryEventsService);
+  private readonly imageUrls = inject(ImageUrlService);
+  private readonly snackBar = inject(MatSnackBar);
+
   protected events = signal<GalleryEventResponse[]>([]);
   protected showNewForm = signal(false);
   protected editingId = signal<string | null>(null);
@@ -28,17 +32,12 @@ export class AdminGallery implements OnInit {
   protected editName = '';
   protected editDate = '';
 
-  constructor(
-    private galleryEventService: GalleryEventService,
-    private snackBar: MatSnackBar,
-  ) {}
-
   ngOnInit(): void {
     this.loadEvents();
   }
 
   protected loadEvents(): void {
-    this.galleryEventService.getAll().subscribe({
+    this.galleryEventsService.getAll1().subscribe({
       next: (events) => this.events.set(events),
       error: () => this.showMessage('Fehler beim Laden der Events.'),
     });
@@ -52,7 +51,7 @@ export class AdminGallery implements OnInit {
 
   protected createEvent(): void {
     if (!this.newName.trim() || !this.newDate) return;
-    this.galleryEventService.create({ name: this.newName, date: this.newDate }).subscribe({
+    this.galleryEventsService.create1({ body: { name: this.newName, date: this.newDate } }).subscribe({
       next: () => {
         this.showMessage('Event erstellt.');
         this.toggleNewForm();
@@ -74,7 +73,7 @@ export class AdminGallery implements OnInit {
 
   protected saveEvent(event: GalleryEventResponse): void {
     if (!this.editName.trim() || !this.editDate) return;
-    this.galleryEventService.update(event.id, { name: this.editName, date: this.editDate }).subscribe({
+    this.galleryEventsService.update1({ id: event.id, body: { name: this.editName, date: this.editDate } }).subscribe({
       next: () => {
         this.showMessage('Event aktualisiert.');
         this.editingId.set(null);
@@ -86,7 +85,7 @@ export class AdminGallery implements OnInit {
 
   protected deleteEvent(event: GalleryEventResponse): void {
     if (!confirm(`Event "${event.name}" und alle zugehörigen Bilder wirklich löschen?`)) return;
-    this.galleryEventService.delete(event.id).subscribe({
+    this.galleryEventsService.delete1({ id: event.id }).subscribe({
       next: () => {
         this.showMessage('Event gelöscht.');
         if (this.expandedEventId() === event.id) {
@@ -103,7 +102,7 @@ export class AdminGallery implements OnInit {
   }
 
   protected getImageUrl(eventId: string, imageId: string): string {
-    return this.galleryEventService.getImageDownloadUrl(eventId, imageId);
+    return this.imageUrls.galleryImage(eventId, imageId);
   }
 
   protected onFilesSelected(event: GalleryEventResponse, fileEvent: Event): void {
@@ -111,7 +110,7 @@ export class AdminGallery implements OnInit {
     if (!input.files?.length) return;
 
     const files = Array.from(input.files);
-    this.galleryEventService.uploadImages(event.id, files).subscribe({
+    this.galleryEventsService.uploadImages({ id: event.id, body: { files } }).subscribe({
       next: () => {
         const count = files.length;
         this.showMessage(count === 1 ? 'Bild hochgeladen.' : `${count} Bilder hochgeladen.`);
@@ -125,7 +124,7 @@ export class AdminGallery implements OnInit {
 
   protected deleteImage(event: GalleryEventResponse, imageId: string): void {
     if (!confirm('Bild wirklich löschen?')) return;
-    this.galleryEventService.deleteImage(event.id, imageId).subscribe({
+    this.galleryEventsService.deleteImage1({ id: event.id, imageId }).subscribe({
       next: () => {
         this.showMessage('Bild gelöscht.');
         this.loadEvents();
@@ -149,7 +148,7 @@ export class AdminGallery implements OnInit {
   }
 
   private reorderImages(eventId: string, ids: string[]): void {
-    this.galleryEventService.reorderImages(eventId, ids).subscribe({
+    this.galleryEventsService.reorderImages({ id: eventId, body: ids }).subscribe({
       next: () => this.loadEvents(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });

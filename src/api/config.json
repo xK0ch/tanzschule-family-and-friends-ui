@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "src/api/openapi.json",
+  "output": "src/api/src",
+  "ignoreUnusedModels": false,
+  "indexFile": true,
+  "services": true,
+  "promises": false,
+  "module": false,
+  "defaultTag": "Api"
+}

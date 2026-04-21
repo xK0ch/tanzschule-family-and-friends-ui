@@ -1,10 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { GalleryEventResponse } from '../../core/models/gallery-event.model';
-import { GalleryEventService } from '../../core/services/gallery-event.service';
+import { GalleryEventsService, GalleryEventResponse } from '../../../api/src';
+import { ImageUrlService } from '../../core/services/image-url.service';
 
 @Component({
   selector: 'app-gallery',
@@ -13,14 +13,15 @@ import { GalleryEventService } from '../../core/services/gallery-event.service';
   styleUrl: './gallery.scss',
 })
 export class Gallery implements OnInit {
+  private readonly galleryEventsService = inject(GalleryEventsService);
+  private readonly imageUrls = inject(ImageUrlService);
+
   protected events = signal<GalleryEventResponse[]>([]);
   protected loading = signal(true);
   protected error = signal(false);
 
-  constructor(private galleryEventService: GalleryEventService) {}
-
   ngOnInit(): void {
-    this.galleryEventService.getAll().subscribe({
+    this.galleryEventsService.getAll1().subscribe({
       next: (events) => {
         this.events.set(events.filter((e) => e.images.length > 0));
         this.loading.set(false);
@@ -33,6 +34,6 @@ export class Gallery implements OnInit {
   }
 
   protected getCoverUrl(event: GalleryEventResponse): string {
-    return this.galleryEventService.getImageDownloadUrl(event.id, event.images[0].id);
+    return this.imageUrls.galleryImage(event.id, event.images[0].id);
   }
 }

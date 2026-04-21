@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NewsService } from '../../core/services/news.service';
-import { NewsResponse } from '../../core/models/news.model';
+import { NewsService, NewsResponse } from '../../../api/src';
+import { ImageUrlService } from '../../core/services/image-url.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -31,10 +31,9 @@ export class Home implements OnInit, OnDestroy {
     return list[this.currentIndex()];
   });
 
-  constructor(
-    protected newsService: NewsService,
-    private dialog: MatDialog
-  ) {}
+  private readonly newsService = inject(NewsService);
+  protected readonly imageUrls = inject(ImageUrlService);
+  private readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.newsService.getAll().subscribe({
@@ -56,9 +55,7 @@ export class Home implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(NewsDetailDialog, {
       data: {
         news,
-        imageUrl: news.image
-          ? this.newsService.getImageUrl(news.id)
-          : null,
+        imageUrl: news.image ? this.imageUrls.newsImage(news.id) : null,
       },
       maxWidth: '900px',
       width: '90vw',

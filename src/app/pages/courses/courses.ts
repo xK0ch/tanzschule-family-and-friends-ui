@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -6,8 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
-import { CourseCategoryService } from '../../core/services/course-category.service';
-import { CourseCategoryResponse } from '../../core/models/course.model';
+import { CourseCategoriesService, CourseCategoryResponse } from '../../../api/src';
 
 @Component({
   selector: 'app-courses',
@@ -16,6 +15,8 @@ import { CourseCategoryResponse } from '../../core/models/course.model';
   styleUrl: './courses.scss',
 })
 export class Courses {
+  private readonly courseCategoriesService = inject(CourseCategoriesService);
+
   protected allCategories = signal<CourseCategoryResponse[]>([]);
   protected selectedCategoryIds = signal<Set<string>>(new Set());
   protected loading = signal(true);
@@ -29,8 +30,8 @@ export class Courses {
     return all.filter((c) => selected.has(c.id) && c.courses.length > 0);
   });
 
-  constructor(private courseCategoryService: CourseCategoryService) {
-    this.courseCategoryService.getAll().subscribe({
+  constructor() {
+    this.courseCategoriesService.getAll3().subscribe({
       next: (categories) => {
         this.allCategories.set(categories);
         this.loading.set(false);

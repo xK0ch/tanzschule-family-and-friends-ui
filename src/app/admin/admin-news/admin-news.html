@@ -56,7 +56,7 @@
           <div class="image-section">
             @if (news.image) {
               <div class="image-preview">
-                <img [src]="newsService.getImageUrl(news.id)" [alt]="news.title" />
+                <img [src]="imageUrls.newsImage(news.id)" [alt]="news.title" />
                 <button mat-icon-button color="warn" (click)="removeImage(news)" title="Bild entfernen">
                   <mat-icon>delete</mat-icon>
                 </button>

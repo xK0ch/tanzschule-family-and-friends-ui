@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ContactService } from '../../core/services/contact.service';
+import { ContactService } from '../../../api/src';
 
 @Component({
   selector: 'app-contact',
@@ -25,10 +25,8 @@ export class Contact {
   private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   private readonly phonePattern = /^[+]?[\d\s()/-]{6,20}$/;
 
-  constructor(
-    private contactService: ContactService,
-    private snackBar: MatSnackBar,
-  ) {}
+  private readonly contactService = inject(ContactService);
+  private readonly snackBar = inject(MatSnackBar);
 
   protected isEmailValid(): boolean {
     return this.emailPattern.test(this.email);
@@ -50,11 +48,13 @@ export class Contact {
     if (!this.isFormValid()) return;
     this.sending.set(true);
 
-    this.contactService.send({
-      name: this.name,
-      email: this.email,
-      phone: this.phone || undefined,
-      message: this.message,
+    this.contactService.sendMessage({
+      body: {
+        name: this.name,
+        email: this.email,
+        phone: this.phone || undefined,
+        message: this.message,
+      },
     }).subscribe({
       next: () => {
         this.snackBar.open('Ihre Nachricht wurde erfolgreich gesendet!', 'OK', { duration: 5000 });
