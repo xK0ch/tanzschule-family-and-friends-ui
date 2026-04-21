@@ -1,57 +1,22 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Tanzschule Family \u0026 Friends API",
-    "description": "REST API for the Tanzschule Family \u0026 Friends web application",
-    "contact": {
-      "name": "Tanzschule Family \u0026 Friends"
-    },
+    "title": "Tanzschule Family & Friends API",
+    "description": "REST API for the Tanzschule Family & Friends web application",
+    "contact": { "name": "Tanzschule Family & Friends" },
     "version": "0.0.1-SNAPSHOT"
   },
-  "servers": [
-    {
-      "url": "http://localhost:8080",
-      "description": "Generated server url"
-    }
-  ],
-  "security": [
-    {
-      "Bearer Authentication": []
-    }
-  ],
+  "servers": [{ "url": "http://192.168.178.50:8080", "description": "Generated server url" }],
+  "security": [{ "Bearer Authentication": [] }],
   "tags": [
-    {
-      "name": "Course Categories",
-      "description": "Course category management"
-    },
-    {
-      "name": "Contact",
-      "description": "Contact form"
-    },
-    {
-      "name": "Gallery Events",
-      "description": "Gallery event and image management"
-    },
-    {
-      "name": "FAQ",
-      "description": "Frequently asked questions management"
-    },
-    {
-      "name": "News",
-      "description": "News management"
-    },
-    {
-      "name": "Course Registration",
-      "description": "Public course registration"
-    },
-    {
-      "name": "Courses",
-      "description": "Course management"
-    },
-    {
-      "name": "Authentication",
-      "description": "Admin login and JWT token generation"
-    }
+    { "name": "Course Categories", "description": "Course category management" },
+    { "name": "Contact", "description": "Contact form" },
+    { "name": "Gallery Events", "description": "Gallery event and image management" },
+    { "name": "FAQ", "description": "Frequently asked questions management" },
+    { "name": "News", "description": "News management" },
+    { "name": "Course Registration", "description": "Public course registration" },
+    { "name": "Courses", "description": "Course management" },
+    { "name": "Authentication", "description": "Admin login and JWT token generation" }
   ],
   "paths": {
     "/api/news/{id}": {
@@ -65,22 +30,13 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/NewsResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/NewsResponse" } } }
           }
         },
         "security": []
@@ -95,32 +51,19 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewsRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/NewsRequest" } }
           },
           "required": true
         },
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/NewsResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/NewsResponse" } } }
           }
         }
       },
@@ -134,17 +77,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/news/reorder": {
@@ -156,13 +92,7 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
+              "schema": { "type": "array", "items": { "type": "string", "format": "uuid" } }
             }
           },
           "required": true
@@ -174,9 +104,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NewsResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/NewsResponse" }
                 }
               }
             }
@@ -195,21 +123,14 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GalleryEventResponse"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/GalleryEventResponse" } }
             }
           }
         },
@@ -225,19 +146,12 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GalleryEventRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/GalleryEventRequest" } }
           },
           "required": true
         },
@@ -245,11 +159,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GalleryEventResponse"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/GalleryEventResponse" } }
             }
           }
         }
@@ -264,17 +174,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/gallery-events/{id}/images/reorder": {
@@ -288,22 +191,13 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
+              "schema": { "type": "array", "items": { "type": "string", "format": "uuid" } }
             }
           },
           "required": true
@@ -315,9 +209,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ImageResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/ImageResponse" }
                 }
               }
             }
@@ -336,22 +228,13 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FaqResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FaqResponse" } } }
           }
         },
         "security": []
@@ -366,32 +249,19 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FaqRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/FaqRequest" } }
           },
           "required": true
         },
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FaqResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FaqResponse" } } }
           }
         }
       },
@@ -405,17 +275,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/faqs/reorder": {
@@ -427,13 +290,7 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
+              "schema": { "type": "array", "items": { "type": "string", "format": "uuid" } }
             }
           },
           "required": true
@@ -445,9 +302,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FaqResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/FaqResponse" }
                 }
               }
             }
@@ -466,22 +321,13 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/CourseResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/CourseResponse" } } }
           }
         },
         "security": []
@@ -496,32 +342,19 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CourseRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/CourseRequest" } }
           },
           "required": true
         },
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/CourseResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/CourseResponse" } } }
           }
         }
       },
@@ -535,17 +368,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/courses/reorder": {
@@ -557,13 +383,7 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
+              "schema": { "type": "array", "items": { "type": "string", "format": "uuid" } }
             }
           },
           "required": true
@@ -575,9 +395,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CourseResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/CourseResponse" }
                 }
               }
             }
@@ -596,21 +414,14 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/CourseCategoryResponse"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/CourseCategoryResponse" } }
             }
           }
         },
@@ -626,18 +437,13 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CourseCategoryRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/CourseCategoryRequest" }
             }
           },
           "required": true
@@ -646,11 +452,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/CourseCategoryResponse"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/CourseCategoryResponse" } }
             }
           }
         }
@@ -665,17 +467,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/course-categories/reorder": {
@@ -687,13 +482,7 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
+              "schema": { "type": "array", "items": { "type": "string", "format": "uuid" } }
             }
           },
           "required": true
@@ -705,9 +494,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CourseCategoryResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/CourseCategoryResponse" }
                 }
               }
             }
@@ -728,9 +515,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NewsResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/NewsResponse" }
                 }
               }
             }
@@ -745,24 +530,14 @@
         "operationId": "create",
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewsRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/NewsRequest" } }
           },
           "required": true
         },
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/NewsResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/NewsResponse" } } }
           }
         }
       }
@@ -778,10 +553,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
@@ -789,12 +561,7 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                },
+                "properties": { "file": { "type": "string", "format": "binary" } },
                 "required": ["file"]
               }
             }
@@ -803,13 +570,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/ImageResponse" } } }
           }
         }
       },
@@ -823,17 +584,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/gallery-events": {
@@ -849,9 +603,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GalleryEventResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/GalleryEventResponse" }
                 }
               }
             }
@@ -866,11 +618,7 @@
         "operationId": "create_1",
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GalleryEventRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/GalleryEventRequest" } }
           },
           "required": true
         },
@@ -878,11 +626,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GalleryEventResponse"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/GalleryEventResponse" } }
             }
           }
         }
@@ -899,10 +643,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
@@ -911,13 +652,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "files": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  }
+                  "files": { "type": "array", "items": { "type": "string", "format": "binary" } }
                 },
                 "required": ["files"]
               }
@@ -931,9 +666,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ImageResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/ImageResponse" }
                 }
               }
             }
@@ -954,9 +687,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FaqResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/FaqResponse" }
                 }
               }
             }
@@ -971,24 +702,14 @@
         "operationId": "create_2",
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FaqRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/FaqRequest" } }
           },
           "required": true
         },
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/FaqResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/FaqResponse" } } }
           }
         }
       }
@@ -1001,24 +722,14 @@
         "operationId": "create_3",
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CourseRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/CourseRequest" } }
           },
           "required": true
         },
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/CourseResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/CourseResponse" } } }
           }
         }
       }
@@ -1034,27 +745,18 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CourseRegistrationRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/CourseRegistrationRequest" }
             }
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
+        "responses": { "200": { "description": "OK" } },
         "security": []
       }
     },
@@ -1069,13 +771,7 @@
             "name": "ids",
             "in": "query",
             "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "format": "uuid"
-              }
-            }
+            "schema": { "type": "array", "items": { "type": "string", "format": "uuid" } }
           }
         ],
         "responses": {
@@ -1085,9 +781,7 @@
               "*/*": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CourseCategoryResponse"
-                  }
+                  "items": { "$ref": "#/components/schemas/CourseCategoryResponse" }
                 }
               }
             }
@@ -1103,9 +797,7 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CourseCategoryRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/CourseCategoryRequest" }
             }
           },
           "required": true
@@ -1114,11 +806,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/CourseCategoryResponse"
-                }
-              }
+              "*/*": { "schema": { "$ref": "#/components/schemas/CourseCategoryResponse" } }
             }
           }
         }
@@ -1132,19 +820,11 @@
         "operationId": "sendMessage",
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/ContactRequest" } }
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
+        "responses": { "200": { "description": "OK" } },
         "security": []
       }
     },
@@ -1156,24 +836,14 @@
         "operationId": "login",
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } }
           },
           "required": true
         },
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "$ref": "#/components/schemas/LoginResponse" } } }
           }
         },
         "security": []
@@ -1190,23 +860,13 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "type": "string", "format": "binary" } } }
           }
         },
         "security": []
@@ -1223,32 +883,19 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           },
           {
             "name": "imageId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
+            "content": { "*/*": { "schema": { "type": "string", "format": "binary" } } }
           }
         },
         "security": []
@@ -1265,26 +912,16 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           },
           {
             "name": "imageId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+            "schema": { "type": "string", "format": "uuid" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     }
   },
@@ -1293,61 +930,25 @@
       "NewsRequest": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "minLength": 1
-          },
-          "description": {
-            "type": "string",
-            "minLength": 1
-          },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          }
+          "title": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "displayOrder": { "type": "integer", "format": "int32" }
         },
         "required": ["description", "displayOrder", "title"]
       },
       "ImageResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "filename": {
-            "type": "string"
-          },
-          "originalFilename": {
-            "type": "string"
-          },
-          "contentType": {
-            "type": "string"
-          },
-          "fileSize": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "galleryEventId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "newsId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string", "format": "uuid" },
+          "filename": { "type": "string" },
+          "originalFilename": { "type": "string" },
+          "contentType": { "type": "string" },
+          "fileSize": { "type": "integer", "format": "int64" },
+          "displayOrder": { "type": "integer", "format": "int32" },
+          "galleryEventId": { "type": "string", "format": "uuid" },
+          "newsId": { "type": "string", "format": "uuid" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         },
         "required": [
           "contentType",
@@ -1363,165 +964,72 @@
       "NewsResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "image": {
-            "$ref": "#/components/schemas/ImageResponse"
-          },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "image": { "$ref": "#/components/schemas/ImageResponse" },
+          "displayOrder": { "type": "integer", "format": "int32" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         },
         "required": ["createdAt", "description", "displayOrder", "id", "title", "updatedAt"]
       },
       "GalleryEventRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "date": {
-            "type": "string",
-            "format": "date"
-          }
+          "name": { "type": "string", "minLength": 1 },
+          "date": { "type": "string", "format": "date" }
         },
         "required": ["date", "name"]
       },
       "GalleryEventResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImageResponse"
-            }
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "date": { "type": "string", "format": "date" },
+          "images": { "type": "array", "items": { "$ref": "#/components/schemas/ImageResponse" } },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         },
         "required": ["createdAt", "date", "id", "images", "name", "updatedAt"]
       },
       "FaqRequest": {
         "type": "object",
         "properties": {
-          "question": {
-            "type": "string",
-            "minLength": 1
-          },
-          "answer": {
-            "type": "string",
-            "minLength": 1
-          },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          }
+          "question": { "type": "string", "minLength": 1 },
+          "answer": { "type": "string", "minLength": 1 },
+          "displayOrder": { "type": "integer", "format": "int32" }
         },
         "required": ["answer", "displayOrder", "question"]
       },
       "FaqResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "question": {
-            "type": "string"
-          },
-          "answer": {
-            "type": "string"
-          },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string", "format": "uuid" },
+          "question": { "type": "string" },
+          "answer": { "type": "string" },
+          "displayOrder": { "type": "integer", "format": "int32" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         },
         "required": ["answer", "createdAt", "displayOrder", "id", "question", "updatedAt"]
       },
       "CourseRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "startTime": {
-            "type": "string"
-          },
-          "endTime": {
-            "type": "string"
-          },
-          "numberOfHours": {
-            "type": "string",
-            "minLength": 1
-          },
-          "teacher": {
-            "type": "string",
-            "minLength": 1
-          },
-          "remark": {
-            "type": "string"
-          },
-          "partnerOption": {
-            "type": "boolean"
-          },
-          "categoryId": {
-            "type": "string",
-            "format": "uuid"
-          },
+          "name": { "type": "string", "minLength": 1 },
+          "startDate": { "type": "string", "format": "date" },
+          "startTime": { "type": "string" },
+          "endTime": { "type": "string" },
+          "numberOfHours": { "type": "string", "minLength": 1 },
+          "teacher": { "type": "string", "minLength": 1 },
+          "remark": { "type": "string" },
+          "partnerOption": { "type": "boolean" },
+          "categoryId": { "type": "string", "format": "uuid" },
           "tariffs": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CourseTariffRequest"
-            }
+            "items": { "$ref": "#/components/schemas/CourseTariffRequest" }
           }
         },
         "required": [
@@ -1538,70 +1046,31 @@
       "CourseTariffRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "price": {
-            "type": "number"
-          }
+          "name": { "type": "string", "minLength": 1 },
+          "price": { "type": "number" }
         },
         "required": ["name", "price"]
       },
       "CourseResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "startTime": {
-            "type": "string"
-          },
-          "endTime": {
-            "type": "string"
-          },
-          "numberOfHours": {
-            "type": "string"
-          },
-          "teacher": {
-            "type": "string"
-          },
-          "remark": {
-            "type": "string"
-          },
-          "partnerOption": {
-            "type": "boolean"
-          },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryId": {
-            "type": "string",
-            "format": "uuid"
-          },
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "startDate": { "type": "string", "format": "date" },
+          "startTime": { "type": "string" },
+          "endTime": { "type": "string" },
+          "numberOfHours": { "type": "string" },
+          "teacher": { "type": "string" },
+          "remark": { "type": "string" },
+          "partnerOption": { "type": "boolean" },
+          "displayOrder": { "type": "integer", "format": "int32" },
+          "categoryId": { "type": "string", "format": "uuid" },
           "tariffs": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CourseTariffResponse"
-            }
+            "items": { "$ref": "#/components/schemas/CourseTariffResponse" }
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         },
         "required": [
           "categoryId",
@@ -1622,177 +1091,70 @@
       "CourseTariffResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "courseId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "courseId": { "type": "string", "format": "uuid" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         },
         "required": ["courseId", "createdAt", "id", "name", "price", "updatedAt"]
       },
       "CourseCategoryRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          }
+          "name": { "type": "string", "minLength": 1 },
+          "displayOrder": { "type": "integer", "format": "int32" }
         },
         "required": ["displayOrder", "name"]
       },
       "CourseCategoryResponse": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          },
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "displayOrder": { "type": "integer", "format": "int32" },
           "courses": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CourseResponse"
-            }
+            "items": { "$ref": "#/components/schemas/CourseResponse" }
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         },
         "required": ["courses", "createdAt", "displayOrder", "id", "name", "updatedAt"]
       },
       "CourseRegistrationRequest": {
         "type": "object",
         "properties": {
-          "salutation": {
-            "type": "string",
-            "minLength": 1
-          },
-          "firstName": {
-            "type": "string",
-            "minLength": 1
-          },
-          "lastName": {
-            "type": "string",
-            "minLength": 1
-          },
-          "birthDate": {
-            "type": "string",
-            "minLength": 1
-          },
-          "street": {
-            "type": "string",
-            "minLength": 1
-          },
-          "city": {
-            "type": "string",
-            "minLength": 1
-          },
-          "phone": {
-            "type": "string",
-            "minLength": 1
-          },
-          "mobile": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "minLength": 1
-          },
-          "remark": {
-            "type": "string"
-          },
-          "tariffName": {
-            "type": "string",
-            "minLength": 1
-          },
-          "withPartner": {
-            "type": "boolean"
-          },
-          "partnerSalutation": {
-            "type": "string"
-          },
-          "partnerFirstName": {
-            "type": "string"
-          },
-          "partnerLastName": {
-            "type": "string"
-          },
-          "partnerBirthDate": {
-            "type": "string"
-          },
-          "partnerStreet": {
-            "type": "string"
-          },
-          "partnerCity": {
-            "type": "string"
-          },
-          "partnerPhone": {
-            "type": "string"
-          },
-          "partnerMobile": {
-            "type": "string"
-          },
-          "partnerEmail": {
-            "type": "string",
-            "format": "email"
-          },
-          "directDebit": {
-            "type": "boolean"
-          },
-          "accountHolder": {
-            "type": "string"
-          },
-          "iban": {
-            "type": "string"
-          },
-          "bic": {
-            "type": "string"
-          },
-          "samePaymentDetails": {
-            "type": "boolean"
-          },
-          "partnerAccountHolder": {
-            "type": "string"
-          },
-          "partnerIban": {
-            "type": "string"
-          },
-          "partnerBic": {
-            "type": "string"
-          }
+          "salutation": { "type": "string", "minLength": 1 },
+          "firstName": { "type": "string", "minLength": 1 },
+          "lastName": { "type": "string", "minLength": 1 },
+          "birthDate": { "type": "string", "minLength": 1 },
+          "street": { "type": "string", "minLength": 1 },
+          "city": { "type": "string", "minLength": 1 },
+          "phone": { "type": "string", "minLength": 1 },
+          "mobile": { "type": "string" },
+          "email": { "type": "string", "format": "email", "minLength": 1 },
+          "remark": { "type": "string" },
+          "tariffName": { "type": "string", "minLength": 1 },
+          "withPartner": { "type": "boolean" },
+          "partnerSalutation": { "type": "string" },
+          "partnerFirstName": { "type": "string" },
+          "partnerLastName": { "type": "string" },
+          "partnerBirthDate": { "type": "string" },
+          "partnerStreet": { "type": "string" },
+          "partnerCity": { "type": "string" },
+          "partnerPhone": { "type": "string" },
+          "partnerMobile": { "type": "string" },
+          "partnerEmail": { "type": "string", "format": "email" },
+          "directDebit": { "type": "boolean" },
+          "accountHolder": { "type": "string" },
+          "iban": { "type": "string" },
+          "bic": { "type": "string" },
+          "samePaymentDetails": { "type": "boolean" },
+          "partnerAccountHolder": { "type": "string" },
+          "partnerIban": { "type": "string" },
+          "partnerBic": { "type": "string" }
         },
         "required": [
           "birthDate",
@@ -1811,49 +1173,24 @@
       "ContactRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "minLength": 1
-          },
-          "phone": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string",
-            "minLength": 1
-          }
+          "name": { "type": "string", "minLength": 1 },
+          "email": { "type": "string", "format": "email", "minLength": 1 },
+          "phone": { "type": "string" },
+          "message": { "type": "string", "minLength": 1 }
         },
         "required": ["email", "message", "name"]
       },
       "LoginRequest": {
         "type": "object",
         "properties": {
-          "username": {
-            "type": "string",
-            "minLength": 1
-          },
-          "password": {
-            "type": "string",
-            "minLength": 1
-          }
+          "username": { "type": "string", "minLength": 1 },
+          "password": { "type": "string", "minLength": 1 }
         },
         "required": ["password", "username"]
       },
       "LoginResponse": {
         "type": "object",
-        "properties": {
-          "token": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          }
-        },
+        "properties": { "token": { "type": "string" }, "username": { "type": "string" } },
         "required": ["token", "username"]
       }
     },
