@@ -9,34 +9,6 @@
     </p>
   </section>
 
-  <!-- Opening Hours -->
-  <section class="hours-section">
-    <h2 class="section-title">Öffnungszeiten</h2>
-    <p class="hours-subtitle">Du hast etwas gefunden und eventuelle Fragen? Komm einfach vorbei oder ruf uns an!</p>
-    <mat-card>
-      <mat-card-content>
-        <div class="hours-inner">
-          <div class="hours-info">
-            <table class="hours-table">
-              <tr>
-                <td class="hours-day">So. bis Fr.</td>
-                <td class="hours-time">14:30 &ndash; 21:00 Uhr</td>
-              </tr>
-              <tr>
-                <td class="hours-day">Sa.</td>
-                <td class="hours-time">19:30 &ndash; 23:00 Uhr</td>
-              </tr>
-            </table>
-          </div>
-          <div class="hours-contact">
-            <mat-icon class="phone-icon">phone</mat-icon>
-            <a href="tel:+4943211490O" class="phone-number">04321 - 1 49 00</a>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </section>
-
   <!-- News Slideshow -->
   @if (currentNews(); as news) {
     <section class="news-section">
@@ -77,14 +49,46 @@
     </section>
   }
 
-  <!-- Video: Einblicke -->
-  <section class="video-section">
-    <h2 class="section-title">Einblicke in unsere Tanzschule</h2>
-    <div class="video-wrapper">
-      <video controls preload="metadata">
-        <source src="assets/videos/einblicke.mp4" type="video/mp4" />
-        Dein Browser unterstützt leider keine Videos.
-      </video>
+  <!-- Video + Opening Hours Row (2/3 + 1/3) -->
+  <section class="video-hours-row">
+    <!-- Video: Einblicke (2/3) -->
+    <div class="video-section">
+      <h2 class="section-title">Einblicke in unsere Tanzschule</h2>
+      <div class="video-wrapper">
+        <video controls preload="metadata">
+          <source src="assets/videos/einblicke.mp4" type="video/mp4" />
+          Dein Browser unterstützt leider keine Videos.
+        </video>
+      </div>
+    </div>
+
+    <!-- Opening Hours (1/3) -->
+    <div class="hours-section">
+      <h2 class="section-title">Öffnungszeiten</h2>
+      <p class="hours-subtitle">Komm einfach vorbei oder ruf uns an!</p>
+      <mat-card>
+        <mat-card-content>
+          <div class="hours-inner">
+            <div class="hours-info">
+              <table class="hours-table">
+                <tr>
+                  <td class="hours-day">So. bis Fr.</td>
+                  <td class="hours-time">14:30 &ndash; 21:00 Uhr</td>
+                </tr>
+                <tr>
+                  <td class="hours-day">Sa.</td>
+                  <td class="hours-time">19:30 &ndash; 23:00 Uhr</td>
+                </tr>
+              </table>
+            </div>
+            <div class="hours-divider"></div>
+            <div class="hours-contact">
+              <mat-icon class="phone-icon">phone</mat-icon>
+              <a href="tel:+4943211490O" class="phone-number">04321 - 1 49 00</a>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </section>
 
