@@ -7,6 +7,31 @@
     </button>
   </div>
 
+  <!-- Scheduler Toggle -->
+  <mat-card class="cleanup-card">
+    <mat-card-content>
+      <div class="cleanup-header">
+        <div class="cleanup-text">
+          <div class="cleanup-title">
+            <mat-icon>auto_delete</mat-icon>
+            <span>Automatische Bereinigung</span>
+          </div>
+          <p class="cleanup-hint">
+            Wenn aktiviert, werden täglich alle Veranstaltungen aus vergangenen Monaten automatisch gelöscht.
+            Beispiel: Sobald der Mai beginnt, werden alle April-Veranstaltungen entfernt. Aktuelle und
+            zukünftige Monate bleiben unberührt.
+          </p>
+        </div>
+        <mat-slide-toggle
+          [checked]="cleanupEnabled()"
+          [disabled]="!cleanupLoaded()"
+          (change)="onCleanupToggle($event.checked)">
+          {{ cleanupEnabled() ? 'Aktiviert' : 'Deaktiviert' }}
+        </mat-slide-toggle>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   <!-- New Event Form -->
   @if (showNewEventForm()) {
     <mat-card class="form-card">
@@ -66,114 +91,130 @@
     </mat-card>
   }
 
-  <!-- Events List -->
-  @for (event of events(); track event.id; let i = $index) {
-    <mat-card class="event-card">
-      @if (editingEventId() === event.id) {
-        <!-- Edit Event -->
-        <mat-card-content>
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Name</mat-label>
-            <input matInput [(ngModel)]="editEventName" />
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Datum</mat-label>
-            <input matInput type="date" [(ngModel)]="editEventDate" />
-          </mat-form-field>
-          <div class="form-row">
-            <mat-form-field appearance="outline">
-              <mat-label>Eintritt (€)</mat-label>
-              <input matInput type="number" step="0.01" [(ngModel)]="editEventEntryCost" placeholder="optional" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Eintritt mit Kundenkarte (€)</mat-label>
-              <input matInput type="number" step="0.01" [(ngModel)]="editEventEntryCostWithCustomerCard" placeholder="optional" />
-            </mat-form-field>
-          </div>
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Bemerkung</mat-label>
-            <textarea matInput [(ngModel)]="editEventRemark" rows="3"></textarea>
-          </mat-form-field>
-
-          <h4 class="time-range-title">Uhrzeiten</h4>
-          @for (range of editEventTimeRanges; track $index; let j = $index) {
-            <div class="time-range-row">
-              <mat-form-field appearance="outline">
-                <mat-label>Von</mat-label>
-                <input matInput type="time" [(ngModel)]="range.startTime" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Bis</mat-label>
-                <input matInput type="time" [(ngModel)]="range.endTime" />
-              </mat-form-field>
-              <button mat-icon-button color="warn" (click)="removeEditTimeRange(j)" title="Zeitraum entfernen">
-                <mat-icon>remove_circle</mat-icon>
-              </button>
-            </div>
-          }
-          <button mat-button (click)="addEditTimeRange()">
-            <mat-icon>add</mat-icon> Zeitraum hinzufügen
-          </button>
-        </mat-card-content>
-        <mat-card-actions align="end">
-          <button mat-button (click)="cancelEditEvent()">Abbrechen</button>
-          <button mat-raised-button color="primary" (click)="saveEvent(event)">Speichern</button>
-        </mat-card-actions>
-      } @else {
-        <!-- View Event -->
-        <mat-card-header>
-          <mat-card-title>{{ event.name }}</mat-card-title>
-          <mat-card-subtitle>
-            {{ event.date | date:'dd.MM.yyyy' }}
-            @if (event.timeRanges.length > 0) {
-              &middot;
-              @for (range of event.timeRanges; track range.id; let last = $last) {
-                <span>{{ range.startTime.substring(0, 5) }}–{{ range.endTime.substring(0, 5) }}</span>@if (!last) {<span>, </span>}
-              }
-              Uhr
-            }
-          </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          @if (event.remark) {
-            <p class="event-remark">{{ event.remark }}</p>
-          }
-          <div class="event-details">
-            @if (event.entryCost != null) {
-              <span class="badge cost-badge">Eintritt: {{ event.entryCost | number:'1.2-2' }} €</span>
-            }
-            @if (event.entryCostWithCustomerCard != null) {
-              <span class="badge card-badge">Kundenkarte: {{ event.entryCostWithCustomerCard | number:'1.2-2' }} €</span>
-            }
-          </div>
-        </mat-card-content>
-        <mat-card-actions class="event-actions">
-          <div class="order-buttons">
-            <button mat-icon-button (click)="moveEventUp(i)" [disabled]="i === 0" title="Nach oben">
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <button mat-icon-button (click)="moveEventDown(i)" [disabled]="i === events().length - 1" title="Nach unten">
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
-          </div>
-          <div class="edit-buttons">
-            <button mat-icon-button color="primary" (click)="startEditEvent(event)" title="Bearbeiten">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="deleteEvent(event)" title="Löschen">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </mat-card-actions>
-      }
+  <!-- Events Agenda -->
+  @if (events().length === 0) {
+    <mat-card class="empty-card">
+      <mat-card-content>
+        <p>Noch keine Veranstaltungen vorhanden. Erstelle die erste Veranstaltung!</p>
+      </mat-card-content>
     </mat-card>
-  } @empty {
-    @if (!showNewEventForm()) {
-      <mat-card class="empty-card">
-        <mat-card-content>
-          <p>Noch keine Veranstaltungen vorhanden. Erstelle die erste Veranstaltung!</p>
-        </mat-card-content>
-      </mat-card>
-    }
+  } @else {
+    <div class="agenda">
+      @for (group of eventsByMonth(); track group.key) {
+        <section class="month-group">
+          <h3 class="month-label">{{ group.anchorDate | date:'LLLL yyyy' }}</h3>
+
+          <ul class="events-list">
+            @for (event of group.events; track event.id) {
+              <li class="event-row" [class.editing]="editingEventId() === event.id">
+                @if (editingEventId() === event.id) {
+                  <!-- Edit Mode -->
+                  <div class="edit-form">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Name</mat-label>
+                      <input matInput [(ngModel)]="editEventName" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Datum</mat-label>
+                      <input matInput type="date" [(ngModel)]="editEventDate" />
+                    </mat-form-field>
+                    <div class="form-row">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Eintritt (€)</mat-label>
+                        <input matInput type="number" step="0.01" [(ngModel)]="editEventEntryCost" placeholder="optional" />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Eintritt mit Kundenkarte (€)</mat-label>
+                        <input matInput type="number" step="0.01" [(ngModel)]="editEventEntryCostWithCustomerCard" placeholder="optional" />
+                      </mat-form-field>
+                    </div>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Bemerkung</mat-label>
+                      <textarea matInput [(ngModel)]="editEventRemark" rows="3"></textarea>
+                    </mat-form-field>
+
+                    <h4 class="time-range-title">Uhrzeiten</h4>
+                    @for (range of editEventTimeRanges; track $index; let j = $index) {
+                      <div class="time-range-row">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Von</mat-label>
+                          <input matInput type="time" [(ngModel)]="range.startTime" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Bis</mat-label>
+                          <input matInput type="time" [(ngModel)]="range.endTime" />
+                        </mat-form-field>
+                        <button mat-icon-button color="warn" (click)="removeEditTimeRange(j)" title="Zeitraum entfernen">
+                          <mat-icon>remove_circle</mat-icon>
+                        </button>
+                      </div>
+                    }
+                    <button mat-button (click)="addEditTimeRange()">
+                      <mat-icon>add</mat-icon> Zeitraum hinzufügen
+                    </button>
+
+                    <div class="edit-actions">
+                      <button mat-button (click)="cancelEditEvent()">Abbrechen</button>
+                      <button mat-raised-button color="primary" (click)="saveEvent(event)">Speichern</button>
+                    </div>
+                  </div>
+                } @else {
+                  <!-- View Mode -->
+                  <div class="date-badge">
+                    <span class="day">{{ event.date | date:'d' }}</span>
+                    <span class="weekday">{{ event.date | date:'EE' }}</span>
+                  </div>
+
+                  <div class="event-details">
+                    <h4 class="event-name">{{ event.name }}</h4>
+
+                    <div class="event-meta">
+                      @if (event.timeRanges.length > 0) {
+                        <span class="meta-item">
+                          <mat-icon>schedule</mat-icon>
+                          <span class="time-ranges">
+                            @for (range of event.timeRanges; track range.id; let last = $last) {
+                              <span class="time-range">{{ formatTime(range.startTime) }} – {{ formatTime(range.endTime) }} Uhr</span>@if (!last) {<span class="separator">·</span>}
+                            }
+                          </span>
+                        </span>
+                      }
+
+                      @if (event.entryCost != null) {
+                        <span class="meta-item price">
+                          <mat-icon>euro</mat-icon>
+                          <span>
+                            {{ event.entryCost | number:'1.2-2' }} €
+                            @if (event.entryCostWithCustomerCard != null) {
+                              <span class="customer-card">(mit Kundenkarte: {{ event.entryCostWithCustomerCard | number:'1.2-2' }} €)</span>
+                            }
+                          </span>
+                        </span>
+                      }
+                    </div>
+
+                    @if (event.remark) {
+                      <p class="event-remark">
+                        <mat-icon>info</mat-icon>
+                        <span>{{ event.remark }}</span>
+                      </p>
+                    }
+                  </div>
+
+                  <div class="row-actions">
+                    <button mat-icon-button color="primary" (click)="startEditEvent(event)" title="Bearbeiten">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteEvent(event)" title="Löschen">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                }
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    </div>
   }
 </div>

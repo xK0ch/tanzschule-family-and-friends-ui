@@ -13,6 +13,7 @@
     { "name": "Contact", "description": "Contact form" },
     { "name": "Gallery Events", "description": "Gallery event and image management" },
     { "name": "FAQ", "description": "Frequently asked questions management" },
+    { "name": "Event Cleanup Config", "description": "Configuration for automatic event cleanup" },
     { "name": "Events", "description": "Event management" },
     { "name": "News", "description": "News management" },
     { "name": "Course Registration", "description": "Public course registration" },
@@ -391,16 +392,32 @@
         "responses": { "200": { "description": "OK" } }
       }
     },
-    "/api/events/reorder": {
+    "/api/event-cleanup-config": {
+      "get": {
+        "tags": ["Event Cleanup Config"],
+        "summary": "Get event cleanup config",
+        "description": "Returns whether the automatic cleanup of past events is enabled (requires authentication)",
+        "operationId": "getEventCleanupConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EventCleanupConfigResponse" }
+              }
+            }
+          }
+        }
+      },
       "put": {
-        "tags": ["Events"],
-        "summary": "Reorder events",
-        "description": "Reorder events by providing a list of IDs in the desired order (requires authentication)",
-        "operationId": "reorderEvents",
+        "tags": ["Event Cleanup Config"],
+        "summary": "Update event cleanup config",
+        "description": "Enable or disable automatic cleanup of past events (requires authentication)",
+        "operationId": "updateEventCleanupConfig",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "type": "array", "items": { "type": "string", "format": "uuid" } }
+              "schema": { "$ref": "#/components/schemas/EventCleanupConfigRequest" }
             }
           },
           "required": true
@@ -410,10 +427,7 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/EventResponse" }
-                }
+                "schema": { "$ref": "#/components/schemas/EventCleanupConfigResponse" }
               }
             }
           }
@@ -844,7 +858,7 @@
       "get": {
         "tags": ["Events"],
         "summary": "Get all events",
-        "description": "Returns all events ordered by date and display order",
+        "description": "Returns all events ordered by date",
         "operationId": "getAllEvents",
         "responses": {
           "200": {
@@ -1222,7 +1236,6 @@
           "entryCost": { "type": "number" },
           "entryCostWithCustomerCard": { "type": "number" },
           "remark": { "type": "string" },
-          "displayOrder": { "type": "integer", "format": "int32" },
           "timeRanges": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/EventTimeRangeResponse" }
@@ -1230,7 +1243,7 @@
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         },
-        "required": ["createdAt", "date", "displayOrder", "id", "name", "timeRanges", "updatedAt"]
+        "required": ["createdAt", "date", "id", "name", "timeRanges", "updatedAt"]
       },
       "EventTimeRangeResponse": {
         "type": "object",
@@ -1243,6 +1256,21 @@
           "updatedAt": { "type": "string", "format": "date-time" }
         },
         "required": ["createdAt", "endTime", "eventId", "id", "startTime", "updatedAt"]
+      },
+      "EventCleanupConfigRequest": {
+        "type": "object",
+        "properties": { "enabled": { "type": "boolean" } },
+        "required": ["enabled"]
+      },
+      "EventCleanupConfigResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "enabled": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["createdAt", "enabled", "id", "updatedAt"]
       },
       "CourseRequest": {
         "type": "object",

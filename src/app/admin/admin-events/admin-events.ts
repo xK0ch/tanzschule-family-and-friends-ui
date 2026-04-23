@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -7,12 +7,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import {
   EventsService,
   EventResponse,
   EventTimeRangeRequest,
+  EventCleanupConfigService,
 } from '../../../api/src';
+
+interface MonthGroup {
+  key: string;
+  anchorDate: string;
+  events: EventResponse[];
+}
 
 @Component({
   selector: 'app-admin-events',
@@ -26,6 +34,7 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
   ],
   templateUrl: './admin-events.html',
@@ -33,11 +42,15 @@ import {
 })
 export class AdminEvents implements OnInit {
   private readonly eventsService = inject(EventsService);
+  private readonly cleanupConfigService = inject(EventCleanupConfigService);
   private readonly snackBar = inject(MatSnackBar);
 
   protected events = signal<EventResponse[]>([]);
   protected showNewEventForm = signal(false);
   protected editingEventId = signal<string | null>(null);
+
+  protected cleanupEnabled = signal(true);
+  protected cleanupLoaded = signal(false);
 
   // New event form fields
   protected newEventName = '';
@@ -55,8 +68,29 @@ export class AdminEvents implements OnInit {
   protected editEventRemark = '';
   protected editEventTimeRanges: EventTimeRangeRequest[] = [];
 
+  protected eventsByMonth = computed<MonthGroup[]>(() => {
+    const groups = new Map<string, EventResponse[]>();
+    for (const ev of this.events()) {
+      const key = ev.date.substring(0, 7); // "YYYY-MM"
+      const bucket = groups.get(key);
+      if (bucket) {
+        bucket.push(ev);
+      } else {
+        groups.set(key, [ev]);
+      }
+    }
+    return [...groups.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([key, events]) => ({
+        key,
+        anchorDate: `${key}-01`,
+        events,
+      }));
+  });
+
   ngOnInit(): void {
     this.loadEvents();
+    this.loadCleanupConfig();
   }
 
   protected loadEvents(): void {
@@ -64,6 +98,37 @@ export class AdminEvents implements OnInit {
       next: (events) => this.events.set(events),
       error: () => this.showMessage('Fehler beim Laden der Veranstaltungen.'),
     });
+  }
+
+  protected loadCleanupConfig(): void {
+    this.cleanupConfigService.getEventCleanupConfig().subscribe({
+      next: (config) => {
+        this.cleanupEnabled.set(config.enabled);
+        this.cleanupLoaded.set(true);
+      },
+      error: () => this.showMessage('Fehler beim Laden der Cleanup-Konfiguration.'),
+    });
+  }
+
+  protected onCleanupToggle(enabled: boolean): void {
+    this.cleanupEnabled.set(enabled);
+    this.cleanupConfigService
+      .updateEventCleanupConfig({ body: { enabled } })
+      .subscribe({
+        next: (config) => {
+          this.cleanupEnabled.set(config.enabled);
+          this.showMessage(
+            config.enabled
+              ? 'Automatische Bereinigung aktiviert.'
+              : 'Automatische Bereinigung deaktiviert.'
+          );
+        },
+        error: () => {
+          // rollback
+          this.cleanupEnabled.set(!enabled);
+          this.showMessage('Fehler beim Speichern der Einstellung.');
+        },
+      });
   }
 
   protected toggleNewEventForm(): void {
@@ -170,27 +235,6 @@ export class AdminEvents implements OnInit {
     });
   }
 
-  protected moveEventUp(index: number): void {
-    if (index <= 0) return;
-    const ids = this.events().map((e) => e.id);
-    [ids[index - 1], ids[index]] = [ids[index], ids[index - 1]];
-    this.reorderEvents(ids);
-  }
-
-  protected moveEventDown(index: number): void {
-    const ids = this.events().map((e) => e.id);
-    if (index >= ids.length - 1) return;
-    [ids[index], ids[index + 1]] = [ids[index + 1], ids[index]];
-    this.reorderEvents(ids);
-  }
-
-  private reorderEvents(ids: string[]): void {
-    this.eventsService.reorderEvents({ body: ids }).subscribe({
-      next: () => this.loadEvents(),
-      error: () => this.showMessage('Fehler beim Sortieren.'),
-    });
-  }
-
   // ── Time ranges ──
 
   protected addNewTimeRange(): void {
@@ -207,6 +251,10 @@ export class AdminEvents implements OnInit {
 
   protected removeEditTimeRange(index: number): void {
     this.editEventTimeRanges.splice(index, 1);
+  }
+
+  protected formatTime(time: string): string {
+    return time.substring(0, 5);
   }
 
   private showMessage(message: string): void {
