@@ -288,7 +288,7 @@
 
 .courses-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-bottom: 28px;
 }
@@ -301,7 +301,7 @@
 
   img {
     width: 100%;
-    height: 240px;
+    aspect-ratio: 150 / 225;
     object-fit: cover;
     display: block;
     transition: transform 0.4s;
@@ -342,6 +342,12 @@
   }
 }
 
+@media (max-width: 900px) {
+  .courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .slide-image {
     height: 280px;
@@ -360,12 +366,13 @@
   }
 
   .courses-grid {
-    grid-template-columns: 1fr;
     gap: 16px;
   }
+}
 
-  .course-teaser img {
-    height: 200px;
+@media (max-width: 420px) {
+  .courses-grid {
+    grid-template-columns: 1fr;
   }
 }
 
