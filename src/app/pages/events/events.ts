@@ -5,6 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EventsService, EventResponse } from '../../../api/src';
 
+interface MonthGroup {
+  key: string;
+  anchorDate: string;
+  events: EventResponse[];
+}
+
 @Component({
   selector: 'app-events',
   imports: [DatePipe, DecimalPipe, MatCardModule, MatIconModule, MatProgressSpinnerModule],
@@ -25,6 +31,26 @@ export class Events {
       const d = new Date(ev.date);
       return d.getTime() >= today.getTime();
     });
+  });
+
+  protected eventsByMonth = computed<MonthGroup[]>(() => {
+    const groups = new Map<string, EventResponse[]>();
+    for (const ev of this.upcomingEvents()) {
+      const key = ev.date.substring(0, 7); // "YYYY-MM"
+      const bucket = groups.get(key);
+      if (bucket) {
+        bucket.push(ev);
+      } else {
+        groups.set(key, [ev]);
+      }
+    }
+    return [...groups.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([key, events]) => ({
+        key,
+        anchorDate: `${key}-01`,
+        events,
+      }));
   });
 
   constructor() {

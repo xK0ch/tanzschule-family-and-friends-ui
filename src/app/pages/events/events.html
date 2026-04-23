@@ -19,45 +19,58 @@
       </mat-card-content>
     </mat-card>
   } @else {
-    <div class="event-grid">
-      @for (event of upcomingEvents(); track event.id) {
-        <mat-card class="event-card">
-          <mat-card-content>
-            <h2 class="event-name">{{ event.name }}</h2>
-            <div class="event-info">
-              <div class="info-item">
-                <mat-icon>calendar_today</mat-icon>
-                <span>{{ event.date | date:'EEEE, dd.MM.yyyy':'':'de' }}</span>
-              </div>
-              @if (event.timeRanges.length > 0) {
-                <div class="info-item">
-                  <mat-icon>schedule</mat-icon>
-                  <div class="time-ranges">
-                    @for (range of event.timeRanges; track range.id) {
-                      <span class="time-range">{{ formatTime(range.startTime) }} – {{ formatTime(range.endTime) }} Uhr</span>
+    <div class="agenda">
+      @for (group of eventsByMonth(); track group.key) {
+        <section class="month-group">
+          <h2 class="month-label">{{ group.anchorDate | date:'LLLL yyyy' }}</h2>
+
+          <ul class="events-list">
+            @for (event of group.events; track event.id) {
+              <li class="event-row">
+                <div class="date-badge">
+                  <span class="day">{{ event.date | date:'d' }}</span>
+                  <span class="weekday">{{ event.date | date:'EE' }}</span>
+                </div>
+
+                <div class="event-details">
+                  <h3 class="event-name">{{ event.name }}</h3>
+
+                  <div class="event-meta">
+                    @if (event.timeRanges.length > 0) {
+                      <span class="meta-item">
+                        <mat-icon>schedule</mat-icon>
+                        <span class="time-ranges">
+                          @for (range of event.timeRanges; track range.id; let last = $last) {
+                            <span class="time-range">{{ formatTime(range.startTime) }} – {{ formatTime(range.endTime) }} Uhr</span>@if (!last) {<span class="separator">·</span>}
+                          }
+                        </span>
+                      </span>
+                    }
+
+                    @if (event.entryCost != null) {
+                      <span class="meta-item price">
+                        <mat-icon>euro</mat-icon>
+                        <span>
+                          {{ event.entryCost | number:'1.2-2' }} €
+                          @if (event.entryCostWithCustomerCard != null) {
+                            <span class="customer-card">(mit Kundenkarte: {{ event.entryCostWithCustomerCard | number:'1.2-2' }} €)</span>
+                          }
+                        </span>
+                      </span>
                     }
                   </div>
+
+                  @if (event.remark) {
+                    <p class="event-remark">
+                      <mat-icon>info</mat-icon>
+                      <span>{{ event.remark }}</span>
+                    </p>
+                  }
                 </div>
-              }
-              @if (event.entryCost != null) {
-                <div class="info-item price">
-                  <mat-icon>euro</mat-icon>
-                  <span>Eintritt: {{ event.entryCost | number:'1.2-2' }} €
-                    @if (event.entryCostWithCustomerCard != null) {
-                      <span class="customer-card">(mit Kundenkarte: {{ event.entryCostWithCustomerCard | number:'1.2-2' }} €)</span>
-                    }
-                  </span>
-                </div>
-              }
-              @if (event.remark) {
-                <div class="event-remark">
-                  <mat-icon>info</mat-icon>
-                  <span>{{ event.remark }}</span>
-                </div>
-              }
-            </div>
-          </mat-card-content>
-        </mat-card>
+              </li>
+            }
+          </ul>
+        </section>
       }
     </div>
   }
