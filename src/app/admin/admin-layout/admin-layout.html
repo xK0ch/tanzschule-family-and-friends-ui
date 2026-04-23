@@ -19,21 +19,25 @@
     (closed)="sidenavOpen.set(false)"
     class="admin-sidenav">
     <mat-nav-list>
-      <a mat-list-item routerLink="/admin/faq" routerLinkActive="active-link" (click)="onNavClick()">
-        <mat-icon matListItemIcon>help_outline</mat-icon>
-        <span matListItemTitle>FAQ</span>
-      </a>
-      <a mat-list-item routerLink="/admin/gallery" routerLinkActive="active-link" (click)="onNavClick()">
-        <mat-icon matListItemIcon>photo_library</mat-icon>
-        <span matListItemTitle>Galerie</span>
+      <a mat-list-item routerLink="/admin/news" routerLinkActive="active-link" (click)="onNavClick()">
+        <mat-icon matListItemIcon>newspaper</mat-icon>
+        <span matListItemTitle>Neuigkeiten</span>
       </a>
       <a mat-list-item routerLink="/admin/courses" routerLinkActive="active-link" (click)="onNavClick()">
         <mat-icon matListItemIcon>school</mat-icon>
         <span matListItemTitle>Kurse</span>
       </a>
-      <a mat-list-item routerLink="/admin/news" routerLinkActive="active-link" (click)="onNavClick()">
-        <mat-icon matListItemIcon>newspaper</mat-icon>
-        <span matListItemTitle>Neuigkeiten</span>
+      <a mat-list-item routerLink="/admin/events" routerLinkActive="active-link" (click)="onNavClick()">
+        <mat-icon matListItemIcon>event</mat-icon>
+        <span matListItemTitle>Veranstaltungen</span>
+      </a>
+      <a mat-list-item routerLink="/admin/gallery" routerLinkActive="active-link" (click)="onNavClick()">
+        <mat-icon matListItemIcon>photo_library</mat-icon>
+        <span matListItemTitle>Galerie</span>
+      </a>
+      <a mat-list-item routerLink="/admin/faq" routerLinkActive="active-link" (click)="onNavClick()">
+        <mat-icon matListItemIcon>help_outline</mat-icon>
+        <span matListItemTitle>FAQ</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>

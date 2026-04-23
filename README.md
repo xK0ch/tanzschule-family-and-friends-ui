@@ -75,6 +75,8 @@ The admin area is only accessible via URL — it is not linked from the public n
 |--------------------|------------------------------------------------------|
 | `/admin/login`     | Admin login (username + password)                    |
 | `/admin/faq`       | FAQ management (CRUD + reorder)                      |
+| `/admin/courses`   | Course categories & courses management (CRUD + reorder, tariffs) |
+| `/admin/events`    | Events management (CRUD + reorder, multiple time ranges per event) |
 | `/admin/gallery`   | Gallery management (events CRUD, image upload/delete/reorder) |
 | `/admin/news`      | News management (CRUD, image upload, reorder)                 |
 
@@ -97,6 +99,8 @@ src/
     │   ├── admin-login/     # Login page
     │   ├── admin-layout/    # Layout with sidebar
     │   ├── admin-faq/       # FAQ management (create, edit, delete, reorder)
+    │   ├── admin-courses/   # Course categories & courses management (CRUD + reorder, tariffs)
+    │   ├── admin-events/    # Events management (CRUD + reorder, multiple time ranges per event)
     │   ├── admin-gallery/   # Gallery management (events CRUD, image upload/delete/reorder)
     │   └── admin-news/      # News management (CRUD, image upload, reorder)
     ├── pages/

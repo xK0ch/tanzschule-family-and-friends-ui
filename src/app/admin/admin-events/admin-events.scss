@@ -1,0 +1,111 @@
+.admin-events {
+  max-width: 900px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+    color: var(--ts-text-dark);
+  }
+}
+
+.form-card,
+.event-card {
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+
+  mat-form-field {
+    flex: 1;
+  }
+}
+
+.event-card {
+  border-left: 3px solid var(--ts-orange);
+}
+
+.event-remark {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.event-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  background: var(--ts-bg-light);
+  color: var(--ts-text-dark);
+}
+
+.cost-badge {
+  background: var(--ts-orange);
+  color: white;
+}
+
+.card-badge {
+  background: var(--ts-cyan);
+  color: white;
+}
+
+.time-range-title {
+  margin: 16px 0 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ts-text-dark);
+}
+
+.time-range-hint {
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.time-range-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  mat-form-field {
+    flex: 1;
+  }
+}
+
+.event-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-buttons,
+.edit-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.empty-card {
+  text-align: center;
+
+  p {
+    color: #666;
+    padding: 24px 0;
+  }
+}

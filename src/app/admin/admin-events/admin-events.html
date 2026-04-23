@@ -1,0 +1,179 @@
+<div class="admin-events">
+  <div class="header">
+    <h2>Veranstaltungen verwalten</h2>
+    <button mat-raised-button color="primary" (click)="toggleNewEventForm()">
+      <mat-icon>{{ showNewEventForm() ? 'close' : 'add' }}</mat-icon>
+      {{ showNewEventForm() ? 'Abbrechen' : 'Neue Veranstaltung' }}
+    </button>
+  </div>
+
+  <!-- New Event Form -->
+  @if (showNewEventForm()) {
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Neue Veranstaltung erstellen</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="newEventName" placeholder="z.B. Silvesterball" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Datum</mat-label>
+          <input matInput type="date" [(ngModel)]="newEventDate" />
+        </mat-form-field>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Eintritt (€)</mat-label>
+            <input matInput type="number" step="0.01" [(ngModel)]="newEventEntryCost" placeholder="optional" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Eintritt mit Kundenkarte (€)</mat-label>
+            <input matInput type="number" step="0.01" [(ngModel)]="newEventEntryCostWithCustomerCard" placeholder="optional" />
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Bemerkung</mat-label>
+          <textarea matInput [(ngModel)]="newEventRemark" rows="3" placeholder="optional"></textarea>
+        </mat-form-field>
+
+        <!-- Time Ranges -->
+        <h4 class="time-range-title">Uhrzeiten</h4>
+        <p class="time-range-hint">Optional. Mehrere Zeiträume möglich (z.B. Kurs- und Tanzzeit).</p>
+        @for (range of newEventTimeRanges; track $index; let j = $index) {
+          <div class="time-range-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Von</mat-label>
+              <input matInput type="time" [(ngModel)]="range.startTime" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Bis</mat-label>
+              <input matInput type="time" [(ngModel)]="range.endTime" />
+            </mat-form-field>
+            <button mat-icon-button color="warn" (click)="removeNewTimeRange(j)" title="Zeitraum entfernen">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </div>
+        }
+        <button mat-button (click)="addNewTimeRange()">
+          <mat-icon>add</mat-icon> Zeitraum hinzufügen
+        </button>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button (click)="toggleNewEventForm()">Abbrechen</button>
+        <button mat-raised-button color="primary" (click)="createEvent()">Erstellen</button>
+      </mat-card-actions>
+    </mat-card>
+  }
+
+  <!-- Events List -->
+  @for (event of events(); track event.id; let i = $index) {
+    <mat-card class="event-card">
+      @if (editingEventId() === event.id) {
+        <!-- Edit Event -->
+        <mat-card-content>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="editEventName" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Datum</mat-label>
+            <input matInput type="date" [(ngModel)]="editEventDate" />
+          </mat-form-field>
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Eintritt (€)</mat-label>
+              <input matInput type="number" step="0.01" [(ngModel)]="editEventEntryCost" placeholder="optional" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Eintritt mit Kundenkarte (€)</mat-label>
+              <input matInput type="number" step="0.01" [(ngModel)]="editEventEntryCostWithCustomerCard" placeholder="optional" />
+            </mat-form-field>
+          </div>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Bemerkung</mat-label>
+            <textarea matInput [(ngModel)]="editEventRemark" rows="3"></textarea>
+          </mat-form-field>
+
+          <h4 class="time-range-title">Uhrzeiten</h4>
+          @for (range of editEventTimeRanges; track $index; let j = $index) {
+            <div class="time-range-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Von</mat-label>
+                <input matInput type="time" [(ngModel)]="range.startTime" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Bis</mat-label>
+                <input matInput type="time" [(ngModel)]="range.endTime" />
+              </mat-form-field>
+              <button mat-icon-button color="warn" (click)="removeEditTimeRange(j)" title="Zeitraum entfernen">
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </div>
+          }
+          <button mat-button (click)="addEditTimeRange()">
+            <mat-icon>add</mat-icon> Zeitraum hinzufügen
+          </button>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button (click)="cancelEditEvent()">Abbrechen</button>
+          <button mat-raised-button color="primary" (click)="saveEvent(event)">Speichern</button>
+        </mat-card-actions>
+      } @else {
+        <!-- View Event -->
+        <mat-card-header>
+          <mat-card-title>{{ event.name }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ event.date | date:'dd.MM.yyyy' }}
+            @if (event.timeRanges.length > 0) {
+              &middot;
+              @for (range of event.timeRanges; track range.id; let last = $last) {
+                <span>{{ range.startTime.substring(0, 5) }}–{{ range.endTime.substring(0, 5) }}</span>@if (!last) {<span>, </span>}
+              }
+              Uhr
+            }
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @if (event.remark) {
+            <p class="event-remark">{{ event.remark }}</p>
+          }
+          <div class="event-details">
+            @if (event.entryCost != null) {
+              <span class="badge cost-badge">Eintritt: {{ event.entryCost | number:'1.2-2' }} €</span>
+            }
+            @if (event.entryCostWithCustomerCard != null) {
+              <span class="badge card-badge">Kundenkarte: {{ event.entryCostWithCustomerCard | number:'1.2-2' }} €</span>
+            }
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="event-actions">
+          <div class="order-buttons">
+            <button mat-icon-button (click)="moveEventUp(i)" [disabled]="i === 0" title="Nach oben">
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button mat-icon-button (click)="moveEventDown(i)" [disabled]="i === events().length - 1" title="Nach unten">
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+          </div>
+          <div class="edit-buttons">
+            <button mat-icon-button color="primary" (click)="startEditEvent(event)" title="Bearbeiten">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteEvent(event)" title="Löschen">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-actions>
+      }
+    </mat-card>
+  } @empty {
+    @if (!showNewEventForm()) {
+      <mat-card class="empty-card">
+        <mat-card-content>
+          <p>Noch keine Veranstaltungen vorhanden. Erstelle die erste Veranstaltung!</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+</div>

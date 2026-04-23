@@ -1,13 +1,64 @@
 <div class="page-container">
   <h1>Veranstaltungen</h1>
-  <p>Kommende Events und Tanzveranstaltungen.</p>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Platzhalter für Veranstaltungen</mat-card-title>
-      <mat-card-subtitle>Inhalte folgen mit dem Backend</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Hier werden zukünftig alle geplanten Veranstaltungen und Events angezeigt.</p>
-    </mat-card-content>
-  </mat-card>
+  <p class="intro">Entdecken Sie unsere kommenden Tanzveranstaltungen und Events. Wir freuen uns auf Sie!</p>
+
+  @if (loading()) {
+    <div class="loading">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else if (error()) {
+    <mat-card>
+      <mat-card-content>
+        <p class="empty">Die Veranstaltungen konnten leider nicht geladen werden. Bitte versuchen Sie es später erneut.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (upcomingEvents().length === 0) {
+    <mat-card>
+      <mat-card-content>
+        <p class="empty">Aktuell sind keine Veranstaltungen geplant. Schauen Sie bald wieder vorbei!</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="event-grid">
+      @for (event of upcomingEvents(); track event.id) {
+        <mat-card class="event-card">
+          <mat-card-content>
+            <h2 class="event-name">{{ event.name }}</h2>
+            <div class="event-info">
+              <div class="info-item">
+                <mat-icon>calendar_today</mat-icon>
+                <span>{{ event.date | date:'EEEE, dd.MM.yyyy':'':'de' }}</span>
+              </div>
+              @if (event.timeRanges.length > 0) {
+                <div class="info-item">
+                  <mat-icon>schedule</mat-icon>
+                  <div class="time-ranges">
+                    @for (range of event.timeRanges; track range.id) {
+                      <span class="time-range">{{ formatTime(range.startTime) }} – {{ formatTime(range.endTime) }} Uhr</span>
+                    }
+                  </div>
+                </div>
+              }
+              @if (event.entryCost != null) {
+                <div class="info-item price">
+                  <mat-icon>euro</mat-icon>
+                  <span>Eintritt: {{ event.entryCost | number:'1.2-2' }} €
+                    @if (event.entryCostWithCustomerCard != null) {
+                      <span class="customer-card">(mit Kundenkarte: {{ event.entryCostWithCustomerCard | number:'1.2-2' }} €)</span>
+                    }
+                  </span>
+                </div>
+              }
+              @if (event.remark) {
+                <div class="event-remark">
+                  <mat-icon>info</mat-icon>
+                  <span>{{ event.remark }}</span>
+                </div>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
 </div>
