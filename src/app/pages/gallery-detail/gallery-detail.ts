@@ -25,7 +25,7 @@ export class GalleryDetail {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.galleryEventsService.getById1({ id }).subscribe({
+    this.galleryEventsService.getGalleryEventById({ id }).subscribe({
       next: (event) => {
         this.event.set(event);
         this.loading.set(false);

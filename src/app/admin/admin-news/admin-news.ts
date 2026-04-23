@@ -44,7 +44,7 @@ export class AdminNews implements OnInit {
   }
 
   protected loadNews(): void {
-    this.newsService.getAll().subscribe({
+    this.newsService.getAllNews().subscribe({
       next: (news) => this.newsList.set(news),
       error: () => this.showMessage('Fehler beim Laden der Neuigkeiten.'),
     });
@@ -61,7 +61,7 @@ export class AdminNews implements OnInit {
 
     const displayOrder = this.newsList().length;
     this.newsService
-      .create({
+      .createNews({
         body: {
           title: this.newTitle,
           description: this.newDescription,
@@ -92,7 +92,7 @@ export class AdminNews implements OnInit {
     if (!this.editTitle.trim() || !this.editDescription.trim()) return;
 
     this.newsService
-      .update({
+      .updateNews({
         id: news.id,
         body: {
           title: this.editTitle,
@@ -113,7 +113,7 @@ export class AdminNews implements OnInit {
   protected deleteNews(news: NewsResponse): void {
     if (!confirm(`Neuigkeit "${news.title}" wirklich löschen?`)) return;
 
-    this.newsService.delete({ id: news.id }).subscribe({
+    this.newsService.deleteNews({ id: news.id }).subscribe({
       next: () => {
         this.showMessage('Neuigkeit gelöscht.');
         this.loadNews();
@@ -127,7 +127,7 @@ export class AdminNews implements OnInit {
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-    this.newsService.uploadImage({ id: news.id, body: { file } }).subscribe({
+    this.newsService.uploadNewsImage({ id: news.id, body: { file } }).subscribe({
       next: () => {
         this.showMessage('Bild hochgeladen.');
         this.loadNews();
@@ -141,7 +141,7 @@ export class AdminNews implements OnInit {
   protected removeImage(news: NewsResponse): void {
     if (!confirm('Bild wirklich entfernen?')) return;
 
-    this.newsService.deleteImage({ id: news.id }).subscribe({
+    this.newsService.deleteNewsImage({ id: news.id }).subscribe({
       next: () => {
         this.showMessage('Bild entfernt.');
         this.loadNews();
@@ -165,7 +165,7 @@ export class AdminNews implements OnInit {
   }
 
   private reorder(ids: string[]): void {
-    this.newsService.reorder({ body: ids }).subscribe({
+    this.newsService.reorderNews({ body: ids }).subscribe({
       next: () => this.loadNews(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });

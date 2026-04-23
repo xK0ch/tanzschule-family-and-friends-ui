@@ -60,7 +60,7 @@ export class AdminEvents implements OnInit {
   }
 
   protected loadEvents(): void {
-    this.eventsService.getAll4().subscribe({
+    this.eventsService.getAllEvents().subscribe({
       next: (events) => this.events.set(events),
       error: () => this.showMessage('Fehler beim Laden der Veranstaltungen.'),
     });
@@ -88,7 +88,7 @@ export class AdminEvents implements OnInit {
     const timeRanges = this.newEventTimeRanges.filter((t) => t.startTime && t.endTime);
 
     this.eventsService
-      .create5({
+      .createEvent({
         body: {
           name: this.newEventName,
           date: this.newEventDate,
@@ -135,7 +135,7 @@ export class AdminEvents implements OnInit {
     const timeRanges = this.editEventTimeRanges.filter((t) => t.startTime && t.endTime);
 
     this.eventsService
-      .update5({
+      .updateEvent({
         id: event.id,
         body: {
           name: this.editEventName,
@@ -161,7 +161,7 @@ export class AdminEvents implements OnInit {
 
   protected deleteEvent(event: EventResponse): void {
     if (!confirm(`Veranstaltung "${event.name}" wirklich löschen?`)) return;
-    this.eventsService.delete5({ id: event.id }).subscribe({
+    this.eventsService.deleteEvent({ id: event.id }).subscribe({
       next: () => {
         this.showMessage('Veranstaltung gelöscht.');
         this.loadEvents();
@@ -185,7 +185,7 @@ export class AdminEvents implements OnInit {
   }
 
   private reorderEvents(ids: string[]): void {
-    this.eventsService.reorder4({ body: ids }).subscribe({
+    this.eventsService.reorderEvents({ body: ids }).subscribe({
       next: () => this.loadEvents(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });

@@ -28,7 +28,7 @@ export class Events {
   });
 
   constructor() {
-    this.eventsService.getAll4().subscribe({
+    this.eventsService.getAllEvents().subscribe({
       next: (events) => {
         this.events.set(events);
         this.loading.set(false);

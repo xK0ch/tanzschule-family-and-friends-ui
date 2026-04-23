@@ -36,7 +36,7 @@ export class Home implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
-    this.newsService.getAll().subscribe({
+    this.newsService.getAllNews().subscribe({
       next: (news) => {
         this.newsList.set(news);
         if (news.length > 1) {

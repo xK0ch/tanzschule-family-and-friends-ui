@@ -31,7 +31,7 @@ export class Courses {
   });
 
   constructor() {
-    this.courseCategoriesService.getAll3().subscribe({
+    this.courseCategoriesService.getAllCourseCategories().subscribe({
       next: (categories) => {
         this.allCategories.set(categories);
         this.loading.set(false);

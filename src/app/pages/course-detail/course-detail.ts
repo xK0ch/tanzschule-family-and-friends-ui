@@ -85,7 +85,7 @@ export class CourseDetail {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.coursesService.getById3({ id }).subscribe({
+    this.coursesService.getCourseById({ id }).subscribe({
       next: (course) => {
         this.course.set(course);
         if (course.tariffs.length > 0) {
@@ -181,7 +181,7 @@ export class CourseDetail {
       partnerBic: (this.directDebit && this.withPartner && !this.samePaymentDetails) ? this.partnerBic || undefined : undefined,
     };
 
-    this.courseRegistrationService.register({ id: this.course()!.id, body: request }).subscribe({
+    this.courseRegistrationService.registerForCourse({ id: this.course()!.id, body: request }).subscribe({
       next: () => {
         this.snackBar.open('Ihre Anmeldung wurde erfolgreich gesendet!', 'OK', { duration: 5000 });
         this.resetForm();

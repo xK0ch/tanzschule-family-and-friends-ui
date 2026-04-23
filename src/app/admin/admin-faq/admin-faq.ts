@@ -42,7 +42,7 @@ export class AdminFaq implements OnInit {
   }
 
   protected loadFaqs(): void {
-    this.faqService.getAll2().subscribe({
+    this.faqService.getAllFaqs().subscribe({
       next: (faqs) => this.faqs.set(faqs),
       error: () => this.showMessage('Fehler beim Laden der FAQs.'),
     });
@@ -59,7 +59,7 @@ export class AdminFaq implements OnInit {
 
     const displayOrder = this.faqs().length;
     this.faqService
-      .create2({
+      .createFaq({
         body: { question: this.newQuestion, answer: this.newAnswer, displayOrder },
       })
       .subscribe({
@@ -86,7 +86,7 @@ export class AdminFaq implements OnInit {
     if (!this.editQuestion.trim() || !this.editAnswer.trim()) return;
 
     this.faqService
-      .update2({
+      .updateFaq({
         id: faq.id,
         body: {
           question: this.editQuestion,
@@ -107,7 +107,7 @@ export class AdminFaq implements OnInit {
   protected deleteFaq(faq: FaqResponse): void {
     if (!confirm(`FAQ "${faq.question}" wirklich löschen?`)) return;
 
-    this.faqService.delete2({ id: faq.id }).subscribe({
+    this.faqService.deleteFaq({ id: faq.id }).subscribe({
       next: () => {
         this.showMessage('FAQ gelöscht.');
         this.loadFaqs();
@@ -131,7 +131,7 @@ export class AdminFaq implements OnInit {
   }
 
   private reorder(ids: string[]): void {
-    this.faqService.reorder1({ body: ids }).subscribe({
+    this.faqService.reorderFaqs({ body: ids }).subscribe({
       next: () => this.loadFaqs(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });

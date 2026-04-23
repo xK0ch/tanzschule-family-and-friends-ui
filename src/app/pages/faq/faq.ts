@@ -18,7 +18,7 @@ export class Faq implements OnInit {
   private readonly faqService = inject(FaqService);
 
   ngOnInit(): void {
-    this.faqService.getAll2().subscribe({
+    this.faqService.getAllFaqs().subscribe({
       next: (faqs) => {
         this.faqs.set(faqs);
         this.loading.set(false);

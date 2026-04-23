@@ -21,7 +21,7 @@ export class Gallery implements OnInit {
   protected error = signal(false);
 
   ngOnInit(): void {
-    this.galleryEventsService.getAll1().subscribe({
+    this.galleryEventsService.getAllGalleryEvents().subscribe({
       next: (events) => {
         this.events.set(events.filter((e) => e.images.length > 0));
         this.loading.set(false);

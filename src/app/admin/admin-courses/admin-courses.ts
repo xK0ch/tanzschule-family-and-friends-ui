@@ -82,7 +82,7 @@ export class AdminCourses implements OnInit {
   // ── Categories ──
 
   protected loadCategories(): void {
-    this.courseCategoriesService.getAll3().subscribe({
+    this.courseCategoriesService.getAllCourseCategories().subscribe({
       next: (categories) => this.categories.set(categories),
       error: () => this.showMessage('Fehler beim Laden der Kategorien.'),
     });
@@ -97,7 +97,7 @@ export class AdminCourses implements OnInit {
     if (!this.newCategoryName.trim()) return;
     const displayOrder = this.categories().length;
     this.courseCategoriesService
-      .create4({ body: { name: this.newCategoryName, displayOrder } })
+      .createCourseCategory({ body: { name: this.newCategoryName, displayOrder } })
       .subscribe({
         next: () => {
           this.showMessage('Kategorie erstellt.');
@@ -120,7 +120,7 @@ export class AdminCourses implements OnInit {
   protected saveCategory(category: CourseCategoryResponse): void {
     if (!this.editCategoryName.trim()) return;
     this.courseCategoriesService
-      .update4({
+      .updateCourseCategory({
         id: category.id,
         body: { name: this.editCategoryName, displayOrder: category.displayOrder },
       })
@@ -136,7 +136,7 @@ export class AdminCourses implements OnInit {
 
   protected deleteCategory(category: CourseCategoryResponse): void {
     if (!confirm(`Kategorie "${category.name}" und alle zugehörigen Kurse wirklich löschen?`)) return;
-    this.courseCategoriesService.delete4({ id: category.id }).subscribe({
+    this.courseCategoriesService.deleteCourseCategory({ id: category.id }).subscribe({
       next: () => {
         this.showMessage('Kategorie gelöscht.');
         if (this.expandedCategoryId() === category.id) this.expandedCategoryId.set(null);
@@ -165,7 +165,7 @@ export class AdminCourses implements OnInit {
   }
 
   private reorderCategories(ids: string[]): void {
-    this.courseCategoriesService.reorder3({ body: ids }).subscribe({
+    this.courseCategoriesService.reorderCourseCategories({ body: ids }).subscribe({
       next: () => this.loadCategories(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });
@@ -186,7 +186,7 @@ export class AdminCourses implements OnInit {
   }
 
   private reorderCourses(ids: string[]): void {
-    this.coursesService.reorder2({ body: ids }).subscribe({
+    this.coursesService.reorderCourses({ body: ids }).subscribe({
       next: () => this.loadCategories(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });
@@ -218,7 +218,7 @@ export class AdminCourses implements OnInit {
   protected createCourse(categoryId: string): void {
     if (!this.newCourseName.trim() || !this.newCourseStartDate || !this.newCourseStartTime || !this.newCourseEndTime || !this.newCourseNumberOfHours.trim() || !this.newCourseTeacher.trim()) return;
     this.coursesService
-      .create3({
+      .createCourse({
         body: {
           name: this.newCourseName,
           startDate: this.newCourseStartDate,
@@ -266,7 +266,7 @@ export class AdminCourses implements OnInit {
   protected saveCourse(course: CourseResponse): void {
     if (!this.editCourseName.trim() || !this.editCourseStartDate || !this.editCourseStartTime || !this.editCourseEndTime || !this.editCourseNumberOfHours.trim() || !this.editCourseTeacher.trim()) return;
     this.coursesService
-      .update3({
+      .updateCourse({
         id: course.id,
         body: {
           name: this.editCourseName,
@@ -293,7 +293,7 @@ export class AdminCourses implements OnInit {
 
   protected deleteCourse(course: CourseResponse): void {
     if (!confirm(`Kurs "${course.name}" wirklich löschen?`)) return;
-    this.coursesService.delete3({ id: course.id }).subscribe({
+    this.coursesService.deleteCourse({ id: course.id }).subscribe({
       next: () => {
         this.showMessage('Kurs gelöscht.');
         this.loadCategories();

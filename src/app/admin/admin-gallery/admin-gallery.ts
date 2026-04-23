@@ -37,7 +37,7 @@ export class AdminGallery implements OnInit {
   }
 
   protected loadEvents(): void {
-    this.galleryEventsService.getAll1().subscribe({
+    this.galleryEventsService.getAllGalleryEvents().subscribe({
       next: (events) => this.events.set(events),
       error: () => this.showMessage('Fehler beim Laden der Events.'),
     });
@@ -51,7 +51,7 @@ export class AdminGallery implements OnInit {
 
   protected createEvent(): void {
     if (!this.newName.trim() || !this.newDate) return;
-    this.galleryEventsService.create1({ body: { name: this.newName, date: this.newDate } }).subscribe({
+    this.galleryEventsService.createGalleryEvent({ body: { name: this.newName, date: this.newDate } }).subscribe({
       next: () => {
         this.showMessage('Event erstellt.');
         this.toggleNewForm();
@@ -73,7 +73,7 @@ export class AdminGallery implements OnInit {
 
   protected saveEvent(event: GalleryEventResponse): void {
     if (!this.editName.trim() || !this.editDate) return;
-    this.galleryEventsService.update1({ id: event.id, body: { name: this.editName, date: this.editDate } }).subscribe({
+    this.galleryEventsService.updateGalleryEvent({ id: event.id, body: { name: this.editName, date: this.editDate } }).subscribe({
       next: () => {
         this.showMessage('Event aktualisiert.');
         this.editingId.set(null);
@@ -85,7 +85,7 @@ export class AdminGallery implements OnInit {
 
   protected deleteEvent(event: GalleryEventResponse): void {
     if (!confirm(`Event "${event.name}" und alle zugehörigen Bilder wirklich löschen?`)) return;
-    this.galleryEventsService.delete1({ id: event.id }).subscribe({
+    this.galleryEventsService.deleteGalleryEvent({ id: event.id }).subscribe({
       next: () => {
         this.showMessage('Event gelöscht.');
         if (this.expandedEventId() === event.id) {
@@ -110,7 +110,7 @@ export class AdminGallery implements OnInit {
     if (!input.files?.length) return;
 
     const files = Array.from(input.files);
-    this.galleryEventsService.uploadImages({ id: event.id, body: { files } }).subscribe({
+    this.galleryEventsService.uploadGalleryImages({ id: event.id, body: { files } }).subscribe({
       next: () => {
         const count = files.length;
         this.showMessage(count === 1 ? 'Bild hochgeladen.' : `${count} Bilder hochgeladen.`);
@@ -124,7 +124,7 @@ export class AdminGallery implements OnInit {
 
   protected deleteImage(event: GalleryEventResponse, imageId: string): void {
     if (!confirm('Bild wirklich löschen?')) return;
-    this.galleryEventsService.deleteImage1({ id: event.id, imageId }).subscribe({
+    this.galleryEventsService.deleteGalleryImage({ id: event.id, imageId }).subscribe({
       next: () => {
         this.showMessage('Bild gelöscht.');
         this.loadEvents();
@@ -148,7 +148,7 @@ export class AdminGallery implements OnInit {
   }
 
   private reorderImages(eventId: string, ids: string[]): void {
-    this.galleryEventsService.reorderImages({ id: eventId, body: ids }).subscribe({
+    this.galleryEventsService.reorderGalleryImages({ id: eventId, body: ids }).subscribe({
       next: () => this.loadEvents(),
       error: () => this.showMessage('Fehler beim Sortieren.'),
     });

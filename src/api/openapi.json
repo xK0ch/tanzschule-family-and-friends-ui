@@ -25,7 +25,7 @@
         "tags": ["News"],
         "summary": "Get news by ID",
         "description": "Returns a single news entry by its ID",
-        "operationId": "getById",
+        "operationId": "getNewsById",
         "parameters": [
           {
             "name": "id",
@@ -48,7 +48,7 @@
         "tags": ["News"],
         "summary": "Update news",
         "description": "Update an existing news entry (requires authentication)",
-        "operationId": "update",
+        "operationId": "updateNews",
         "parameters": [
           {
             "name": "id",
@@ -76,7 +76,7 @@
         "tags": ["News"],
         "summary": "Delete news",
         "description": "Delete a news entry and its image (requires authentication)",
-        "operationId": "delete",
+        "operationId": "deleteNews",
         "parameters": [
           {
             "name": "id",
@@ -93,7 +93,7 @@
         "tags": ["News"],
         "summary": "Reorder news",
         "description": "Reorder news by providing a list of IDs in the desired order (requires authentication)",
-        "operationId": "reorder",
+        "operationId": "reorderNews",
         "requestBody": {
           "content": {
             "application/json": {
@@ -122,7 +122,7 @@
         "tags": ["Gallery Events"],
         "summary": "Get gallery event by ID",
         "description": "Returns a single gallery event with its images",
-        "operationId": "getById_1",
+        "operationId": "getGalleryEventById",
         "parameters": [
           {
             "name": "id",
@@ -147,7 +147,7 @@
         "tags": ["Gallery Events"],
         "summary": "Update gallery event",
         "description": "Update an existing gallery event (requires authentication)",
-        "operationId": "update_1",
+        "operationId": "updateGalleryEvent",
         "parameters": [
           {
             "name": "id",
@@ -177,7 +177,7 @@
         "tags": ["Gallery Events"],
         "summary": "Delete gallery event",
         "description": "Delete a gallery event and all its images (requires authentication)",
-        "operationId": "delete_1",
+        "operationId": "deleteGalleryEvent",
         "parameters": [
           {
             "name": "id",
@@ -194,7 +194,7 @@
         "tags": ["Gallery Events"],
         "summary": "Reorder images in gallery event",
         "description": "Reorder images by providing a list of IDs in the desired order (requires authentication)",
-        "operationId": "reorderImages",
+        "operationId": "reorderGalleryImages",
         "parameters": [
           {
             "name": "id",
@@ -231,7 +231,7 @@
         "tags": ["FAQ"],
         "summary": "Get FAQ by ID",
         "description": "Returns a single FAQ by its ID",
-        "operationId": "getById_2",
+        "operationId": "getFaqById",
         "parameters": [
           {
             "name": "id",
@@ -254,7 +254,7 @@
         "tags": ["FAQ"],
         "summary": "Update FAQ",
         "description": "Update an existing FAQ entry (requires authentication)",
-        "operationId": "update_2",
+        "operationId": "updateFaq",
         "parameters": [
           {
             "name": "id",
@@ -282,7 +282,7 @@
         "tags": ["FAQ"],
         "summary": "Delete FAQ",
         "description": "Delete a FAQ entry (requires authentication)",
-        "operationId": "delete_2",
+        "operationId": "deleteFaq",
         "parameters": [
           {
             "name": "id",
@@ -299,7 +299,7 @@
         "tags": ["FAQ"],
         "summary": "Reorder FAQs",
         "description": "Reorder FAQs by providing a list of IDs in the desired order (requires authentication)",
-        "operationId": "reorder_1",
+        "operationId": "reorderFaqs",
         "requestBody": {
           "content": {
             "application/json": {
@@ -328,7 +328,7 @@
         "tags": ["Events"],
         "summary": "Get event by ID",
         "description": "Returns a single event with its time ranges",
-        "operationId": "getById_3",
+        "operationId": "getEventById",
         "parameters": [
           {
             "name": "id",
@@ -351,7 +351,7 @@
         "tags": ["Events"],
         "summary": "Update event",
         "description": "Update an existing event and its time ranges (requires authentication)",
-        "operationId": "update_3",
+        "operationId": "updateEvent",
         "parameters": [
           {
             "name": "id",
@@ -379,7 +379,7 @@
         "tags": ["Events"],
         "summary": "Delete event",
         "description": "Delete an event and all its time ranges (requires authentication)",
-        "operationId": "delete_3",
+        "operationId": "deleteEvent",
         "parameters": [
           {
             "name": "id",
@@ -396,7 +396,7 @@
         "tags": ["Events"],
         "summary": "Reorder events",
         "description": "Reorder events by providing a list of IDs in the desired order (requires authentication)",
-        "operationId": "reorder_2",
+        "operationId": "reorderEvents",
         "requestBody": {
           "content": {
             "application/json": {
@@ -425,7 +425,7 @@
         "tags": ["Courses"],
         "summary": "Get course by ID",
         "description": "Returns a single course with its tariffs",
-        "operationId": "getById_4",
+        "operationId": "getCourseById",
         "parameters": [
           {
             "name": "id",
@@ -448,7 +448,7 @@
         "tags": ["Courses"],
         "summary": "Update course",
         "description": "Update an existing course and its tariffs (requires authentication)",
-        "operationId": "update_4",
+        "operationId": "updateCourse",
         "parameters": [
           {
             "name": "id",
@@ -476,7 +476,7 @@
         "tags": ["Courses"],
         "summary": "Delete course",
         "description": "Delete a course and all its tariffs (requires authentication)",
-        "operationId": "delete_4",
+        "operationId": "deleteCourse",
         "parameters": [
           {
             "name": "id",
@@ -493,7 +493,7 @@
         "tags": ["Courses"],
         "summary": "Reorder courses",
         "description": "Reorder courses by providing a list of IDs in the desired order (requires authentication)",
-        "operationId": "reorder_3",
+        "operationId": "reorderCourses",
         "requestBody": {
           "content": {
             "application/json": {
@@ -522,7 +522,7 @@
         "tags": ["Course Categories"],
         "summary": "Get course category by ID",
         "description": "Returns a single course category with its courses",
-        "operationId": "getById_5",
+        "operationId": "getCourseCategoryById",
         "parameters": [
           {
             "name": "id",
@@ -547,7 +547,7 @@
         "tags": ["Course Categories"],
         "summary": "Update course category",
         "description": "Update an existing course category (requires authentication)",
-        "operationId": "update_5",
+        "operationId": "updateCourseCategory",
         "parameters": [
           {
             "name": "id",
@@ -579,7 +579,7 @@
         "tags": ["Course Categories"],
         "summary": "Delete course category",
         "description": "Delete a course category (requires authentication)",
-        "operationId": "delete_5",
+        "operationId": "deleteCourseCategory",
         "parameters": [
           {
             "name": "id",
@@ -596,7 +596,7 @@
         "tags": ["Course Categories"],
         "summary": "Reorder course categories",
         "description": "Reorder categories by providing a list of IDs in the desired order (requires authentication)",
-        "operationId": "reorder_4",
+        "operationId": "reorderCourseCategories",
         "requestBody": {
           "content": {
             "application/json": {
@@ -625,7 +625,7 @@
         "tags": ["News"],
         "summary": "Get all news",
         "description": "Returns all news sorted by display order",
-        "operationId": "getAll",
+        "operationId": "getAllNews",
         "responses": {
           "200": {
             "description": "OK",
@@ -645,7 +645,7 @@
         "tags": ["News"],
         "summary": "Create news",
         "description": "Create a new news entry (requires authentication)",
-        "operationId": "create",
+        "operationId": "createNews",
         "requestBody": {
           "content": {
             "application/json": { "schema": { "$ref": "#/components/schemas/NewsRequest" } }
@@ -667,7 +667,7 @@
         "tags": ["News"],
         "summary": "Upload news image",
         "description": "Upload or replace the image of a news entry (requires authentication)",
-        "operationId": "uploadImage",
+        "operationId": "uploadNewsImage",
         "parameters": [
           {
             "name": "id",
@@ -700,7 +700,7 @@
         "tags": ["News"],
         "summary": "Delete news image",
         "description": "Delete the image of a news entry (requires authentication)",
-        "operationId": "deleteImage",
+        "operationId": "deleteNewsImage",
         "parameters": [
           {
             "name": "id",
@@ -717,7 +717,7 @@
         "tags": ["Gallery Events"],
         "summary": "Get all gallery events",
         "description": "Returns all gallery events sorted by date descending",
-        "operationId": "getAll_1",
+        "operationId": "getAllGalleryEvents",
         "responses": {
           "200": {
             "description": "OK",
@@ -737,7 +737,7 @@
         "tags": ["Gallery Events"],
         "summary": "Create gallery event",
         "description": "Create a new gallery event (requires authentication)",
-        "operationId": "create_1",
+        "operationId": "createGalleryEvent",
         "requestBody": {
           "content": {
             "application/json": { "schema": { "$ref": "#/components/schemas/GalleryEventRequest" } }
@@ -761,7 +761,7 @@
         "tags": ["Gallery Events"],
         "summary": "Upload images to gallery event",
         "description": "Upload one or more images to a gallery event (requires authentication)",
-        "operationId": "uploadImages",
+        "operationId": "uploadGalleryImages",
         "parameters": [
           {
             "name": "id",
@@ -803,7 +803,7 @@
         "tags": ["FAQ"],
         "summary": "Get all FAQs",
         "description": "Returns all FAQs sorted by display order",
-        "operationId": "getAll_2",
+        "operationId": "getAllFaqs",
         "responses": {
           "200": {
             "description": "OK",
@@ -823,7 +823,7 @@
         "tags": ["FAQ"],
         "summary": "Create FAQ",
         "description": "Create a new FAQ entry (requires authentication)",
-        "operationId": "create_2",
+        "operationId": "createFaq",
         "requestBody": {
           "content": {
             "application/json": { "schema": { "$ref": "#/components/schemas/FaqRequest" } }
@@ -845,7 +845,7 @@
         "tags": ["Events"],
         "summary": "Get all events",
         "description": "Returns all events ordered by date and display order",
-        "operationId": "getAll_3",
+        "operationId": "getAllEvents",
         "responses": {
           "200": {
             "description": "OK",
@@ -865,7 +865,7 @@
         "tags": ["Events"],
         "summary": "Create event",
         "description": "Create a new event with time ranges (requires authentication)",
-        "operationId": "create_3",
+        "operationId": "createEvent",
         "requestBody": {
           "content": {
             "application/json": { "schema": { "$ref": "#/components/schemas/EventRequest" } }
@@ -887,7 +887,7 @@
         "tags": ["Courses"],
         "summary": "Create course",
         "description": "Create a new course with tariffs (requires authentication)",
-        "operationId": "create_4",
+        "operationId": "createCourse",
         "requestBody": {
           "content": {
             "application/json": { "schema": { "$ref": "#/components/schemas/CourseRequest" } }
@@ -909,7 +909,7 @@
         "tags": ["Course Registration"],
         "summary": "Register for a course",
         "description": "Submit a course registration form (public)",
-        "operationId": "register",
+        "operationId": "registerForCourse",
         "parameters": [
           {
             "name": "id",
@@ -935,7 +935,7 @@
         "tags": ["Course Categories"],
         "summary": "Get course categories",
         "description": "Returns course categories with their courses, sorted by display order. Optionally filter by category IDs.",
-        "operationId": "getAll_4",
+        "operationId": "getAllCourseCategories",
         "parameters": [
           {
             "name": "ids",
@@ -963,7 +963,7 @@
         "tags": ["Course Categories"],
         "summary": "Create course category",
         "description": "Create a new course category (requires authentication)",
-        "operationId": "create_5",
+        "operationId": "createCourseCategory",
         "requestBody": {
           "content": {
             "application/json": {
@@ -989,7 +989,7 @@
         "tags": ["Contact"],
         "summary": "Send contact message",
         "description": "Sends a contact form message via email (public)",
-        "operationId": "sendMessage",
+        "operationId": "sendContactMessage",
         "requestBody": {
           "content": {
             "application/json": { "schema": { "$ref": "#/components/schemas/ContactRequest" } }
@@ -1028,7 +1028,7 @@
         "tags": ["News"],
         "summary": "Download news image",
         "description": "Returns the image file for display or download",
-        "operationId": "downloadImage",
+        "operationId": "downloadNewsImage",
         "parameters": [
           {
             "name": "id",
@@ -1053,7 +1053,7 @@
         "tags": ["Gallery Events"],
         "summary": "Download image",
         "description": "Returns the image file for display or download",
-        "operationId": "downloadImage_1",
+        "operationId": "downloadGalleryImage",
         "parameters": [
           {
             "name": "id",
@@ -1084,7 +1084,7 @@
         "tags": ["Gallery Events"],
         "summary": "Delete image from gallery event",
         "description": "Delete a single image from a gallery event (requires authentication)",
-        "operationId": "deleteImage_1",
+        "operationId": "deleteGalleryImage",
         "parameters": [
           {
             "name": "id",

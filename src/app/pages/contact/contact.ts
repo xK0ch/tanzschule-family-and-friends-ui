@@ -48,7 +48,7 @@ export class Contact {
     if (!this.isFormValid()) return;
     this.sending.set(true);
 
-    this.contactService.sendMessage({
+    this.contactService.sendContactMessage({
       body: {
         name: this.name,
         email: this.email,
