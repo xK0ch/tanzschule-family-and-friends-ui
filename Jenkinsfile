@@ -1,6 +1,12 @@
 pipeline {
   agent any
 
+  options {
+    disableConcurrentBuilds()
+    timestamps()
+    buildDiscarder(logRotator(numToKeepStr: '20'))
+  }
+
   tools {
     nodejs '22.22.1'
   }
@@ -20,10 +26,14 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml down'
-        sh 'docker image prune -af'
-        sh 'docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build -d'
+        sh 'docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build -d --remove-orphans'
       }
+    }
+  }
+
+  post {
+    always {
+      sh 'docker image prune -f'
     }
   }
 }
