@@ -24,18 +24,9 @@ export class Events {
   protected loading = signal(true);
   protected error = signal(false);
 
-  protected upcomingEvents = computed(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return this.events().filter((ev) => {
-      const d = new Date(ev.date);
-      return d.getTime() >= today.getTime();
-    });
-  });
-
   protected eventsByMonth = computed<MonthGroup[]>(() => {
     const groups = new Map<string, EventResponse[]>();
-    for (const ev of this.upcomingEvents()) {
+    for (const ev of this.events()) {
       const key = ev.date.substring(0, 7); // "YYYY-MM"
       const bucket = groups.get(key);
       if (bucket) {
