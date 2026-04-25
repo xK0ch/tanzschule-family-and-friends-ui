@@ -40,7 +40,7 @@ export const adminRoutes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'faq',
+        redirectTo: 'news',
         pathMatch: 'full',
       },
     ],
