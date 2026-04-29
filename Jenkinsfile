@@ -26,7 +26,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build -d --remove-orphans'
+        sh 'docker compose -f docker-compose-dance-school-ui.yml up --build -d --remove-orphans'
       }
     }
   }

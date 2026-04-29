@@ -1,16 +1,16 @@
 services:
-  tanzschule-ui:
+  dance-school-ui:
     build: .
-    container_name: tanzschule-ui
+    container_name: dance-school-ui
     networks:
       - proxy-net
-      - tanzschule-net
+      - dance-school-net
     restart: unless-stopped
 
 networks:
   proxy-net:
     name: proxy-net
     external: true
-  tanzschule-net:
-    name: tanzschule-net
+  dance-school-net:
+    name: dance-school-net
     external: true

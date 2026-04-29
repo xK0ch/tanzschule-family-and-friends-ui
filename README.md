@@ -1,6 +1,6 @@
-# Tanzschule Family & Friends – Frontend
+# Dance School (Frontend)
 
-Web frontend for the Tanzschule Family & Friends dance school website.
+Web frontend for a fictional dance school. Originally built as a custom client project for "Tanzschule Family & Friends" in Neumünster, kept as a portfolio piece after the customer's existing site turned out to cover all needs. The mockup business name and German page content are preserved on purpose.
 
 ## Tech Stack
 
@@ -37,7 +37,7 @@ Starts the dev server on `http://localhost:4200` with API proxy to `http://local
 npm run build
 ```
 
-Output in `dist/tanzschule-family-and-friends-ui/`.
+Output in `dist/dance-school-ui/`.
 
 ### Tests
 
@@ -49,7 +49,7 @@ npm run test:watch # watch mode
 ### Docker
 
 ```bash
-docker compose -f docker-compose-tanzschule-family-and-friends-ui.yml up --build -d
+docker compose -f docker-compose-dance-school-ui.yml up --build -d
 ```
 
 ## Pages
@@ -119,7 +119,7 @@ src/
 ## Backend Connection
 
 - **Development**: Angular dev server proxies `/api` requests to `localhost:8080` (`proxy.conf.json`)
-- **Production**: nginx proxies `/api` requests to the `tanzschule-service` Docker container
+- **Production**: nginx proxies `/api` requests to the `dance-school-service` Docker container
 
 ## API Client (OpenAPI → Angular services)
 

@@ -10,7 +10,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "tanzschule-family-and-friends-ui": {
+    "dance-school-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -93,10 +93,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "tanzschule-family-and-friends-ui:build:production"
+              "buildTarget": "dance-school-ui:build:production"
             },
             "development": {
-              "buildTarget": "tanzschule-family-and-friends-ui:build:development"
+              "buildTarget": "dance-school-ui:build:development"
             }
           },
           "defaultConfiguration": "development",

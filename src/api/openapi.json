@@ -6,7 +6,7 @@
     "contact": { "name": "Tanzschule Family & Friends" },
     "version": "0.0.1-SNAPSHOT"
   },
-  "servers": [{ "url": "http://tanzschule.fynn-koch.de", "description": "Generated server url" }],
+  "servers": [{ "url": "http://dance-school.fynn-koch.de", "description": "Generated server url" }],
   "security": [{ "Bearer Authentication": [] }],
   "tags": [
     { "name": "Course Categories", "description": "Course category management" },
